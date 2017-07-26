@@ -435,5 +435,48 @@ class ItemView(GraphView):
         return sum(1 for _ in self)
 
 
-class AdjacencyList(GraphView):
-    pass
+class AdjacencyList(dict, abc_collection.MutableMapping):
+    """
+    Edge values of nodes to a node in a graph
+
+    This represents edges in a ``graph`` originating from ``node`` as a mapping to their values.
+    For example, the edge ``graph[a:b] = c`` corresponds to ``adjacency[b] = c`` for node ``a``.
+    """
+    __slots__ = ('__weakref__',)
+
+
+class AdjacencyView(GraphView, AdjacencyList):
+    """
+    View on the adjacency of edges for a node in a graph
+
+    This represents edges in a ``graph`` originating from ``node`` as a mapping-like view.
+    For example, the edge ``graph[a:b] = c`` corresponds to ``adjacency[b] = c`` for node ``a``.
+    """
+    __slots__ = ('_node',)
+
+    def __init__(self, graph, node):
+        super(AdjacencyView, self).__init__(graph)
+        self._node = node
+
+    def __getitem__(self, node):
+        return self._graph[self._node:node]
+
+    def __setitem__(self, node, value):
+        self._graph[self._node:node] = value
+
+    def __delitem__(self, node):
+        del self._graph[self._node:node]
+
+    def __iter__(self):
+        self_graph, self_node = self._graph, self._node
+        for node in self_graph:
+            try:
+                yield self_graph[self_node:node]
+            except (NoSuchEdge, NoSuchNode):
+                continue
+
+    def __len__(self):
+        return sum(1 for _ in self)
+
+    def __contains__(self, node):
+        return edge.Edge(self._node, node) in self._graph
