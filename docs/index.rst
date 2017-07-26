@@ -23,7 +23,51 @@ GraphI - Python Graph Interface and Types
     Changelog <source/changelog>
     Module Index <source/api/modules>
 
-This page intentionally left blank.
+``GraphI`` is a lightweight library for graphs - it is suitable to comfortably work with networks, relations and other connected data.
+Compared to other graph libraries, ``GraphI`` aims for being as pythonic as possible.
+If you are comfortable using :py:class:`list`, :py:class:`dict` or other types, ``GraphI`` is intuitive and straight-forward to use.
+
+.. code::
+
+    # create a graph with initial nodes
+    airports = Graph("New York", "Rio", "Tokyo")
+    # add connections between nodes
+    airports["New York":"Rio"] = timedelta(hours=9, minutes=50)
+    airports["New York":"Tokyo"] = timedelta(hours=13, minutes=55)
+
+At its heart, ``GraphI`` is built match Python's data model.
+It natively works with primitives, iterables, mappings and whatever you need.
+For example, creating a multigraph is as simple as using multiple edge values:
+
+.. code::
+
+    # add multiple connections between nodes
+    airports["Rio":"Tokyo"] = timedelta(days=1, hours=2), timedelta(days=1, hours=3)
+
+With its general-purpose implementation, ``GraphI`` makes no assumptions about your data.
+You are free to use whatever is needed to solve your problem, not satisfy some interface.
+
+Frequently Asked Questions
+==========================
+
+*Yet another graph library?*
+    The goal of ``GraphI`` is not to be another graph library, but to provide an intuitive graph interface.
+    Working with complex graphs should be as easy *for you* as working with any other primitive type.
+
+*Where are all the algorithms?*
+    First and foremost, ``GraphI`` is designed for you to *work on graph data* instead of pre-sliced storybook data.
+    ``GraphI`` implements only algorithms that
+
+        1. are fundamental building blocks for advanced algorithms, and/or
+
+        2. benefit from knowledge of internal data structures.
+
+*What about performance?*
+    At its core, ``GraphI`` uses Python's native, highly optimized data structures.
+    For any non-trivial graph algorithm, the provided performance is more than sufficient.
+
+    From our experience, performance critical code is best run with `PyPy <https://pypy.org>`_.
+    This will not just optimize isolated pieces, but the actual combination of your algorithm and ``GraphI`` as a whole.
 
 Indices and tables
 ==================
