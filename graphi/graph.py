@@ -71,10 +71,10 @@ class Graph(abc_collection.Collection):
 
     .. describe:: g.undirected
 
-      Indicates whether :py:class:`~.Graph` `g` is guaranteed to be undirected, having only
-      symmetric edge values. If `True`, `g[a:b] is g[b:a]` for any nodes `a` and `b`
-      in `g`; the graph enforces this, e.g. `g[a:b] = c` implies `g[b:a] = c`.
-      If `False`, symmetric edges are allowed but not enforced.
+      Indicates whether :py:class:`~.Graph` ``g`` is guaranteed to be undirected, having only
+      symmetric edge values. If :py:const:`True`, ``g[a:b] is g[b:a]`` for any nodes ``a`` and ``b``
+      in ``g``; the graph enforces this, e.g. ``g[a:b] = c`` implies ``g[b:a] = c``.
+      If :py:const:`False`, symmetric edges are allowed but not enforced.
 
       Read-only unless explicitly indicated otherwise.
 
@@ -82,65 +82,67 @@ class Graph(abc_collection.Collection):
 
     .. describe:: len(g)
 
-      Return the number of nodes in the graph `g`.
+      Return the number of nodes in the graph ``g``.
 
     .. describe:: g[a:b]
 
-      Return the value of the edge between nodes `a` and `b`. Raises :py:exc:`NoSuchEdge` if
+      Return the value of the edge between nodes ``a`` and ``b``. Raises :py:exc:`NoSuchEdge` if
       no edge is defined for the nodes. Implementations of undirected graphs
-      must guarantee `g[a:b] == `g[b:a]`.
+      must guarantee ``g[a:b] == `g[b:a]``.
 
     .. describe:: g[a:b] = value
 
-      Set the value of the edge between nodes `a` and `b` to `value` for graph `g`.
+      Set the value of the edge between nodes ``a`` and ``b`` to ``value`` for graph ``g``.
 
     .. describe:: del g[a:b]
 
-      Remove the edge and value between nodes `a` and `b` from `g`.  Raises
+      Remove the edge and value between nodes ``a`` and ``b`` from ``g``.  Raises
       :exc:`NoSuchEdge` if the edge is not in the graph.
 
     .. describe:: g[a]
 
-      Return the edges between nodes `a` and any other node as an adjacency
-      mapping `{b: ab_edge, c: ac_edge, ...}`. Raises :py:exc:`NoSuchNode` if
-      `a` is not in `g`.
+      Return the edges between nodes ``a`` and any other node as an :py:class:`AdjacencyList`
+      corresponding to ``{b: ab_edge, c: ac_edge, ...}``. Raises :py:exc:`NoSuchNode` if
+      ``a`` is not in ``g``.
 
     .. describe:: g[a] = None
                   g[a] = a
                   g.add(a)
 
-      Add the node `a` to graph `g` if it does not exist. Do not add, remove or modify existing edges.
+      Add the node ``a`` to graph ``g`` if it does not exist. Do not add, remove or modify existing edges.
       Graphs for which edges are computed, not set, may create them implicitly.
 
     .. describe:: g[a] = {}
+                  g[a] = :py:class:`AdjacencyList`()
 
-      Add the node `a` to graph `g` if it does not exist. Remove any existing
-      edges originating at `a` from graph `g`.
+      Add the node ``a`` to graph ``g`` if it does not exist. Remove any existing
+      edges originating at ``a`` from graph ``g``.
 
     .. describe:: g[a] = {b: ab_edge, c: ac_edge, ...}
+                  g[a] = :py:class:`AdjacencyList`(b=ab_edge, c=c_edge)
 
-      Add the node `a` to graph `g` if it does not exist. Set the edge between
-      nodes `a` and `b` to `ab_edge`, between `a` and `c` to `ac_edge`, and so on.
-      Remove any other edge from `a`. Raises :py:exc:`NoSuchNode` if any of `b`,
-      `c`, etc. are not in `g`.
+      Add the node ``a`` to graph ``g`` if it does not exist. Set the value of the edge between
+      nodes ``a`` and ``b`` to ``ab_edge``, between ``a`` and ``c`` to ``ac_edge``, and so on.
+      Remove any other edge from ``a``. Raises :py:exc:`NoSuchNode` if any of ``b``,
+      ``c``, etc. are not in ``g``.
 
     .. describe:: del g[a]
 
-      Remove the node `a` and all its edges from `g`.  Raises
+      Remove the node ``a`` and all its edges from ``g``.  Raises
       :exc:`NoSuchNode` if the node is not in the graph.
 
     .. describe:: a in g
 
-      Return `True` if `g` has a node `a`, else `False`.
+      Return :py:const:`True` if ``g`` has a node ``a``, else :py:const:`False`.
 
     .. describe:: Edge[a:b] in g
                   Edge(a, b) in g
 
-      Return `True` if `g` has an edge from node `a` to `b`, else `False`.
+      Return :py:const:`True` if ``g`` has an edge from node ``a`` to ``b``, else :py:const:`False`.
 
     .. describe:: iter(g)
 
-      Return an iterator over the nodes in `g`.
+      Return an iterator over the nodes in ``g``.
 
     In addition, several methods are provided. While methods and operators for
     retrieving data must be implemented by all subclasses, methods for
@@ -278,12 +280,12 @@ class Graph(abc_collection.Collection):
 
     def get(self, item, default=None):
         """
-        Return the value for node or edge `item` if it is in the graph, else default. If
-        default is not given, it defaults to ``None``, so that this method never
+        Return the value for node or edge ``item`` if it is in the graph, else default. If
+        ``default`` is not given, it defaults to :py:const:`None`, so that this method never
         raises a :py:exc:`NoSuchNode` or :py:exc:`NoSuchEdge`.
 
         :param item: node or edge to look up in the graph
-        :param default: default to return if `item` is not in the graph
+        :param default: default to return if ``item`` is not in the graph
         """
         try:
             return self[item]
