@@ -339,6 +339,10 @@ class GraphView(abc_collection.Sized):
     """
     __slots__ = ('_graph',)
 
+    @property
+    def undirected(self):
+        return self._graph.undirected
+
     def __init__(self, graph):
         self._graph = graph
 
