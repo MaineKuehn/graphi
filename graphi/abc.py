@@ -184,6 +184,12 @@ class Graph(abc_collection.Container):
     undirected = False
 
     def __init__(self, *source, **kwargs):
+        """
+        Initialize a new graph from another graph, iterable or mapping
+
+        :param source: source for elements of the new graph
+        :param kwargs: parameters for initialization
+        """
         if not source:
             self.__init_empty__(**kwargs)
         elif len(source) == 1 and isinstance(source[0], GraphView):
@@ -196,15 +202,20 @@ class Graph(abc_collection.Container):
         else:
             self.__init_iterable__(source, **kwargs)
 
+    # initialize a new, empty graph
     def __init_empty__(self, **kwargs):
-        pass
+        if kwargs:
+            raise ValueError('%s does not take any keyword arguments' % self.__class__.__name__)
 
+    # initialize a new graph by copying nodes, edges and values from another graph
     def __init_graph__(self, graph, **kwargs):
         raise NotImplementedError
 
+    # initialize a new graph by copying nodes from an iterable
     def __init_iterable__(self, iterable, **kwargs):
         raise NotImplementedError
 
+    # initialize a new graph by copying nodes, edges and values from a nested mapping
     def __init_mapping__(self, mapping, **kwargs):
         raise NotImplementedError
 
