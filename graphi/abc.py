@@ -148,6 +148,7 @@ class Graph(abc_collection.Container):
     retrieving data must be implemented by all subclasses, methods for
     modifying data may not be applicable to certain graphs.
     """
+    #: whether this graph is undirected, having only symmetric edges
     undirected = False
 
     # container interface
