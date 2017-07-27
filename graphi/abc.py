@@ -205,19 +205,22 @@ class Graph(abc_collection.Container):
     # initialize a new, empty graph
     def __init_empty__(self, **kwargs):
         if kwargs:
-            raise ValueError('%s does not take any keyword arguments' % self.__class__.__name__)
+            raise ValueError('Graph.__init__() takes no keyword parameters')
 
     # initialize a new graph by copying nodes, edges and values from another graph
     def __init_graph__(self, graph, **kwargs):
-        raise NotImplementedError
+        if kwargs:
+            raise ValueError('Graph.__init__() takes no keyword parameters')
 
     # initialize a new graph by copying nodes from an iterable
     def __init_iterable__(self, iterable, **kwargs):
-        raise NotImplementedError
+        if kwargs:
+            raise ValueError('Graph.__init__() takes no keyword parameters')
 
     # initialize a new graph by copying nodes, edges and values from a nested mapping
     def __init_mapping__(self, mapping, **kwargs):
-        raise NotImplementedError
+        if kwargs:
+            raise ValueError('Graph.__init__() takes no keyword parameters')
 
     # container interface
     def __len__(self):
