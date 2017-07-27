@@ -183,6 +183,31 @@ class Graph(abc_collection.Container):
     #: whether this graph is undirected, having only symmetric edges
     undirected = False
 
+    def __init__(self, *source, **kwargs):
+        if not source:
+            self.__init_empty__(**kwargs)
+        elif len(source) == 1 and isinstance(source[0], GraphView):
+            self.__init_graph__(source[0], **kwargs)
+            return
+        elif len(source) == 1 and isinstance(source[0], abc_collection.Mapping):
+            self.__init_mapping__(source[0], **kwargs)
+        elif len(source) == 1 and isinstance(source[0], abc_collection.Iterable):
+            self.__init_iterable__(source[0], **kwargs)
+        else:
+            self.__init_iterable__(source, **kwargs)
+
+    def __init_empty__(self, **kwargs):
+        pass
+
+    def __init_graph__(self, graph, **kwargs):
+        raise NotImplementedError
+
+    def __init_iterable__(self, iterable, **kwargs):
+        raise NotImplementedError
+
+    def __init_mapping__(self, mapping, **kwargs):
+        raise NotImplementedError
+
     # container interface
     def __len__(self):
         return sum(1 for _ in self)
