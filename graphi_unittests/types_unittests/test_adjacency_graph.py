@@ -43,7 +43,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             yield self.random_content(length, connections[idx], distance_range)
 
     def test_containment(self):
-        graph = self.graph_cls(source={
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
             2: {1: 1},
             3: {1: 1},
@@ -70,7 +70,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             graph["notanode"]
 
     def test_set(self):
-        graph = self.graph_cls(source={
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
             2: {1: 1},
             3: {1: 1},
@@ -129,7 +129,7 @@ class TestAdjacencyGraph(unittest.TestCase):
                     self.assertEqual(graph[new_node:node_to], edges[node_to])
 
     def test_deletion(self):
-        graph = self.graph_cls(source={
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
             2: {1: 1},
             3: {1: 1},
@@ -149,7 +149,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             del graph[6]
 
     def test_neighbours(self):
-        graph = self.graph_cls(source={
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
             2: {1: 1},
             3: {1: 1},
