@@ -41,7 +41,7 @@ if __name__ == '__main__':
         ],
         keywords=package_about['__keywords__'],
         # unit tests
-        # test_suite='test_graphi',
+        test_suite='graphi_unittests',
         # use unittest backport to have subTest etc.
         # tests_require=['unittest2'] if sys.version_info < (3, 4) else [],
     )
