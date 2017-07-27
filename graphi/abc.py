@@ -21,7 +21,7 @@ class AdjacencyListTypeError(TypeError):
         TypeError.__init__(self, 'AdjacencyList must be None, its node or a mapping, not %r' % item.__class__)
 
 
-class Graph(abc_collection.Collection):
+class Graph(abc_collection.Container):
     """
     Abstract Base Class for graphs representing values of edges between nodes
 
