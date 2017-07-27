@@ -12,12 +12,13 @@ Subpackages
 .. toctree::
 
     graphi.compatibility
+    graphi.types
 
 Submodules
 ----------
 
 .. toctree::
 
+   graphi.abc
    graphi.edge
-   graphi.graph
 
