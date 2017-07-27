@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=chainlet
+set SPHINXPROJ=graphi
 
 if "%1" == "" goto help
 
