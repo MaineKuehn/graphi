@@ -19,7 +19,7 @@ GraphI - Python Graph Interface and Types
     :maxdepth: 1
     :caption: Documentation Topics Overview:
 
-    source/template
+    source/usage
     Changelog <source/changelog>
     Module Index <source/api/modules>
 
