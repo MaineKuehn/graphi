@@ -78,6 +78,38 @@ class Graph(abc_collection.Container):
 
       Read-only unless explicitly indicated otherwise.
 
+    There are several ways to initialise a new graph;
+    their main difference is which element types are left empty.
+
+    .. describe:: Graph()
+
+      Create a new empty graph.
+      No nodes, edges or values are filled in.
+
+    .. describe:: Graph(graph)
+
+      Create a new graph with all nodes, edges and values of ``graph``.
+      The resulting graph is a shallow copy of ``graph`` - the identity of elements is preserved.
+
+    .. describe:: Graph(a, b, c, ...)
+                  Graph([a, b, c, ...])
+                  Graph({a, b, c, ...})
+                  Graph(<iterable for a, b, c, ...>)
+
+      Create a new graph with nodes ``a``, ``b``, ``c``, ``d``, and so on.
+      No edges or values are created explicitly.
+
+    .. describe:: Graph({a: {b: ab_edge, c: ...}, b: {a: ab_edge, ...}})
+                  Graph({a: :py:class:`AdjacencyList`({b: ab_edge, c: ...}), b: :py:class:`AdjacencyList`(...), ...})
+
+     Create a new graph with nodes ``a``, ``b``, ``c``, and so on.
+     Initialize edges to ``graph[a:b] = ab_edge``, ``graph[b:a] = ba_edge``, and so on.
+
+    .. note::
+      If only a single argument is provided, graph and mapping initialization is preferred over iterable initialisation.
+      To initialize a graph with a graph or mapping as the sole node, wrap it in an iterable.
+      For example, use ``Graph([graph])`` to ensure that ``graph`` is used as a node.
+
     All implementations of this ABC guarantee the following operators:
 
     .. describe:: len(g)
