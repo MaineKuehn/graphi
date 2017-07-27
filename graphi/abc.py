@@ -451,7 +451,8 @@ class AdjacencyList(dict, abc_collection.MutableMapping):
     __slots__ = ('__weakref__',)
 
 
-class AdjacencyView(GraphView, AdjacencyList):
+@AdjacencyList.register
+class AdjacencyView(GraphView):
     """
     View on the adjacency of edges for a node in a graph
 
