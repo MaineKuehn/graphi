@@ -45,8 +45,8 @@ class Graph(abc_collection.Container):
     In short, ``graph[a]`` provides a collection of edges originating at ``a``,
     while ``graph[a:b]`` provides the specific edge value from ``a`` to ``b``.
 
-    .. see:: Many interfaces return the rich :py:class:`~.Edge` type for its added usability.
-             To access an edge value, using :py:class:`slice` such as ``graph[a:b]`` is sufficient, however.
+    .. note:: Many interfaces return the rich :py:class:`~.Edge` type for its added usability.
+              To access an edge value, using :py:class:`slice` such as ``graph[a:b]`` is sufficient, however.
 
     Similar to :py:class:`Mappings`, nodes are the primary keys of a :py:class:`~.Graph`.
     As a result, the container interfaces, such as ``iter`` and ``len``, operate on nodes.
@@ -100,15 +100,14 @@ class Graph(abc_collection.Container):
       No edges or values are created explicitly.
 
     .. describe:: Graph({a: {b: ab_edge, c: ...}, b: {a: ab_edge, ...}})
-                  Graph({a: :py:class:`AdjacencyList`({b: ab_edge, c: ...}), b: :py:class:`AdjacencyList`(...), ...})
+                  Graph({a: AdjacencyList({b: ab_edge, c: ...}), b: AdjacencyList(...), ...})
 
      Create a new graph with nodes ``a``, ``b``, ``c``, and so on.
      Initialize edges to ``graph[a:b] = ab_edge``, ``graph[b:a] = ba_edge``, and so on.
 
     .. note::
       If only a single argument is provided, graph and mapping initialization is preferred over iterable initialisation.
-      To initialize a graph with a graph or mapping as the sole node, wrap it in an iterable.
-      For example, use ``Graph([graph])`` to ensure that ``graph`` is used as a node.
+      To initialize a graph with a graph or mapping as the sole node, wrap it in an iterable, e.g. ``Graph([graph])``.
 
     All implementations of this ABC guarantee the following operators:
 
@@ -119,8 +118,7 @@ class Graph(abc_collection.Container):
     .. describe:: g[a:b]
 
       Return the value of the edge between nodes ``a`` and ``b``. Raises :py:exc:`NoSuchEdge` if
-      no edge is defined for the nodes. Implementations of undirected graphs
-      must guarantee ``g[a:b] == `g[b:a]``.
+      no edge is defined for the nodes. Undirected graphs guarantee ``g[a:b] == g[b:a]``.
 
     .. describe:: g[a:b] = value
 
@@ -145,13 +143,13 @@ class Graph(abc_collection.Container):
       Graphs for which edges are computed, not set, may create them implicitly.
 
     .. describe:: g[a] = {}
-                  g[a] = :py:class:`AdjacencyList`()
+                  g[a] = AdjacencyList()
 
       Add the node ``a`` to graph ``g`` if it does not exist. Remove any existing
       edges originating at ``a`` from graph ``g``.
 
     .. describe:: g[a] = {b: ab_edge, c: ac_edge, ...}
-                  g[a] = :py:class:`AdjacencyList`(b=ab_edge, c=c_edge)
+                  g[a] = AdjacencyList(b=ab_edge, c=c_edge)
 
       Add the node ``a`` to graph ``g`` if it does not exist. Set the value of the edge between
       nodes ``a`` and ``b`` to ``ab_edge``, between ``a`` and ``c`` to ``ac_edge``, and so on.
@@ -332,7 +330,7 @@ class Graph(abc_collection.Container):
         """
         Remove a node or edge from the graph if it is a member
 
-        :param item: node or edge to look up in the graph
+        :param item: node or edge to discard from the graph
         """
         try:
             del self[item]
