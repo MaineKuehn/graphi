@@ -18,12 +18,22 @@ class AdjacencyGraph(abc.Graph):
     :param source: adjacency information
     :param undirected: whether the graph enforces symmetry
     """
-    def __init__(self, source=None, undirected=False, max_distance=None):
+    def __init__(self, *source, undirected=False, max_distance=None):
         self.undirected = undirected
         self._adjacency = {}  # {node: {neighbour: distance, neighbour: distance, ...}, ...}
+        super(AdjacencyGraph, self).__init__(*source, max_distance=max_distance)
         # TODO: handle different possible sources
         if isinstance(source, abc_collection.Mapping):
             self._adjacency.update(self._adjacency_from_mapping(source, max_distance))
+        if undirected:
+            self._ensure_symmetry()
+
+    @staticmethod
+    def _adjacency_from_graph(graph, max_distance):
+        adjacency = {}
+        for node in graph:
+            adjacency[node] = {other: graph[node:other] for other in graph.get_neighbours(node, max_distance)}
+        return adjacency
 
     @staticmethod
     def _adjacency_from_mapping(adjacency_dict, max_distance):
@@ -36,6 +46,37 @@ class AdjacencyGraph(abc.Graph):
                     other: neighbours[other] for other in neighbours if neighbours[other] <= max_distance
                 }
         return adjacency
+
+    def __init_empty__(self, max_distance=None):
+        return
+
+    # initialize a new graph by copying nodes, edges and values from another graph
+    def __init_graph__(self, graph, max_distance=None):
+        self._adjacency.update(self._adjacency_from_graph(graph, max_distance=max_distance))
+
+    # initialize a new graph by copying nodes from an iterable
+    def __init_iterable__(self, iterable, **kwargs):
+        for node in iterable:
+            self._adjacency.setdefault(node, {})
+
+    # initialize a new graph by copying nodes, edges and values from a nested mapping
+    def __init_mapping__(self, mapping, max_distance=None):
+        self._adjacency.update(self._adjacency_from_mapping(mapping, max_distance=max_distance))
+
+    def _ensure_symmetry(self):
+        """
+        Ensure that adjacency list is symmetric
+
+        Adds any missing inverted edges. Raises :py:exc:`ValueError` if inverted edges do not have the same value.
+        """
+        adjacency = self._adjacency
+        for node_a in adjacency:
+            for node_b in adjacency[node_a]:
+                try:
+                    if adjacency[node_a][node_b] != adjacency[node_b][node_a]:
+                        raise ValueError("symmetric graph initialized with asymmetric edges")
+                except KeyError:
+                    adjacency.setdefault(node_b, {})[node_a] = adjacency[node_a][node_b]
 
     def __getitem__(self, item):
         if isinstance(item, slice):
