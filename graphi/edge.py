@@ -13,7 +13,7 @@ class EdgeMeta(type):
         return cls(item.start, item.stop, item.step)
 
 
-@six.with_metaclass(EdgeMeta)
+@six.add_metaclass(EdgeMeta)
 class Edge(object):
     """
     An edge in a graph as a pair of nodes
