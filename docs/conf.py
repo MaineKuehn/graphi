@@ -40,6 +40,7 @@ extensions = [
     'sphinx.ext.imgmath',
     'sphinx.ext.githubpages',
     'sphinx.ext.graphviz',
+    'sphinx.ext.imgmath',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -162,8 +163,10 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
+# -- Options for extensions ----------------------------------------------
 
-
+imgmath_image_format = 'svg'
+imgmath_font_size = 14
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/3/': None}
