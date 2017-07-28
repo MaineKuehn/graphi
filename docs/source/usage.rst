@@ -13,16 +13,15 @@ The primitives you need to familiarise yourself with are
 
 4. edge values, which are values assigned to connections in a graph.
 
-.. graphviz::
+.. math::
 
-    digraph graphname {
-        graph [rankdir=LR, label="graph(a, b, c)"]
-        subgraph cluster_c {
-            label=""
-            a -> c [label="[b:c]=2"]
-            b -> c [label="[a:c]=3"]
-            a -> b [label="[c:b]=5"]
-        }
+    \mathtt{
+        \underbrace{\vphantom{\bigl[}\mathtt{flighttime}}_\mathtt{graph}
+            [\overbrace{
+                \underbrace{\vphantom{\bigl[}\mathtt{Berlin}}_\mathtt{node}
+                :
+                \underbrace{\vphantom{\bigl[}\mathtt{London}}_\mathtt{node}
+            }^{edge}] = \underbrace{\vphantom{\bigl[}\mathtt{3900}}_\mathtt{value}
     }
 
 This documentation page gives an overview of the most important aspects.
