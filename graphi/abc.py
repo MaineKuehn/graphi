@@ -11,10 +11,12 @@ from . import edge
 
 
 class EdgeError(Exception):
+    """Graph edge not found"""
     pass
 
 
 class NodeError(Exception):
+    """Graph node not found"""
     pass
 
 
