@@ -2,7 +2,10 @@ from __future__ import absolute_import
 
 import abc
 import itertools
-from collections import abc as abc_collection
+try:
+    from collections import abc as abc_collection
+except ImportError:
+    import collections as abc_collection
 
 from . import edge
 
