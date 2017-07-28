@@ -23,7 +23,7 @@ class NodeError(Exception):
 class AdjacencyListTypeError(TypeError):
     """AdjacencyList set with an incorrect type"""
     def __init__(self, item):
-        TypeError.__init__(self, 'AdjacencyList must be None, its node or a mapping, not %r' % item.__class__)
+        TypeError.__init__(self, 'AdjacencyList of a node must be None, the node or a mapping, not %r' % item.__class__)
 
 
 class Graph(abc_collection.Container):
