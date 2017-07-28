@@ -7,11 +7,11 @@ from collections import abc as abc_collection
 from . import edge
 
 
-class NoSuchEdge(Exception):
+class EdgeError(Exception):
     pass
 
 
-class NoSuchNode(Exception):
+class NodeError(Exception):
     pass
 
 
@@ -117,7 +117,7 @@ class Graph(abc_collection.Container):
 
     .. describe:: g[a:b]
 
-      Return the value of the edge between nodes ``a`` and ``b``. Raises :py:exc:`NoSuchEdge` if
+      Return the value of the edge between nodes ``a`` and ``b``. Raises :py:exc:`EdgeError` if
       no edge is defined for the nodes. Undirected graphs guarantee ``g[a:b] == g[b:a]``.
 
     .. describe:: g[a:b] = value
@@ -127,12 +127,12 @@ class Graph(abc_collection.Container):
     .. describe:: del g[a:b]
 
       Remove the edge and value between nodes ``a`` and ``b`` from ``g``.  Raises
-      :exc:`NoSuchEdge` if the edge is not in the graph.
+      :exc:`EdgeError` if the edge is not in the graph.
 
     .. describe:: g[a]
 
       Return the edges between nodes ``a`` and any other node as an :py:class:`AdjacencyList`
-      corresponding to ``{b: ab_edge, c: ac_edge, ...}``. Raises :py:exc:`NoSuchNode` if
+      corresponding to ``{b: ab_edge, c: ac_edge, ...}``. Raises :py:exc:`NodeError` if
       ``a`` is not in ``g``.
 
     .. describe:: g[a] = None
@@ -153,13 +153,13 @@ class Graph(abc_collection.Container):
 
       Add the node ``a`` to graph ``g`` if it does not exist. Set the value of the edge between
       nodes ``a`` and ``b`` to ``ab_edge``, between ``a`` and ``c`` to ``ac_edge``, and so on.
-      Remove any other edge from ``a``. Raises :py:exc:`NoSuchNode` if any of ``b``,
+      Remove any other edge from ``a``. Raises :py:exc:`NodeError` if any of ``b``,
       ``c``, etc. are not in ``g``.
 
     .. describe:: del g[a]
 
       Remove the node ``a`` and all its edges from ``g``.  Raises
-      :exc:`NoSuchNode` if the node is not in the graph.
+      :exc:`NodeError` if the node is not in the graph.
 
     .. describe:: a in g
 
@@ -262,7 +262,7 @@ class Graph(abc_collection.Container):
         if item.__class__ is slice:
             try:
                 self[item]
-            except NoSuchEdge:
+            except EdgeError:
                 return False
             else:
                 return True
@@ -334,7 +334,7 @@ class Graph(abc_collection.Container):
         """
         try:
             del self[item]
-        except (NoSuchNode, NoSuchEdge):
+        except (NodeError, EdgeError):
             pass
 
     # dict-like graph methods
@@ -352,14 +352,14 @@ class Graph(abc_collection.Container):
         """
         Return the value for node or edge ``item`` if it is in the graph, else default. If
         ``default`` is not given, it defaults to :py:const:`None`, so that this method never
-        raises a :py:exc:`NoSuchNode` or :py:exc:`NoSuchEdge`.
+        raises a :py:exc:`NodeError` or :py:exc:`EdgeError`.
 
         :param item: node or edge to look up in the graph
         :param default: default to return if ``item`` is not in the graph
         """
         try:
             return self[item]
-        except (NoSuchNode, NoSuchEdge):
+        except (NodeError, EdgeError):
             return default
 
     # primitive graph algorithms
@@ -370,7 +370,7 @@ class Graph(abc_collection.Container):
         :param node: node from which edges originate.
         :param distance: optional maximum distance to other nodes.
         :return: iterator of neighbour nodes
-        :raises NoSuchNode: if ``node`` is not in the graph
+        :raises NodeError: if ``node`` is not in the graph
 
         When ``distance`` is not :py:const:`None`, it is the maximum allowed edge value.
         This is interpreted using the ``<=`` operator as ``graph[edge] <= distance``.
@@ -474,7 +474,7 @@ class ValueView(GraphView):
         for node_a, node_b in itertools.product(self_graph, repeat=2):
             try:
                 yield self_graph[node_a:node_b]
-            except (NoSuchEdge, NoSuchNode):
+            except (EdgeError, NodeError):
                 continue
 
     def __contains__(self, value):
@@ -504,7 +504,7 @@ class ItemView(GraphView):
         try:
             node_a, node_b, value = edge_value
             return self._graph[node_a:node_b] == value
-        except (NoSuchEdge, NoSuchNode):
+        except (EdgeError, NodeError):
             return False
 
     def __len__(self):
@@ -549,7 +549,7 @@ class AdjacencyView(GraphView):
         for node in self_graph:
             try:
                 yield self_graph[self_node:node]
-            except (NoSuchEdge, NoSuchNode):
+            except (EdgeError, NodeError):
                 continue
 
     def __len__(self):

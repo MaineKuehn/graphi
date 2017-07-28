@@ -86,24 +86,24 @@ class AdjacencyGraph(abc.Graph):
             try:
                 return self._adjacency[node_from][node_to]
             except KeyError:
-                raise abc.NoSuchEdge
+                raise abc.EdgeError
         else:
             try:
                 return self._adjacency[item]
             except KeyError:
-                raise abc.NoSuchNode
+                raise abc.NodeError
 
     def __setitem__(self, item, value):
         if isinstance(item, slice):
             node_from, node_to = item.start, item.stop
             if node_to not in self._adjacency:
-                raise abc.NoSuchNode  # second edge node
+                raise abc.NodeError  # second edge node
             try:
                 self._adjacency[node_from][node_to] = value
                 if self.undirected:
                     self._adjacency[node_to][node_from] = value
             except KeyError:
-                raise abc.NoSuchNode  # first edge node
+                raise abc.NodeError  # first edge node
         else:
             # g[a] = g[a]
             if self._adjacency.get(item, object()) is value:
@@ -133,12 +133,12 @@ class AdjacencyGraph(abc.Graph):
                 if self.undirected:
                     del self._adjacency[node_to][node_from]
             except KeyError:
-                raise abc.NoSuchEdge
+                raise abc.EdgeError
         else:
             try:
                 node_adjacency = self._adjacency.pop(item)
             except KeyError:
-                raise abc.NoSuchNode
+                raise abc.NodeError
             else:
                 # clean up all edges to this node
                 if self.undirected:
@@ -155,7 +155,7 @@ class AdjacencyGraph(abc.Graph):
         try:
             adjacency_list = self._adjacency[node]
         except KeyError:
-            raise abc.NoSuchNode
+            raise abc.NodeError
         else:
             if not distance:
                 return iter(adjacency_list)

@@ -55,18 +55,18 @@ class TestAdjacencyGraph(unittest.TestCase):
         }, max_distance=2)
         self.assertEqual(1, graph[1:2])
         self.assertEqual(2, graph[6:1])
-        with self.assertRaises(graphi.abc.NoSuchEdge):
+        with self.assertRaises(graphi.abc.EdgeError):
             graph[8:7]
-        with self.assertRaises(graphi.abc.NoSuchEdge):
+        with self.assertRaises(graphi.abc.EdgeError):
             graph[9:10]
         self.assertEqual(graph[2], {1: 1})
         self.assertEqual(graph[6], {1: 2, 7: 1})
         self.assertEqual(graph[8], {1: 1})
-        with self.assertRaises(graphi.abc.NoSuchNode):
+        with self.assertRaises(graphi.abc.NodeError):
             graph[9]
-        with self.assertRaises(graphi.abc.NoSuchNode):
+        with self.assertRaises(graphi.abc.NodeError):
             graph[-1]
-        with self.assertRaises(graphi.abc.NoSuchNode):
+        with self.assertRaises(graphi.abc.NodeError):
             graph["notanode"]
 
     def test_set(self):
@@ -83,9 +83,9 @@ class TestAdjacencyGraph(unittest.TestCase):
         self.assertFalse(slice(1, 6) in graph)
         graph[1:6] = 2
         self.assertEqual(2, graph[1:6])
-        with self.assertRaises(graphi.abc.NoSuchNode):
+        with self.assertRaises(graphi.abc.NodeError):
             graph[1:9] = 1
-        with self.assertRaises(graphi.abc.NoSuchNode):
+        with self.assertRaises(graphi.abc.NodeError):
             graph[9:1] = 1
         graph[9] = {}
         graph[9:1] = 1
@@ -139,13 +139,13 @@ class TestAdjacencyGraph(unittest.TestCase):
             7: {6: 1},
             8: {1: 1}
         }, max_distance=1)
-        with self.assertRaises(graphi.abc.NoSuchEdge):
+        with self.assertRaises(graphi.abc.EdgeError):
             del graph[1:6]
         self.assertEqual(1, graph[6:7])
         del graph[6]
-        with self.assertRaises(graphi.abc.NoSuchEdge):
+        with self.assertRaises(graphi.abc.EdgeError):
             del graph[6:7]
-        with self.assertRaises(graphi.abc.NoSuchNode):
+        with self.assertRaises(graphi.abc.NodeError):
             del graph[6]
 
     def test_neighbours(self):
@@ -161,5 +161,5 @@ class TestAdjacencyGraph(unittest.TestCase):
         })
         self.assertEqual({2, 3, 4, 5, 6, 8}, set(graph.neighbourhood(1)))
         self.assertEqual({2, 3, 4, 5, 8}, set(graph.neighbourhood(1, distance=1)))
-        with self.assertRaises(graphi.abc.NoSuchNode):
+        with self.assertRaises(graphi.abc.NodeError):
             graph.neighbourhood(9)
