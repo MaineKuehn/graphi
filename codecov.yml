@@ -1,0 +1,4 @@
+coverage:
+  ignore:
+    - graphi_unittests
+    - graphi/__about__.py

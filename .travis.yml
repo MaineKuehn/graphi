@@ -1,0 +1,31 @@
+language: python
+python:
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "pypy"
+  - "pypy3"
+  - "3.5-dev"
+  - "3.6-dev"
+  - "3.7-dev"
+  - "nightly" # currently points to 3.7-dev
+os:
+  - linux
+#  - osx  # osx+python installation fails
+matrix:
+  # ignore all but the most recent, stable releases
+  allow_failures:
+  - python: "2.7"
+  - python: "3.5-dev"
+  - python: "3.6-dev"
+  - python: "nightly"
+before_script:
+  - export PYTHONHASHSEED=${PYTHONHASHSEED:-${RANDOM}}
+  - echo "export PYTHONHASHSEED=${PYTHONHASHSEED}"
+  - pip install codecov
+  - export COVERAGE_PROCESS_START=$(pwd)/.coveragerc
+script:
+  - coverage run setup.py test
+after_success:
+  - coverage report && codecov
