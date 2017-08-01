@@ -6,7 +6,7 @@ except ImportError:
     import unittest
 
 from graphi.types import adjacency_graph
-from graphi.operators._neighbours import neighbours
+from graphi.operators import neighbours
 
 
 class TestNeighbours(unittest.TestCase):
