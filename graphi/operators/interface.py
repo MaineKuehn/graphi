@@ -37,13 +37,13 @@ def graph_operator(prefix=DEFAULT_OPERATOR_PREFIX):
 
     attribute is :py:const:`NotImplemented`
         The graph does not overwrite the operation.
-        The operator implementation is used.
+        The operator implementation is always used.
 
     calling the attribute returns :py:const:`NotImplemented`
         The graph does not overwrite the operation for the specific parameters.
         The operator implementation is used.
 
-    The name of an operator is derived from ``operator.__name__`` or ``operator.__class__.__name__``.
+    The name of an operator is taken from ``operator.__name__`` or ``operator.__class__.__name__``.
     """
     def wrap_operator(operator):
         try:
