@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import sys
 from setuptools import setup, find_packages
 
 repo_base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -43,5 +44,5 @@ if __name__ == '__main__':
         # unit tests
         test_suite='graphi_unittests',
         # use unittest backport to have subTest etc.
-        # tests_require=['unittest2'] if sys.version_info < (3, 4) else [],
+        tests_require=['unittest2'] if sys.version_info < (3, 4) else [],
     )
