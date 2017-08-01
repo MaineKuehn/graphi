@@ -50,11 +50,11 @@ def graph_operator(prefix=DEFAULT_OPERATOR_PREFIX):
             operator_name = operator.__name__
         except AttributeError:
             operator_name = operator.__class__.__name__
-        attribute_name = '__%s_%s__' % (prefix, operator_name)
+        override_name = '__%s_%s__' % (prefix, operator_name)
 
         @functools.wraps(operator)
         def wrapped_operator(graph, *args, **kwargs):
-            graph_op = getattr(graph, attribute_name, NotImplemented)
+            graph_op = getattr(graph, override_name, NotImplemented)
             if graph_op is None:
                 raise TypeError(
                     'object of type %r does not support %r graph operator' % type(graph).__name__, operator.__name__
@@ -66,6 +66,7 @@ def graph_operator(prefix=DEFAULT_OPERATOR_PREFIX):
             if return_value is not NotImplemented:
                 return return_value
             return operator(graph, *args, **kwargs)
+        wrapped_operator.override_name = override_name
         return wrapped_operator
     if not isinstance(prefix, str):
         _operator = prefix
