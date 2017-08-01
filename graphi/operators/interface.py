@@ -19,6 +19,15 @@ def graph_operator(prefix=DEFAULT_OPERATOR_PREFIX):
     named ``__<prefix>_<operator name>__``, e.g. ``__graphi_neighbours__`` for an operator ``neighbours``.
     If this is the case, the attribute is called with the provided arguments as a replacement
     for the operator implementation.
+
+    .. py:function:: operator(graph, *args, **kwargs)
+
+        The generic implementation of a graph operator.
+
+    .. py:method:: graph.__graphi_operator__(*args, **kwargs)
+
+        The optimized implementation of a graph operator.
+
     There are three special conditions to this procedure:
 
     attribute is :py:const:`None`
