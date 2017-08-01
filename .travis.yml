@@ -1,5 +1,6 @@
 language: python
 python:
+  - "2.7"
   - "3.3"
   - "3.4"
   - "3.5"
@@ -17,6 +18,7 @@ matrix:
   # ignore all but the most recent, stable releases
   allow_failures:
   - python: "2.7"
+  - python: "pypy"
   - python: "3.5-dev"
   - python: "3.6-dev"
   - python: "nightly"
