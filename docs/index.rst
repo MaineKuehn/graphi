@@ -55,6 +55,13 @@ Frequently Asked Questions
     The goal of ``GraphI`` is not to be another graph library, but to provide an intuitive graph interface.
     Working with complex graphs should be as easy *for you* as working with any other primitive type.
 
+*What is this thing you call ABC?*
+    ``GraphI`` does not just provide graph *implementations*, but also an efficient graph *interface*.
+    This interface is defined by the :py:class:`graphi.abc` :term:`abstract base classes <abstract base class>`.
+
+    Any custom graph implementation can be made a *virtual* subclasses of these ABCs.
+    This allows you to adopt graph implementations optimized for your use-case without changing your code.
+
 *Where are all the algorithms?*
     First and foremost, ``GraphI`` is designed for you to *work on graph data* instead of pre-sliced storybook data.
     ``GraphI`` implements only algorithms that
