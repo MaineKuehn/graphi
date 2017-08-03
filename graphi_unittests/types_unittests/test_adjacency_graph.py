@@ -44,6 +44,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             yield self.random_content(length, connections[idx], distance_range)
 
     def test_containment(self):
+        """Adjacency Graph: retrieve elements"""
         graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
             2: {1: 1},
@@ -53,7 +54,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             6: {1: 2, 7: 1},
             7: {6: 1},
             8: {1: 1}
-        }, max_distance=2)
+        })
         self.assertEqual(1, graph[1:2])
         self.assertEqual(2, graph[6:1])
         with self.assertRaises(graphi.abc.EdgeError):
@@ -71,6 +72,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             graph["notanode"]
 
     def test_set(self):
+        """Adjacency Graph: change/add elements"""
         graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
             2: {1: 1},
@@ -80,10 +82,10 @@ class TestAdjacencyGraph(unittest.TestCase):
             6: {1: 2, 7: 1},
             7: {6: 1},
             8: {1: 1}
-        }, max_distance=1, undirected=True)
-        self.assertFalse(slice(1, 6) in graph)
-        graph[1:6] = 2
-        self.assertEqual(2, graph[1:6])
+        }, undirected=True)
+        self.assertFalse(slice(1, 7) in graph)
+        graph[1:7] = 2
+        self.assertEqual(2, graph[1:7])
         with self.assertRaises(graphi.abc.NodeError):
             graph[1:9] = 1
         with self.assertRaises(graphi.abc.NodeError):
@@ -97,7 +99,7 @@ class TestAdjacencyGraph(unittest.TestCase):
         self.assertEqual(graph[9], {1: 1, 2: 2})
 
     def test_setitem_node(self):
-        """Setitem of individual nodes"""
+        """Adjacency Graph: setitem of individual nodes"""
         graph = self.graph_cls(
             {idx: {} for idx in range(5)}
         )
@@ -139,9 +141,9 @@ class TestAdjacencyGraph(unittest.TestCase):
             6: {1: 2, 7: 1},
             7: {6: 1},
             8: {1: 1}
-        }, max_distance=1)
+        })
         with self.assertRaises(graphi.abc.EdgeError):
-            del graph[1:6]
+            del graph[1:7]
         self.assertEqual(1, graph[6:7])
         del graph[6]
         with self.assertRaises(graphi.abc.EdgeError):

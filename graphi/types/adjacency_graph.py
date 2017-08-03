@@ -19,33 +19,25 @@ class AdjacencyGraph(abc.Graph):
     is arbitrary. The expected complexity for searches is the worst case of O(len(:py:meth:`nodes`) = n)
     and O(len(:py:meth:`edges`) -> n\ :sup:`2`\ ), respectively.
     """
-    def __init__(self, *source, undirected=False, max_distance=None):
+    def __init__(self, *source, undirected=False):
         self.undirected = undirected
         self._adjacency = {}  # {node: {neighbour: distance, neighbour: distance, ...}, ...}
-        super(AdjacencyGraph, self).__init__(*source, max_distance=max_distance)
-        # TODO: handle different possible sources
-        if isinstance(source, abc_collection.Mapping):
-            self._adjacency.update(self._adjacency_from_mapping(source, max_distance))
+        super(AdjacencyGraph, self).__init__(*source)
         if undirected:
             self._ensure_symmetry()
 
     @staticmethod
-    def _adjacency_from_graph(graph, max_distance):
+    def _adjacency_from_graph(graph):
         adjacency = {}
         for node in graph:
-            adjacency[node] = {other: graph[node:other] for other in graph.get_neighbours(node, max_distance)}
+            adjacency[node] = {other: graph[node:other] for other in graph}
         return adjacency
 
     @staticmethod
-    def _adjacency_from_mapping(adjacency_dict, max_distance):
+    def _adjacency_from_mapping(adjacency_dict):
         adjacency = {}
         for node, neighbours in six.viewitems(adjacency_dict):
-            if not max_distance:
-                adjacency[node] = {other: neighbours[other] for other in neighbours}
-            else:
-                adjacency[node] = {
-                    other: neighbours[other] for other in neighbours if neighbours[other] <= max_distance
-                }
+            adjacency[node] = {other: neighbours[other] for other in neighbours}
         return adjacency
 
     def __init_empty__(self, max_distance=None):
@@ -53,7 +45,7 @@ class AdjacencyGraph(abc.Graph):
 
     # initialize a new graph by copying nodes, edges and values from another graph
     def __init_graph__(self, graph, max_distance=None):
-        self._adjacency.update(self._adjacency_from_graph(graph, max_distance=max_distance))
+        self._adjacency.update(self._adjacency_from_graph(graph))
 
     # initialize a new graph by copying nodes from an iterable
     def __init_iterable__(self, iterable, **kwargs):
@@ -62,7 +54,7 @@ class AdjacencyGraph(abc.Graph):
 
     # initialize a new graph by copying nodes, edges and values from a nested mapping
     def __init_mapping__(self, mapping, max_distance=None):
-        self._adjacency.update(self._adjacency_from_mapping(mapping, max_distance=max_distance))
+        self._adjacency.update(self._adjacency_from_mapping(mapping))
 
     def _ensure_symmetry(self):
         """
@@ -80,9 +72,7 @@ class AdjacencyGraph(abc.Graph):
                     adjacency.setdefault(node_b, {})[node_a] = adjacency[node_a][node_b]
 
     def __getitem__(self, item):
-        if isinstance(item, slice):
-            assert item.step is None, "%s does not support stride argument for edges" % \
-                                      self.__class__.__name__
+        if item.__class__ is slice:
             node_from, node_to = item.start, item.stop
             try:
                 return self._adjacency[node_from][node_to]
@@ -95,7 +85,7 @@ class AdjacencyGraph(abc.Graph):
                 raise abc.NodeError
 
     def __setitem__(self, item, value):
-        if isinstance(item, slice):
+        if item.__class__ is slice:
             node_from, node_to = item.start, item.stop
             if node_to not in self._adjacency:
                 raise abc.NodeError  # second edge node
@@ -122,7 +112,7 @@ class AdjacencyGraph(abc.Graph):
                             del self._adjacency[node_to][item]  # safe unless graph not undirected
                     for node_to in value:
                         self._adjacency[node_to][item] = value[node_to]
-                self._adjacency[item] = value.copy()
+                self._adjacency[item] = dict(value)
             else:
                 raise abc.AdjacencyListTypeError(value)
 
@@ -151,3 +141,23 @@ class AdjacencyGraph(abc.Graph):
 
     def __iter__(self):
         return iter(self._adjacency)
+
+    def add(self, node):
+        if node in self._adjacency:
+            return
+        self._adjacency[node] = {}
+
+    def update(self, other):
+        if isinstance(other, (abc.Graph, abc_collection.Mapping)):
+            for node in other:
+                try:
+                    self._adjacency[node].update(other[node])
+                except abc.NodeError:
+                    self._adjacency[node] = dict(other[node])
+        else:
+            for node in other:
+                self.add(node)
+
+    def clear(self):
+        for node in self:
+            self._adjacency[node].clear()
