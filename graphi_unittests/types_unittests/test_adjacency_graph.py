@@ -2,6 +2,7 @@ import random
 
 import graphi.types.adjacency_graph
 import graphi.abc
+from graphi import operators
 
 try:
     import unittest2 as unittest
@@ -159,7 +160,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             7: {6: 1},
             8: {1: 1}
         })
-        self.assertEqual({2, 3, 4, 5, 6, 8}, set(graph.neighbourhood(1)))
-        self.assertEqual({2, 3, 4, 5, 8}, set(graph.neighbourhood(1, distance=1)))
+        self.assertEqual({2, 3, 4, 5, 6, 8}, set(operators.neighbours(graph, 1)))
+        self.assertEqual({2, 3, 4, 5, 8}, set(operators.neighbours(graph, 1, maximum_distance=1)))
         with self.assertRaises(graphi.abc.NodeError):
-            graph.neighbourhood(9)
+            operators.neighbours(graph, 9)

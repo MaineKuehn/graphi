@@ -367,24 +367,6 @@ class Graph(abc_collection.Container):
         except (NodeError, EdgeError):
             return default
 
-    # primitive graph algorithms
-    def neighbourhood(self, node, distance=None):
-        """
-        Yield all nodes to which there is an edge from ``node`` in the graph
-
-        :param node: node from which edges originate.
-        :param distance: optional maximum distance to other nodes.
-        :return: iterator of neighbour nodes
-        :raises NodeError: if ``node`` is not in the graph
-
-        When ``distance`` is not :py:const:`None`, it is the maximum allowed edge value.
-        This is interpreted using the ``<=`` operator as ``graph[edge] <= distance``.
-
-        If there is a valid edge ``graph[node:node] <= distance``, then ``node``
-        is part of its own neighbourhood.
-        """
-        raise NotImplementedError
-
 
 class GraphView(abc_collection.Sized):
     """

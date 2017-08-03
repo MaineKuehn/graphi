@@ -151,13 +151,3 @@ class AdjacencyGraph(abc.Graph):
 
     def __iter__(self):
         return iter(self._adjacency)
-
-    def neighbourhood(self, node, distance=None):
-        try:
-            adjacency_list = self._adjacency[node]
-        except KeyError:
-            raise abc.NodeError
-        else:
-            if not distance:
-                return iter(adjacency_list)
-            return (neighbour for neighbour in adjacency_list if adjacency_list[neighbour] <= distance)
