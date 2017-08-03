@@ -11,7 +11,8 @@ Subpackages
 
 .. toctree::
 
-    graphi.compatibility
+    graphi.graph_io
+    graphi.operators
     graphi.types
 
 Submodules

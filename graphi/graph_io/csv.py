@@ -17,16 +17,16 @@ class DistanceMatrixLiteral(csv.Dialect):
     """
     CSV dialect for a Graph Matrix Literal, suitable for numeric data and string literals
 
-    ```
-     a   b   c
-     0   2 1.3
-     2   0  .5
-    16  .5   1
-    ```
+    A graph with alphabetic node names and numeric values would look like this::
+
+         a   b   c
+         0   2 1.3
+         2   0  .5
+        16  .5   1
     """
-    #: no explicit delimeters required
+    #: no explicit delimeter between fields
     delimiter = ' '
-    #: string literals can be written as "foo"
+    #: string values are written as "foo", multi-values as '1,2,3'
     quotechar = "'"
     doublequote = False
     #: use regular escaping

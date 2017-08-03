@@ -4,19 +4,20 @@ from collections import abc as abc_collection
 import six
 
 
-class AdjacencyListTypeError(TypeError):
-    """AdjacencyList was set to incorrect type"""
-    def __init__(self, edge):
-        TypeError.__init__("AdjacencyList must be None, its node or a mapping, not %r" %
-                           edge.__class__)
-
-
 class AdjacencyGraph(abc.Graph):
-    """
-    Graph storing edge distances via adjacency lists.
+    r"""
+    Graph storing edge distances via adjacency lists
 
     :param source: adjacency information
     :param undirected: whether the graph enforces symmetry
+
+    This graph provides optimal performance for random, direct access to nodes
+    and edges. As it stores individual nodes and edges, it is optimal in both
+    space and time for sparse graphs.
+
+    However, ordering of :py:meth:`nodes`, :py:meth:`edges` and :py:meth:`values`
+    is arbitrary. The expected complexity for searches is the worst case of O(len(:py:meth:`nodes`) = n)
+    and O(len(:py:meth:`edges`) -> n\ :sup:`2`\ ), respectively.
     """
     def __init__(self, *source, undirected=False, max_distance=None):
         self.undirected = undirected
@@ -123,7 +124,7 @@ class AdjacencyGraph(abc.Graph):
                         self._adjacency[node_to][item] = value[node_to]
                 self._adjacency[item] = value.copy()
             else:
-                raise AdjacencyListTypeError(value)
+                raise abc.AdjacencyListTypeError(value)
 
     def __delitem__(self, item):
         if isinstance(item, slice):

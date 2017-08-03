@@ -29,8 +29,9 @@ If you are comfortable using :py:class:`list`, :py:class:`dict` or other types, 
 
 .. code::
 
+    from graphi.types.adjacency_graph import AdjacencyGraph
     # create a graph with initial nodes
-    airports = Graph("New York", "Rio", "Tokyo")
+    airports = AdjacencyGraph("New York", "Rio", "Tokyo")
     # add connections between nodes
     airports["New York":"Rio"] = timedelta(hours=9, minutes=50)
     airports["New York":"Tokyo"] = timedelta(hours=13, minutes=55)
@@ -41,7 +42,7 @@ For example, creating a multigraph is as simple as using multiple edge values:
 
 .. code::
 
-    # add multiple connections between nodes
+    # add multiple connections between nodes -> Multigraph
     airports["Rio":"Tokyo"] = timedelta(days=1, hours=2), timedelta(days=1, hours=3)
 
 With its general-purpose design, ``GraphI`` makes no assumptions about your data.
