@@ -274,13 +274,14 @@ class Graph(abc_collection.Container):
         else:
             return any(item == node for node in self)
 
+    @abc.abstractmethod
     def clear(self):
         """Remove all elements from this graph"""
         raise NotImplementedError
 
     def copy(self):
         """Return a shallow copy of this graph"""
-        raise NotImplementedError
+        return self.__class__(self)
 
     # graph views
     def nodes(self):
@@ -320,6 +321,7 @@ class Graph(abc_collection.Container):
         return ItemView(self)
 
     # set-like graph methods
+    @abc.abstractmethod
     def add(self, node):
         """
         Safely add a node to the graph, without modifying existing edges
@@ -343,6 +345,7 @@ class Graph(abc_collection.Container):
             pass
 
     # dict-like graph methods
+    @abc.abstractmethod
     def update(self, other):
         """
         Update the graph with the nodes, edges and values from ``other``,
