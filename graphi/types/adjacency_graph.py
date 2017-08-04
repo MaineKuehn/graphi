@@ -1,7 +1,9 @@
 from __future__ import absolute_import
-from .. import abc
 from collections import abc as abc_collection
 import six
+
+from .. import abc
+from .. import edge
 
 
 class AdjacencyGraph(abc.Graph):
@@ -16,8 +18,9 @@ class AdjacencyGraph(abc.Graph):
     space and time for sparse graphs.
 
     However, ordering of :py:meth:`nodes`, :py:meth:`edges` and :py:meth:`values`
-    is arbitrary. The expected complexity for searches is the worst case of O(len(:py:meth:`nodes`) = n)
-    and O(len(:py:meth:`edges`) -> n\ :sup:`2`\ ), respectively.
+    is arbitrary. The expected complexity for searches is the worst case of
+    O(len(:py:meth:`nodes`) = n) and O(len(:py:meth:`edges`) -> n\ :sup:`2`\ ),
+    respectively.
     """
     def __init__(self, *source, undirected=False):
         self.undirected = undirected
@@ -45,7 +48,7 @@ class AdjacencyGraph(abc.Graph):
 
     # initialize a new graph by copying nodes, edges and values from another graph
     def __init_graph__(self, graph, max_distance=None):
-        self._adjacency.update(self._adjacency_from_graph(graph))
+        self.update(self._adjacency_from_graph(graph))
 
     # initialize a new graph by copying nodes from an iterable
     def __init_iterable__(self, iterable, **kwargs):
@@ -54,7 +57,7 @@ class AdjacencyGraph(abc.Graph):
 
     # initialize a new graph by copying nodes, edges and values from a nested mapping
     def __init_mapping__(self, mapping, max_distance=None):
-        self._adjacency.update(self._adjacency_from_mapping(mapping))
+        self.update(self._adjacency_from_mapping(mapping))
 
     def _ensure_symmetry(self):
         """
@@ -142,6 +145,19 @@ class AdjacencyGraph(abc.Graph):
     def __iter__(self):
         return iter(self._adjacency)
 
+    def __len__(self):
+        return len(self._adjacency)
+
+    def __contains__(self, item):
+        if item.__class__ is slice:
+            node_from, node_to = item.start, item.stop
+            try:
+                return node_to in self._adjacency[node_from]
+            except KeyError:
+                return False
+        else:
+            return item in self._adjacency
+
     def add(self, node):
         if node in self._adjacency:
             return
@@ -152,7 +168,7 @@ class AdjacencyGraph(abc.Graph):
             for node in other:
                 try:
                     self._adjacency[node].update(other[node])
-                except abc.NodeError:
+                except KeyError:
                     self._adjacency[node] = dict(other[node])
         else:
             for node in other:
@@ -161,3 +177,55 @@ class AdjacencyGraph(abc.Graph):
     def clear(self):
         for node in self:
             self._adjacency[node].clear()
+
+    def edges(self):
+        return EdgeView(self)
+
+    def values(self):
+        return ValueView(self)
+
+
+class EdgeView(abc.EdgeView):
+    """
+    View on the edges in a graph
+    """
+    __slots__ = ()
+
+    def __iter__(self):
+        self_graph = self._graph
+        for node_from in self_graph:
+            for node_to in self_graph[node_from]:
+                yield edge.Edge(node_from, node_to)
+
+    def __contains__(self, pair):
+        if pair.__class__ is slice:
+            return pair in self._graph
+        else:
+            try:
+                return edge.Edge(*pair) in self._graph
+            except TypeError:
+                pass
+        raise TypeError('an edge is required')
+
+    def __len__(self):
+        self_graph = self._graph
+        return sum(len(self_graph[node]) for node in self_graph)
+
+
+class ValueView(abc.ValueView):
+    """
+    View on the values of edges in a graph
+    """
+    __slots__ = ()
+
+    def __iter__(self):
+        self_graph = self._graph
+        for _edge in self_graph.edges():
+            yield self_graph[_edge]
+
+    def __contains__(self, value):
+        self_graph = self._graph
+        return any(self_graph[_edge] == value for _edge in self_graph.edges())
+
+    def __len__(self):
+        return len(self._graph.edges())
