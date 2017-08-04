@@ -6,6 +6,7 @@ except ImportError:
 
 from graphi import abc
 from graphi import edge
+from graphi.types import adjacency_graph
 
 
 class Mixin(object):
@@ -86,6 +87,25 @@ class Mixin(object):
                         node_b: node_a - node_b for node_b in range(10, 20, 2)
                     } for node_a in range(10, 20, 2)
                 })
+                for node in range(10, 20, 2):
+                    self.assertIn(node, graph)
+                for a, b in itertools.product(range(10, 20, 2), repeat=2):
+                    self.assertIn(edge.Edge[a:b], graph)
+                    self.assertEqual(a - b, graph[a:b])
+                self.assertEqual(len(graph), len(range(10, 20, 2)))
+                self.assertEqual(len(graph.nodes()), len(range(10, 20, 2)))
+                self.assertEqual(len(graph.edges()), len(range(10, 20, 2)) ** 2)
+                self.assertEqual(len(graph.values()), len(range(10, 20, 2)) ** 2)
+                self.assertEqual(len(graph.items()), len(range(10, 20, 2)) ** 2)
+
+        def test_init_graph(self):
+            """Graph Interface: graph(graph(...))"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                graph = self.graph_cls(adjacency_graph.AdjacencyGraph({
+                    node_a: {
+                        node_b: node_a - node_b for node_b in range(10, 20, 2)
+                    } for node_a in range(10, 20, 2)
+                }))
                 for node in range(10, 20, 2):
                     self.assertIn(node, graph)
                 for a, b in itertools.product(range(10, 20, 2), repeat=2):
