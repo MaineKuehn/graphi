@@ -52,7 +52,7 @@ class Edge(object):
               Edge *values* can be arbitrary objects.
 
     .. warning:: Even though :py:class:`~.Edge` behaves like a :py:class:`slice` in graphs,
-                 builtin containers such as :py:class:`list` cannot use a :py:class:`~.Edge`.
+                 builtin containers such as :py:class:`list` cannot make use of an :py:class:`~.Edge`.
     """
     __slots__ = ('start', 'stop')
 

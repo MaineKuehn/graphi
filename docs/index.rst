@@ -45,6 +45,15 @@ For example, creating a multigraph is as simple as using multiple edge values:
     # add multiple connections between nodes -> Multigraph
     airports["Rio":"Tokyo"] = timedelta(days=1, hours=2), timedelta(days=1, hours=3)
 
+By design, ``GraphI`` is primarily optimized for general convenience over specific brute force performance.
+It heavily exploits lazy iteration, data views and other modern python paradigms under the hood.
+This allows the use of common operations without loss of performance:
+
+.. code::
+
+    # get number of outgoing edges of nodes -> outdegree
+    outgoing_flights = {city: len(airports[city]) for city in airports}
+
 With its general-purpose design, ``GraphI`` makes no assumptions about your data.
 You are free to use whatever is needed to solve your problem, not please data structure.
 
@@ -52,14 +61,14 @@ Frequently Asked Questions
 ==========================
 
 *Yet another graph library?*
-    The goal of ``GraphI`` is not to be another graph library, but to provide an intuitive graph interface.
+    The goal of ``GraphI`` is not to be another graph library, but to provide an intuitive way to work with graphs.
     Working with complex graphs should be as easy *for you* as working with any other primitive type.
 
 *What is this thing you call ABC?*
     ``GraphI`` does not just provide graph *implementations*, but also an efficient graph *interface*.
     This interface is defined by the :py:class:`graphi.abc` :term:`abstract base classes <abstract base class>`.
 
-    Any custom graph implementation can be made a *virtual* subclasses of these ABCs.
+    Any custom graph implementation can be made a *virtual* subclass of these ABCs.
     This allows you to adopt graph implementations optimized for your use-case without changing your code.
 
 *Where are all the algorithms?*
