@@ -195,9 +195,8 @@ class Graph(abc_collection.Container):
         """
         if not source:
             self.__init_empty__(**kwargs)
-        elif len(source) == 1 and isinstance(source[0], GraphView):
+        elif len(source) == 1 and isinstance(source[0], Graph):
             self.__init_graph__(source[0], **kwargs)
-            return
         elif len(source) == 1 and isinstance(source[0], abc_collection.Mapping):
             self.__init_mapping__(source[0], **kwargs)
         elif len(source) == 1 and isinstance(source[0], abc_collection.Iterable):
