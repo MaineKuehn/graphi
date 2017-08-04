@@ -31,9 +31,9 @@ If you are comfortable using :py:class:`list`, :py:class:`dict` or other types, 
 
 .. code::
 
-    from graphi.types.adjacency_graph import AdjacencyGraph
     # create a graph with initial nodes
-    airports = AdjacencyGraph("New York", "Rio", "Tokyo")
+    from graphi import graph
+    airports = graph("New York", "Rio", "Tokyo")
     # add connections between nodes
     airports["New York":"Rio"] = timedelta(hours=9, minutes=50)
     airports["New York":"Tokyo"] = timedelta(hours=13, minutes=55)
