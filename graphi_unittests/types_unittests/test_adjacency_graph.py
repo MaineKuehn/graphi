@@ -1,13 +1,19 @@
 import random
 
-import graphi.types.adjacency_graph
-import graphi.abc
-from graphi import operators
-
 try:
     import unittest2 as unittest
 except ImportError:
     import unittest
+
+import graphi.types.adjacency_graph
+import graphi.abc
+from graphi import operators
+
+from . import _graph_interface_mixins as mixins
+
+
+class TestAdjacencyGraphInterface(mixins.Mixin.GraphInitMixin, mixins.Mixin.GraphInterfaceMixin):
+    graph_cls = graphi.types.adjacency_graph.AdjacencyGraph
 
 
 class TestAdjacencyGraph(unittest.TestCase):
