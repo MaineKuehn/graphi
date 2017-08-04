@@ -20,6 +20,8 @@ GraphI - Python Graph Interface and Types
     :caption: Documentation Topics Overview:
 
     source/usage
+    source/common_ops
+    source/glossary
     Changelog <source/changelog>
     Module Index <source/api/modules>
 
