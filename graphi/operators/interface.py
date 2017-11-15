@@ -8,7 +8,7 @@ def graph_operator(prefix=DEFAULT_OPERATOR_PREFIX):
     """
     Implement a callable as a graph operator
 
-    :param prefix:
+    :param prefix: identifier to prepend to special method names
 
     Adds the operator lookup and fallback procedure to allow
     :py:class:`~graphi.abc.Graph` subclasses to implement optimized algorithms.
