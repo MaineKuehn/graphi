@@ -95,23 +95,21 @@ def graph_reader(
     In the following example, the edges ``a:b`` and ``a:c`` are symmetric and there
     are no edges or self-loops ``a:a`` or ``b:b``. In contrast, ``b:c`` is 3 whereas
     ``c:b`` is ``4``, and there is a self-loop ``c:c``. The node ``d`` only has an
-    ingoing edge ``b:d``, but no outgoing edges.
-    ```
-    a  b  c  d
-    0  2  1  0
-    2  0  3  2
-    1  4  1  0
-    ```
+    ingoing edge ``b:d``, but no outgoing edges::
+
+     a  b  c  d
+     0  2  1  0
+     2  0  3  2
+     1  4  1  0
 
     If ``undirected`` evaluates to :py:const:`True`, the upper right corner is mirrored to
     the lower left. Note that the diagonal *must* be provided. The following
-    matrices give the same output if ``symmetric`` is :py:const:`True`:
-    ```
-    a  b  c    a  b  c    a  b  c
-    0  2  1    0  2  1    0  2  1
-    2  0  3       0  3    5  0  3
-    1  4  1          1    7     1
-    ```
+    matrices give the same output if ``symmetric`` is :py:const:`True`::
+
+     a  b  c    a  b  c    a  b  c
+     0  2  1    0  2  1    0  2  1
+     2  0  3       0  3    5  0  3
+     1  4  1          1    7     1
 
     Evaluation and
 
