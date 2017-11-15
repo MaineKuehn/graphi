@@ -77,14 +77,6 @@ class Edge(object):
     def __getitem__(self, index):
         return [self.start, self.stop][index]
 
-    def __setitem__(self, index, value):
-        if index == 1:
-            self.start = value
-        elif index == 2:
-            self.stop = value
-        else:
-            raise IndexError('Edge assignment index out of range')
-
     def __iter__(self):
         yield self.start
         yield self.stop
@@ -94,3 +86,20 @@ class Edge(object):
 
     def __repr__(self):
         return '%s[%r:%r]' % (type(self).__name__, self.start, self.stop)
+
+
+class Loop(Edge):
+    """
+    An edge in a graph from a node to itself
+
+    :param start: the start or tail of a loop
+    :param stop: optional stop or head of a loop, same as start
+    :param step: currently unused
+
+    :raises ValueError: if ``stop`` is given but not equal to ``start``
+    """
+    def __init__(self, start, stop=None, step=None):
+        stop = start if stop is None else stop
+        if start != stop:
+            raise ValueError('%s start and stop node must be equal' % self.__class__.__name__)
+        super(Loop, self).__init__(start, stop, step)
