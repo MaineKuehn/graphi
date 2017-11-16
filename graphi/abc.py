@@ -23,7 +23,7 @@ class NodeError(Exception):
 class AdjacencyListTypeError(TypeError):
     """AdjacencyList set with an incorrect type"""
     def __init__(self, item):
-        TypeError.__init__(self, 'AdjacencyList of a node must be None, the node or a mapping, not %r' % item.__class__)
+        TypeError.__init__(self, 'AdjacencyList of a node must be True or a mapping, not %r' % item.__class__.__name__)
 
 
 class Graph(abc_collection.Container):
@@ -140,12 +140,14 @@ class Graph(abc_collection.Container):
       corresponding to ``{b: ab_edge, c: ac_edge, ...}``. Raises :py:exc:`NodeError` if
       ``a`` is not in ``g``.
 
-    .. describe:: g[a] = None
-                  g[a] = a
+    .. describe:: g[a] = True
                   g.add(a)
 
       Add the node ``a`` to graph ``g`` if it does not exist. Do not add, remove or modify existing edges.
       Graphs for which edges are computed, not set, may create them implicitly.
+
+      .. versionchanged:: 0.3.0
+        Added ``g[a] = True``, deprecated ``g[a] = a`` and ``g[a] = None``.
 
     .. describe:: g[a] = {}
                   g[a] = AdjacencyList()

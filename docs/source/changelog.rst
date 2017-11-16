@@ -10,6 +10,10 @@ prerelease 2017-??-??
 
         Added graph input/output
 
+    **Major Changes**
+        Added ``graph[item] = True``, which is equal to ``graph.add(item)``.
+        Deprecates both ``graph[node] = node`` and ``graph[node] = None``.
+
     **New Features**
         Operator interface allowing graphs to provide optimized implementations
 
