@@ -95,7 +95,7 @@ However, other graph types can be created with standard language features.
     Add an :term:`edge` from :term:`node` ``a`` to :term:`node` ``b`` with
     the primitive :term:`value <edge value>` :py:const:`True`.
 
-    This creates an unweighted graph.
+    This creates an unweighted graph edge.
 
 .. describe:: graph[a:b] = [w1, w2, w3, ...]
               graph[a:b] = w1, w2, w3, ...
@@ -103,4 +103,4 @@ However, other graph types can be created with standard language features.
     Add an :term:`edge` from :term:`node` ``a`` to :term:`node` ``b`` with
     multiple :term:`values <edge value>` ``w1, w2, w3, ...``.
 
-    This creates a multigraph.
+    This creates a multigraph edge.
