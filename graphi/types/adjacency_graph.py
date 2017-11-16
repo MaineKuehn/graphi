@@ -158,11 +158,6 @@ class AdjacencyGraph(abc.Graph):
         else:
             return item in self._adjacency
 
-    def add(self, node):
-        if node in self._adjacency:
-            return
-        self._adjacency[node] = {}
-
     def update(self, other):
         if isinstance(other, (abc.Graph, abc_collection.Mapping)):
             for node in other:

@@ -322,17 +322,17 @@ class Graph(abc_collection.Container):
         return ItemView(self)
 
     # set-like graph methods
-    @abc.abstractmethod
-    def add(self, node):
+    def add(self, item):
         """
-        Safely add a node to the graph, without modifying existing edges
+        Safely add a node or edge to the graph, without modifying existing edges
 
-        If the ``node`` is not part of the graph, it is added without any explicit edges.
-        If the node is already present, this has no effect.
+        If a :term:`node` is not part of the graph, it is added without any explicit edges.
+        If a :term:`edge` is not part of the graph, its value is set to :py:const:`True`.
 
         .. note:: Graphs which compute edges may implicitly create new edges if ``node`` is new to the graph.
         """
-        raise NotImplementedError
+        if item not in self:
+            self[item] = True
 
     def discard(self, item):
         """
