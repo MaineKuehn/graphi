@@ -19,9 +19,14 @@ Pythonic Graph Operations
 Nodes of a graph
 ----------------
 
-.. describe:: graph.add(a)
+Graphs behave like a :py:class:`set` with regard to :term:`nodes <node>`.
+Note that removing a :term:`node` also invalidates all its :term:`edges <edge>` and their :term:`values <edge value>`.
 
-    Safely add a :term:`node` ``a`` to ``graph``.
+.. describe:: graph[a] = True
+              graph.add(a)
+              graph.discard(a)
+
+    Safely add or remove a :term:`node` ``a`` from ``graph``.
 
 .. describe:: del graph[a]
 
@@ -35,7 +40,7 @@ Nodes of a graph
               iter(graph)
               for a in graph:
 
-    List/iterate/loop all :term:`nodes <node>` ``a`` in ``graph`` .
+    List/iterate/traverse all :term:`nodes <node>` in ``graph`` .
 
 .. describe:: len(graph)
 
@@ -44,9 +49,8 @@ Nodes of a graph
 Edges and values of a graph
 ---------------------------
 
-.. describe:: graph[a:b] = w
-
-    Add an :term:`edge` from :term:`node` ``a`` to :term:`node` ``b`` with :term:`value <edge value>` ``w``.
+Graphs special-case :term:`edges <edge>`: an :term:`edge` is a secondary key,
+being the value to :term:`nodes <node>` and the key to :term:`edge values <edge value>`.
 
 .. describe:: Edge[a:b] in graph
 
@@ -64,6 +68,39 @@ Edges and values of a graph
     List/iterate/loop all :term:`nodes <node>` ``b`` for which there is an
     edge from :term:`node` ``a`` to :term:`node` ``b``.
 
-.. describe:: len(graph[node])
+.. describe:: len(graph[a])
 
-    The number of outgoing :term:`edges <edge>` of a :term:`node`, i.e. its :term:`outdegree`.
+    The number of outgoing :term:`edges <edge>` of :term:`node` ``a``, i.e. its :term:`outdegree`.
+
+Edge values of a graph
+----------------------
+
+Graphs behave similar to a :py:class:`dict`, tying :term:`values <edge value>` to :term:`edges <edge>`.
+Note that removing a :term:`node` also invalidates all its :term:`edges <edge>` and their :term:`values <edge value>`.
+
+.. describe:: graph[a:b] = w
+              graph[Edge[a:b]] = w
+
+    Add an :term:`edge` from :term:`node` ``a`` to :term:`node` ``b`` with :term:`value <edge value>` ``w``.
+
+Pythonic Graph Types
+++++++++++++++++++++
+
+By default, every graph is a weighted, directed graph
+- :term:`edges <edge>` are oriented from start to end :term:`node` and have one :term:`edge value`.
+However, other graph types can be created with standard language features.
+
+.. describe:: graph[a:b] = True
+
+    Add an :term:`edge` from :term:`node` ``a`` to :term:`node` ``b`` with
+    the primitive :term:`value <edge value>` :py:const:`True`.
+
+    This creates an unweighted graph.
+
+.. describe:: graph[a:b] = [w1, w2, w3, ...]
+              graph[a:b] = w1, w2, w3, ...
+
+    Add an :term:`edge` from :term:`node` ``a`` to :term:`node` ``b`` with
+    multiple :term:`values <edge value>` ``w1, w2, w3, ...``.
+
+    This creates a multigraph.

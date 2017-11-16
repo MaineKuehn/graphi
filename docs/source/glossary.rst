@@ -26,6 +26,9 @@ Glossary
         A collection of :term:`nodes <node>`, :term:`edges <edge>` between them
         and possibly :term:`values <edge value>` associated with any :term:`edges <edge>`.
 
+    node
+        A regular object in a :term:`graph`.
+
     edge
     arrow
         A connection between two :term:`nodes <node>` in a :term:`graph`.
