@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from collections import abc as abc_collection
+import collections as abc_collection
 import six
 
 from .. import abc
@@ -22,11 +22,11 @@ class AdjacencyGraph(abc.Graph):
     O(len(:py:meth:`nodes`) = n) and O(len(:py:meth:`edges`) -> n\ :sup:`2`\ ),
     respectively.
     """
-    def __init__(self, *source, undirected=False):
-        self.undirected = undirected
+    def __init__(self, *source, **kwargs):
+        self.undirected = kwargs.pop('undirected', False)
         self._adjacency = {}  # {node: {neighbour: distance, neighbour: distance, ...}, ...}
         super(AdjacencyGraph, self).__init__(*source)
-        if undirected:
+        if self.undirected:
             self._ensure_symmetry()
 
     @staticmethod

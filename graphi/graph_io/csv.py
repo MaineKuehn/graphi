@@ -1,6 +1,7 @@
 """
 Utilities for loading and storing Graphs
 """
+from __future__ import absolute_import
 import csv
 import ast
 import itertools
