@@ -65,8 +65,8 @@ being the value to :term:`nodes <node>` and the key to :term:`edge values <edge 
               iter(graph[a])
               for b in graph[a]:
 
-    List/iterate/loop all :term:`nodes <node>` ``b`` for which there is an
-    edge from :term:`node` ``a`` to :term:`node` ``b``.
+    List/iterate/loop all :term:`nodes <node>` for which there is an
+    edge from :term:`node` ``a``, i.e. its :term:`neighbours`.
 
 .. describe:: len(graph[a])
 
