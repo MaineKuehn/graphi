@@ -21,6 +21,8 @@ prerelease 2017-??-??
 
             - ``neighbours(graph, node, ..)``
 
+            - ``density(graph)``
+
         Added input/output:
 
             - csv

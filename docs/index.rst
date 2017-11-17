@@ -69,7 +69,7 @@ Frequently Asked Questions
 
 *What is this thing you call ABC?*
     ``GraphI`` does not just provide graph *implementations*, but also an efficient graph *interface*.
-    This interface is defined by the :py:class:`graphi.abc` :term:`abstract base classes <abstract base class>`.
+    This interface is defined by the :py:mod:`graphi.abc` :term:`abstract base classes <abstract base class>`.
 
     Any custom graph implementation can be made a *virtual* subclass of these ABCs.
     This allows you to adopt graph implementations optimized for your use-case without changing your code.
@@ -81,6 +81,8 @@ Frequently Asked Questions
         1. are fundamental building blocks for advanced algorithms, and/or
 
         2. benefit from knowledge of internal data structures.
+
+    At the moment, you can find basic operators in the :py:mod:`graphi.operators` module.
 
 *What about performance?*
     At its core, ``GraphI`` uses Python's native, highly optimized data structures.
