@@ -66,7 +66,7 @@ being the value to :term:`nodes <node>` and the key to :term:`edge values <edge 
               for b in graph[a]:
 
     List/iterate/loop all :term:`nodes <node>` for which there is an
-    edge from :term:`node` ``a``, i.e. its :term:`neighbours`.
+    edge from :term:`node` ``a``, i.e. its :term:`neighbours <neighbour>`.
 
 .. describe:: len(graph[a])
 

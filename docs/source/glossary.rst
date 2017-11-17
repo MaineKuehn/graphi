@@ -12,9 +12,13 @@ Glossary
         The number of ingoing edges of a node.
         If a node has a :term:`loop`, it also counts as an ingoing edge.
 
+        The number of nodes to which a node is a :term:`neighbour`.
+
     outdegree
         The number of outgoing edges of a node.
         If a node has a :term:`loop`, it also counts as an outgoing edge.
+
+        The number of :term:`neighbours <neighbour>` of a node.
 
     degree
         The number of ingoing and outgoing edges of a node.
@@ -36,3 +40,9 @@ Glossary
     edge value
     weight
         The value associated with an :term:`edge` in a :term:`graph`.
+
+    neighbour
+        A :term:`node` with an :term:`edge` from a specific node.
+        Given an edge ``a:b``, ``b`` is a :term:`neighbour` of ``a``.
+
+        The number of neighbours is the :term:`outdegree`.
