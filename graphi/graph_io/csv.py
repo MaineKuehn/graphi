@@ -1,5 +1,16 @@
 """
 Utilities for loading and storing Graphs as csv
+
+The CSV graph format uses an optional header to define nodes, and a body storing the adjacency matrix.
+By default, a graph with ``n`` nodes is stored as a matrix literal of ``n`` columns and ``n+1`` rows::
+
+ a  b  c  d
+ 0  2  1  0
+ 2  0  3  2
+ 1  4  1  0
+
+Separators and formatting are handled by the csv :py:class:`~csv.Dialect`.
+Value conversion and interpretation is handled by the appropriate reader/writer.
 """
 from __future__ import absolute_import
 import csv
@@ -12,6 +23,14 @@ except ImportError:
     import collections as abc_collection
 
 from ..types import adjacency_graph
+
+class ParserError(Exception):
+    """Error during parsing of a graph from a csv"""
+    def __init__(self, error, row, column=None):
+        if column:
+            Exception.__init__(self, '%s: row %d column %d' % (error, row, column))
+        else:
+            Exception.__init__(self, '%s: row %d' % (error, row))
 
 
 class DistanceMatrixLiteral(csv.Dialect):
@@ -60,23 +79,23 @@ def graph_reader(
     """
     Utility for reading a graph from files or iterables
 
-    :param iterable: an iterable yielding lines of CSV
+    :param iterable: an iterable yielding lines of CSV, such as an open file
     :param nodes_header: whether and how to interpret a header specifying nodes
     :param literal_type: type callable to evaluate literals
     :param valid_edge: callable to test whether an edge should be inserted
     :param undirected: whether to mirror the underlying matrix
 
-    The `iterable` argument can be any object that returns a line of
-    input for each iteration step, such as a file object or a list.
+    The ``iterable`` argument can be any object that returns a line of
+    input for each iteration step, such as a file object or a list of strings.
 
-    Nodes are created depending on the value of `nodes_header`:
+    Nodes are created depending on the value of ``nodes_header``:
 
     :py:const:`False`
       Nodes are numbered ``1`` to ``len(iterable[0])``. Elements in the first
       line of ``iterable`` are *not* consumed by this.
 
     iterable
-      Nodes are read from `node_header`.
+      Nodes are read from ``node_header``.
 
     :py:const:`True`
       Nodes are taken as the elements of the first line of ``iterable``. The
@@ -112,7 +131,7 @@ def graph_reader(
      2  0  3       0  3    5  0  3
      1  4  1          1    7     1
 
-    Evaluation and
+    Each value is evaluated and filtered by ``literal_type`` and ``valid_edge``:
 
     .. function:: literal_type(literal) -> object
 
@@ -125,12 +144,12 @@ def graph_reader(
         Similarly, `valid_edge` is called on the result of `literal_type`.
         The default is :py:func:`bool`, which should work for most data types.
 
-    The default for `literal_type` is capable of handling literals,
+    The default for ``literal_type`` is capable of handling regular python literals,
     e.g. :py:class:`int`, :py:class:`float` and :py:class:`str`. In combination with
     `valid_edge`, any literal of non-True values signifies a missing edge:
     `None`, `False`, `0` etc.
 
-    :see: The `*args` and `**kwargs` are passed on directly to
+    :see: All ``*args`` and ``**kwargs`` are passed on directly to
           :py:class:`csv.reader` for extracting lines.
     """
     reader = csv.reader(iterable, *args, **kwargs)
@@ -153,7 +172,10 @@ def graph_reader(
     # still need to consume the first line as content if not unset
     iter_rows = reader if first_line is None else itertools.chain([first_line], reader)
     for row_idx, row in enumerate(iter_rows):
-        node_from = nodes[row_idx]
+        try:
+            node_from = nodes[row_idx]
+        except IndexError as err:
+            raise ParserError('trailing row exceeds node count of %d' % len(nodes), row_idx + 1)
         for idx, literal in enumerate(row if not undirected else row[-len(nodes) + row_idx:]):
             node_to = nodes[idx] if not undirected else nodes[row_idx + idx]
             edge = literal_type(literal.strip())
