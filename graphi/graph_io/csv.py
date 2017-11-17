@@ -1,16 +1,44 @@
 """
 Utilities for loading and storing Graphs as csv
 
+CSV Graph Format
+----------------
+
 The CSV graph format uses an optional header to define nodes, and a body storing the adjacency matrix.
 By default, a graph with ``n`` nodes is stored as a matrix literal of ``n`` columns and ``n+1`` rows::
 
- a  b  c  d
- 0  2  1  0
- 2  0  3  2
- 1  4  1  0
+     a  b  c  d
+     0  2  1  0
+     2  0  3  2
+     1  4  0  0
+     0  1  3  0
 
 Separators and formatting are handled by the csv :py:class:`~csv.Dialect`.
 Value conversion and interpretation is handled by the appropriate reader/writer.
+
+Reading Graphs
+--------------
+
+Graphs can be read using :py:func:`~.graph_reader` from iterables of CSV lines, such as files or str.splitlines.
+The csv itself is parsed using a :py:func:`csv.reader`, which allows setting the CSV dialect.
+
+.. code:: python
+
+    from graphi.graph_io import csv
+
+    literal = \"\"\"\\
+    a, b, c
+    0, 2, 3
+    2, 0, 2
+    1, 2, 0
+    \"\"\"
+
+    graph = csv.graph_reader(
+        literal.splitlines(),
+        skipinitialspace=True,
+    )
+    for nodes in graph:
+        print(repr(node), "=>", graph[nodes])
 """
 from __future__ import absolute_import
 import csv
@@ -77,7 +105,7 @@ def graph_reader(
         **kwargs
 ):
     """
-    Utility for reading a graph from files or iterables
+    Load a graph from files or iterables
 
     :param iterable: an iterable yielding lines of CSV, such as an open file
     :param nodes_header: whether and how to interpret a header specifying nodes
@@ -117,19 +145,19 @@ def graph_reader(
     ``c:b`` is ``4``, and there is a self-loop ``c:c``. The node ``d`` only has an
     ingoing edge ``b:d``, but no outgoing edges::
 
-     a  b  c  d
-     0  2  1  0
-     2  0  3  2
-     1  4  1  0
+         a  b  c  d
+         0  2  1  0
+         2  0  3  2
+         1  4  1  0
 
     If ``undirected`` evaluates to :py:const:`True`, the upper right corner is mirrored to
     the lower left. Note that the diagonal *must* be provided. The following
     matrices give the same output if ``symmetric`` is :py:const:`True`::
 
-     a  b  c    a  b  c    a  b  c
-     0  2  1    0  2  1    0  2  1
-     2  0  3       0  3    5  0  3
-     1  4  1          1    7     1
+         a  b  c    a  b  c    a  b  c
+         0  2  1    0  2  1    0  2  1
+         2  0  3       0  3    5  0  3
+         1  4  1          1    7     1
 
     Each value is evaluated and filtered by ``literal_type`` and ``valid_edge``:
 
