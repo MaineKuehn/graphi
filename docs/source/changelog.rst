@@ -25,6 +25,10 @@ prerelease 2017-??-??
 
             - csv
 
+    **Minor Changes**
+
+        Graphs explicitly define ``bool(graph)``. This was previously implicitly available as ``bool`` falls back to ``__len__``.
+
 0.2.0 2017-07-31
 ----------------
 

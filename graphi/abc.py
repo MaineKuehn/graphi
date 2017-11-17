@@ -116,6 +116,10 @@ class Graph(abc_collection.Container):
 
     All implementations of this ABC guarantee the following operators:
 
+    .. describe:: bool(g)
+
+       Whether there are any nodes in the graph ``g``.
+
     .. describe:: len(g)
 
       Return the number of nodes in the graph ``g``.
@@ -229,6 +233,16 @@ class Graph(abc_collection.Container):
     # container interface
     def __len__(self):
         return sum(1 for _ in self)
+
+    def __bool__(self):
+        try:
+            next(iter(self))
+        except StopIteration:
+            return False
+        else:
+            return True
+
+    __nonzero__ = __bool__
 
     @abc.abstractmethod
     def __getitem__(self, item):

@@ -148,6 +148,11 @@ class AdjacencyGraph(abc.Graph):
     def __len__(self):
         return len(self._adjacency)
 
+    def __bool__(self):
+        return bool(self._adjacency)
+
+    __nonzero__ = __bool__
+
     def __contains__(self, item):
         if item.__class__ is slice:
             node_from, node_to = item.start, item.stop
