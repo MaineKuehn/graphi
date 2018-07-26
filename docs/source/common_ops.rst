@@ -104,3 +104,55 @@ However, other graph types can be created with standard language features.
     multiple :term:`values <edge value>` ``w1, w2, w3, ...``.
 
     This creates a multigraph edge.
+
+.. describe:: graph[a:b] = graph[b:a] = w
+
+    Add :term:`edge`\ s from :term:`node` ``a`` to :term:`node` ``b`` and
+    from :term:`node` ``b`` to :term:`node` ``a``
+    with
+    the identical :term:`value <edge value>` ``w``.
+
+    This creates an undirected graph edge.
+
+Abstract Graph operations
++++++++++++++++++++++++++
+
+The common abstract `Graph Operations`_ interface can be mapped to :py:mod:`graphi` almost directly.
+Most operations map to container accesses via ``[item]``, and an :term:`edge` is represented as ``x:y``.
+
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| Graphi                   | Abstract Graph Operation       |                                                                                   |
++==========================+================================+===================================================================================+
+| ``G.add(x)``             | ``add_vertex(G, x)``           | adds the node ``x``                                                               |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``G.discard(x)``         | ``remove_vertex(G, x)``        | removes the node ``x``                                                            |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``del G[x]``             | N/A                            | ..., but raises ``NodeError`` if there is no node ``x``                           |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``G.add(Edge[x:y])``     | ``add_edge(G, x, y)``          | adds an edge from node ``x`` to node ``y``                                        |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``G.discard(Edge[x:y])`` | ``remove_edge(G, x, y)``       | removes the edge from node ``x`` to node ``y``                                    |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``del G[x:y]``           | N/A                            | ..., but raises ``EdgeError`` if there is no edge from node ``x`` to node ``y``   |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``Edge[x:y] in G``       | ``adjacent(G, x, y)``          | tests whether there is an edge from node ``x`` to node ``y``                      |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``G[x:y]``               | N/A                            | raises ``EdgeError`` if there is no edge from node ``x`` to node ``y``            |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``list(G[x])``           | ``neighbors(G, x)``            | lists all nodes ``y`` with an edge from node ``x`` to node ``y``                  |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| N/A                      | ``get_vertex_value(G, x)``     | returns the value associated with node ``x``                                      |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| N/A                      | ``set_vertex_value(G, x, v)``  | sets the value associated with node ``x`` to ``v``                                |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``G[x:y]``               | ``get_edge_value(G, x, y)``    | returns the value associated with the edge ``x:y``                                |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+| ``G[x:y] = w``           | ``set_edge_value(G, x, y, v)`` | sets the value associated with the edge ``x:y`` to ``v``                          |
++--------------------------+--------------------------------+-----------------------------------------------------------------------------------+
+
+Note that there is no concept for associating a value to a :term:`node` in a graph -
+for a node ``x``, ``G[x]`` is the adjacency list.
+Instead, use a separate :py:class:`dict` to assign external values to nodes,
+or set values directly on nodes.
+
+.. _`Graph Operations`: https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
