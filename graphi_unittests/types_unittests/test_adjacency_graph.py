@@ -225,3 +225,14 @@ class TestAdjacencyGraph(unittest.TestCase):
         graph.update((5, 6))
         self.assertIn(5, graph)
         self.assertIn(6, graph)
+
+    def test_clear(self):
+        graph = self.graph_cls({
+            1: {2: 1, 3: 1, 4: 1},
+            2: {1: 1},
+            3: {1: 1},
+            4: {1: 1}
+        }, undirected=True)
+        self.assertEquals(len(graph), 4)
+        graph.clear()
+        self.assertEquals(len(graph), 0)
