@@ -43,3 +43,6 @@ class TestEdge(unittest.TestCase):
 class TestLoop(unittest.TestCase):
     def test_init(self):
         self.assertEquals(Loop("start"), Edge("start", "start"))
+
+        with self.assertRaises(ValueError):
+            Loop("start", "stop")
