@@ -104,3 +104,12 @@ However, other graph types can be created with standard language features.
     multiple :term:`values <edge value>` ``w1, w2, w3, ...``.
 
     This creates a multigraph edge.
+
+.. describe:: graph[a:b] = graph[b:a] = w
+
+    Add :term:`edge`s from :term:`node` ``a`` to :term:`node` ``b`` and
+    from :term:`node` ``b`` to :term:`node` ``a``
+    with
+    the identical :term:`value <edge value>` ``w``.
+
+    This creates an undirected graph edge.
