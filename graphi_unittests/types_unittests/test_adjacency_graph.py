@@ -280,3 +280,20 @@ class TestAdjacencyGraph(unittest.TestCase):
             [1, 2, 3] in edge_view
         with self.assertRaises(TypeError):
             None in edge_view
+
+    def test_value_view_undirected(self):
+        graph = self.graph_cls({1, 2, 3, 4}, undirected=True)
+        nodes = [2, 3, 4]
+        for value, node in enumerate(nodes):
+            graph[1:node] = value
+        value_view = graph.values()
+        self.assertEqual(len(nodes), len(value_view), "The number of values should be half for undirected graphs")
+
+    def test_value_view_directed(self):
+        graph = self.graph_cls({1, 2, 3, 4}, undirected=False)
+        nodes = [2, 3, 4]
+        for value, node in enumerate(nodes):
+            graph[1:node] = value
+            graph[node:1] = 4
+        value_view = graph.values()
+        self.assertEqual(len(nodes) * 2, len(value_view))
