@@ -7,13 +7,25 @@
 GraphI - Python Graph Interface and Types
 +++++++++++++++++++++++++++++++++++++++++
 
-
-.. image:: https://landscape.io/github/MaineKuehn/graphi/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/MaineKuehn/graphi/master
-    :alt: Code Health
 .. image:: https://readthedocs.org/projects/graphi/badge/?version=latest
     :target: http://graphi.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+
+.. image:: https://travis-ci.org/MaineKuehn/graphi.svg?branch=master
+    :target: https://travis-ci.org/MaineKuehn/graphi
+    :alt: Test Status
+
+.. image:: https://codecov.io/gh/MaineKuehn/graphi/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/MaineKuehn/graphi
+    :alt: Test Coverage
+
+.. image:: https://img.shields.io/pypi/v/graphi.svg
+    :alt: Available on PyPI
+    :target: https://pypi.python.org/pypi/graphi/
+
+.. image:: https://img.shields.io/github/license/MaineKuehn/graphi.svg
+    :alt: License
+    :target: https://github.com/MaineKuehn/graphi/blob/master/LICENSE.txt
 
 .. toctree::
     :maxdepth: 1
