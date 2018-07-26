@@ -49,6 +49,20 @@ class TestAdjacencyGraph(unittest.TestCase):
         for idx, length in enumerate(lengths):
             yield self.random_content(length, connections[idx], distance_range)
 
+    def test_init_undirected(self):
+        with self.assertRaises(ValueError):
+            self.graph_cls({
+                1: {2: 1, 3: 1},
+                2: {1: 1},
+                3: {1: 2}
+            }, undirected=True)
+
+        graph = self.graph_cls({
+            1: {2: 1, 3: 1},
+            2: {1: 1}
+        }, undirected=True)
+        self.assertEquals(graph[1:3], graph[3:1])
+
     def test_containment(self):
         """Adjacency Graph: retrieve elements"""
         graph = self.graph_cls({
