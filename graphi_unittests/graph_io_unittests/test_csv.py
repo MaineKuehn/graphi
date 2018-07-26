@@ -61,13 +61,16 @@ class GraphIOTest(unittest.TestCase):
         with self.assertRaises(abc.EdgeError):
             graph['d':'c']
 
-    def test_header_invalid(self):
+    def test_invalid_header(self):
         """CSV GraphIO: invalid header"""
         literals = ["a,b", "0,1", "1,0"]
         with self.assertRaises(TypeError):
             csv.graph_reader(
                 literals, nodes_header=None
             )
+        literals = ["0,1", "1,0", "1,0", "0,1", "2,3"]
+        with self.assertRaises(csv.ParserError):
+            csv.graph_reader(literals, nodes_header=True)
 
     def test_header_none(self):
         """CSV GraphIO: default, enumerated header"""
