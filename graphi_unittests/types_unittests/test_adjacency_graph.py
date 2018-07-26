@@ -8,6 +8,7 @@ except ImportError:
 import graphi.types.adjacency_graph
 import graphi.abc
 from graphi import operators
+from graphi.abc import EdgeError
 
 from . import _graph_interface_mixins as mixins
 
@@ -113,10 +114,14 @@ class TestAdjacencyGraph(unittest.TestCase):
         graph[9] = {}
         graph[9:1] = 1
         self.assertEqual(1, graph[1:9])
-        edge = graph[9]
+        edge = graph[9].copy()
         edge[2] = 2
         graph[9] = edge
         self.assertEqual(graph[9], {1: 1, 2: 2})
+        graph[9] = {1: 1, 4: 5}
+        self.assertEqual(graph[9], {1: 1, 4: 5})
+        with self.assertRaises(EdgeError):
+            graph[2:9]
 
     def test_setitem_node(self):
         """Adjacency Graph: setitem of individual nodes"""
