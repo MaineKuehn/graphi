@@ -114,7 +114,7 @@ class AdjacencyGraph(abc.Graph):
                     # if we know node already, clean up first
                     if item in self._adjacency:
                         for node_to in self._adjacency[item]:
-                            del self._adjacency[node_to][item]  # safe unless graph not undirected
+                            del self._adjacency[node_to][item]  # safe if graph undirected
                     for node_to in value:
                         self._adjacency[node_to][item] = value[node_to]
                 self._adjacency[item] = dict(value)
