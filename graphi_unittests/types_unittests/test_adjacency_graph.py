@@ -236,3 +236,26 @@ class TestAdjacencyGraph(unittest.TestCase):
         self.assertEquals(len(graph), 4)
         graph.clear()
         self.assertEquals(len(graph), 0)
+
+    def test_edge_view(self):
+        graph = self.graph_cls({
+            1: {2: 1, 3: 1, 4: 1},
+            2: {1: 1},
+            3: {1: 1},
+            4: {1: 1}
+        }, undirected=True)
+        counter = 0
+        edge_view = graph.edges()
+        for edge in edge_view:
+            self.assertTrue(edge in graph)
+            self.assertTrue(edge in edge_view)
+            counter += 1
+        self.assertEquals(6, counter)
+        self.assertTrue(graphi.edge.Edge[1:2] in edge_view)
+        self.assertFalse(graphi.edge.Edge[1:5] in edge_view)
+        self.assertTrue([1, 2] in edge_view)
+        self.assertFalse([1, 5] in edge_view)
+        with self.assertRaises(TypeError):
+            [1, 2, 3] in edge_view
+        with self.assertRaises(TypeError):
+            None in edge_view
