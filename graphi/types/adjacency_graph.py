@@ -104,7 +104,7 @@ class AdjacencyGraph(abc.Graph):
             # g[a] = g[a]
             if self._adjacency.get(item, object()) is value:
                 return
-            # g[a] = None, g[a] = a
+            # g[a] = True
             elif value is True:
                 if item not in self._adjacency:
                     self._adjacency[item] = {}
