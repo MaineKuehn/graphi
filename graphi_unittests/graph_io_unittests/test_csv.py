@@ -148,3 +148,9 @@ class GraphIOTest(unittest.TestCase):
         for target in "abc":
             with self.assertRaises(abc.EdgeError):
                 graph['c':target]
+
+
+class TestParserError(unittest.TestCase):
+    def test_init(self):
+        self.assertNotIn("column", str(csv.ParserError("test", 1)))
+        self.assertIn("column", str(csv.ParserError("test", 1, 1)))
