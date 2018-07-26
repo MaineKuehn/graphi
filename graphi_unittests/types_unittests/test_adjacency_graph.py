@@ -177,6 +177,9 @@ class TestAdjacencyGraph(unittest.TestCase):
             del graph[6:7]
         with self.assertRaises(graphi.abc.NodeError):
             del graph[6]
+        del graph[8:1]
+        with self.assertRaises(graphi.abc.EdgeError):
+            graph[8:1]
 
     def test_deletion_undirected(self):
         graph = self.graph_cls({
