@@ -31,7 +31,7 @@ For example, creating a multigraph is as simple as using multiple edge values:
     airports["Rio":"Tokyo"] = timedelta(days=1, hours=2), timedelta(days=1, hours=3)
 
 With its general-purpose design, ``GraphI`` makes no assumptions about your data.
-You are free to use whatever is needed to solve your problem, not please some data structure.
+You are free to use whatever is needed to solve your problem.
 
 Getting started
 ===============
