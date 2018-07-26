@@ -178,6 +178,24 @@ class TestAdjacencyGraph(unittest.TestCase):
         with self.assertRaises(graphi.abc.NodeError):
             del graph[6]
 
+    def test_deletion_undirected(self):
+        graph = self.graph_cls({
+            1: {2: 1, 3: 1, 4: 1},
+            2: {1: 1},
+            3: {1: 1},
+            4: {1: 1}
+        }, undirected=True)
+        del graph[1:2]
+        with self.assertRaises(graphi.abc.EdgeError):
+            graph[1:2]
+        with self.assertRaises(graphi.abc.EdgeError):
+            graph[2:1]
+        del graph[4]
+        with self.assertRaises(graphi.abc.EdgeError):
+            graph[1:4]
+        with self.assertRaises(graphi.abc.EdgeError):
+            graph[4:1]
+
     def test_neighbours(self):
         graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
