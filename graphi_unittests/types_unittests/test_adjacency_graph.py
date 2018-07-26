@@ -237,20 +237,18 @@ class TestAdjacencyGraph(unittest.TestCase):
         graph.clear()
         self.assertEquals(len(graph), 0)
 
-    def test_edge_view(self):
-        graph = self.graph_cls({
-            1: {2: 1, 3: 1, 4: 1},
-            2: {1: 1},
-            3: {1: 1},
-            4: {1: 1}
-        }, undirected=True)
+    def test_edge_view_undirected(self):
+        graph = self.graph_cls({1, 2, 3, 4}, undirected=True)
+        nodes = [2, 3, 4]
+        for node in nodes:
+            graph[1:node] = 1
         counter = 0
         edge_view = graph.edges()
         for edge in edge_view:
             self.assertTrue(edge in graph)
             self.assertTrue(edge in edge_view)
             counter += 1
-        self.assertEquals(6, counter)
+        self.assertEquals(len(nodes), counter, "The number of edges should be half for undirected graphs")
         self.assertTrue(graphi.edge.Edge[1:2] in edge_view)
         self.assertFalse(graphi.edge.Edge[1:5] in edge_view)
         self.assertTrue([1, 2] in edge_view)
