@@ -177,8 +177,7 @@ class AdjacencyGraph(abc.Graph):
                 self.add(node)
 
     def clear(self):
-        for node in self:
-            self._adjacency[node].clear()
+        self._adjacency = type(self._adjacency)()
 
     def edges(self):
         return EdgeView(self)
