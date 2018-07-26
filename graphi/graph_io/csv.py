@@ -52,6 +52,7 @@ except ImportError:
 
 from ..types import adjacency_graph
 
+
 class ParserError(Exception):
     """Error during parsing of a graph from a csv"""
     def __init__(self, error, row, column=None):
