@@ -3,7 +3,7 @@ try:
 except ImportError:
     import unittest
 
-from graphi.edge import Edge
+from graphi.edge import Edge, Loop
 
 
 class TestEdge(unittest.TestCase):
@@ -24,3 +24,8 @@ class TestEdge(unittest.TestCase):
         self.assertEquals(edge[1], "stop")
         with self.assertRaises(ValueError):
             edge[2]
+
+
+class TestLoop(unittest.TestCase):
+    def test_init(self):
+        self.assertEquals(Loop("start"), Edge("start", "start"))
