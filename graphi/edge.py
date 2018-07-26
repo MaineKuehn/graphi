@@ -84,6 +84,11 @@ class Edge(object):
     def __str__(self):
         return '[%s:%s]' % (self.start, self.stop)
 
+    def __eq__(self, other):
+        if not isinstance(self, type(other)):
+            return NotImplemented
+        return self.start == other.start and self.stop == other.stop
+
     def __repr__(self):
         return '%s[%r:%r]' % (type(self).__name__, self.start, self.stop)
 
