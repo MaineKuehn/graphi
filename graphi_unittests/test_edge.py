@@ -11,9 +11,16 @@ class TestEdge(unittest.TestCase):
         self.assertEquals(Edge["start":"stop"], Edge("start", "stop"))
 
     def test_stop(self):
-        with self.assertRaises(TypeError) as context:
+        with self.assertRaises(TypeError):
             Edge["start":"stop":1]
 
     def test_slice(self):
-        with self.assertRaises(TypeError) as context:
+        with self.assertRaises(TypeError):
             Edge["start"]
+
+    def test_index(self):
+        edge = Edge("start", "stop")
+        self.assertEquals(edge[0], "start")
+        self.assertEquals(edge[1], "stop")
+        with self.assertRaises(ValueError):
+            edge[2]
