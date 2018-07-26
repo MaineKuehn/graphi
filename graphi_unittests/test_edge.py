@@ -25,6 +25,16 @@ class TestEdge(unittest.TestCase):
         with self.assertRaises(ValueError):
             edge[2]
 
+    def test_iter(self):
+        nodes = ["start", "stop"]
+        edge = Edge(*nodes)
+
+        for position, node in enumerate(edge):
+            self.assertEquals(nodes[position], node)
+
+        edge2 = Edge(*edge)
+        self.assertEquals(edge2, edge)
+
 
 class TestLoop(unittest.TestCase):
     def test_init(self):
