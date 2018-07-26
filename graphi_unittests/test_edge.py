@@ -35,6 +35,10 @@ class TestEdge(unittest.TestCase):
         edge2 = Edge(*edge)
         self.assertEquals(edge2, edge)
 
+    def test_representation(self):
+        edge = Edge("start", "stop")
+        self.assertEquals("[start:stop]", str(edge))
+
 
 class TestLoop(unittest.TestCase):
     def test_init(self):
