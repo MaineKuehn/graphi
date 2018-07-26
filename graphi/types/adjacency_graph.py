@@ -66,13 +66,15 @@ class AdjacencyGraph(abc.Graph):
         Adds any missing inverted edges. Raises :py:exc:`ValueError` if inverted edges do not have the same value.
         """
         adjacency = self._adjacency
+        adjacency_diff = {}
         for node_a in adjacency:
             for node_b in adjacency[node_a]:
                 try:
                     if adjacency[node_a][node_b] != adjacency[node_b][node_a]:
                         raise ValueError("symmetric graph initialized with asymmetric edges")
                 except KeyError:
-                    adjacency.setdefault(node_b, {})[node_a] = adjacency[node_a][node_b]
+                    adjacency_diff.setdefault(node_b, {})[node_a] = adjacency[node_a][node_b]
+        adjacency.update(adjacency_diff)
 
     def __getitem__(self, item):
         if item.__class__ is slice:
