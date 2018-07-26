@@ -75,7 +75,11 @@ class Edge(object):
         return slice
 
     def __getitem__(self, index):
-        return [self.start, self.stop][index]
+        if index == 0:
+            return self.start
+        elif index == 1:
+            return self.stop
+        raise ValueError
 
     def __iter__(self):
         yield self.start
