@@ -214,3 +214,14 @@ class TestAdjacencyGraph(unittest.TestCase):
         self.assertEqual({2, 3, 4, 5, 8}, set(operators.neighbours(graph, 1, maximum_distance=1)))
         with self.assertRaises(graphi.abc.NodeError):
             operators.neighbours(graph, 9)
+
+    def test_update(self):
+        graph = self.graph_cls({
+            1: {2: 1, 3: 1, 4: 1},
+            2: {1: 1},
+            3: {1: 1},
+            4: {1: 1}
+        }, undirected=True)
+        graph.update((5, 6))
+        self.assertIn(5, graph)
+        self.assertIn(6, graph)
