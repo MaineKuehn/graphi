@@ -24,10 +24,9 @@ class AdjacencyGraph(abc.Graph):
     """
     def __init__(self, *source, **kwargs):
         self.undirected = kwargs.pop('undirected', False)
+        assert not self.undirected
         self._adjacency = {}  # {node: {neighbour: distance, neighbour: distance, ...}, ...}
         super(AdjacencyGraph, self).__init__(*source)
-        if self.undirected:
-            self._ensure_symmetry()
 
     @staticmethod
     def _adjacency_from_graph(graph):
@@ -59,23 +58,6 @@ class AdjacencyGraph(abc.Graph):
     def __init_mapping__(self, mapping, max_distance=None):
         self.update(self._adjacency_from_mapping(mapping))
 
-    def _ensure_symmetry(self):
-        """
-        Ensure that adjacency list is symmetric
-
-        Adds any missing inverted edges. Raises :py:exc:`ValueError` if inverted edges do not have the same value.
-        """
-        adjacency = self._adjacency
-        adjacency_diff = {}
-        for node_a in adjacency:
-            for node_b in adjacency[node_a]:
-                try:
-                    if adjacency[node_a][node_b] != adjacency[node_b][node_a]:
-                        raise ValueError("symmetric graph initialized with asymmetric edges")
-                except KeyError:
-                    adjacency_diff.setdefault(node_b, {})[node_a] = adjacency[node_a][node_b]
-        adjacency.update(adjacency_diff)
-
     def __getitem__(self, item):
         if item.__class__ is slice:
             node_from, node_to = item.start, item.stop
@@ -96,8 +78,6 @@ class AdjacencyGraph(abc.Graph):
                 raise abc.NodeError  # second edge node
             try:
                 self._adjacency[node_from][node_to] = value
-                if self.undirected:
-                    self._adjacency[node_to][node_from] = value
             except KeyError:
                 raise abc.NodeError  # first edge node
         else:
@@ -110,13 +90,6 @@ class AdjacencyGraph(abc.Graph):
                     self._adjacency[item] = {}
             # g[a] = {b: 3, c: 4, d: 6}
             elif isinstance(value, abc_collection.Mapping):
-                if self.undirected:
-                    # if we know node already, clean up first
-                    if item in self._adjacency:
-                        for node_to in self._adjacency[item]:
-                            del self._adjacency[node_to][item]  # safe if graph undirected
-                    for node_to in value:
-                        self._adjacency[node_to][item] = value[node_to]
                 self._adjacency[item] = dict(value)
             else:
                 raise abc.AdjacencyListTypeError(value)
@@ -126,8 +99,6 @@ class AdjacencyGraph(abc.Graph):
             node_from, node_to = item.start, item.stop
             try:
                 del self._adjacency[node_from][node_to]
-                if self.undirected:
-                    del self._adjacency[node_to][node_from]
             except KeyError:
                 raise abc.EdgeError
         else:
@@ -137,12 +108,8 @@ class AdjacencyGraph(abc.Graph):
                 raise abc.NodeError
             else:
                 # clean up all edges to this node
-                if self.undirected:
-                    for node in node_adjacency:
-                        del self._adjacency[node][item]  # safe unless graph not undirected
-                else:
-                    for node in self:
-                        self._adjacency[node].pop(item, None)
+                for node in self:
+                    self._adjacency[node].pop(item, None)
 
     def __iter__(self):
         return iter(self._adjacency)
