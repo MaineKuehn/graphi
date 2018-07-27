@@ -299,6 +299,10 @@ class TestAdjacencyGraph(unittest.TestCase):
         for value, node in enumerate(nodes):
             graph[1:node] = value
         value_view = graph.values()
+        for value in value_view:
+            self.assertIn(value, [0, 1, 2])
+            self.assertTrue(value in value_view)
+        self.assertFalse(3 in value_view)
         self.assertEqual(len(nodes), len(value_view), "The number of values should be half for undirected graphs")
 
     def test_value_view_directed(self):
