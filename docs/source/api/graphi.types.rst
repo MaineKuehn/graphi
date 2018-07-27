@@ -12,4 +12,5 @@ Submodules
 .. toctree::
 
    graphi.types.adjacency_graph
+   graphi.types.undirected
 

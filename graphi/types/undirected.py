@@ -6,7 +6,22 @@ from .. import edge
 
 
 def undirectable(graph_class):
-    """Make an implementation of :py:class:`abc.Graph` undirectable by passing ``undirected=True`` to it"""
+    """
+    Make an implementation of :py:class:`~.abc.Graph` undirectable by passing ``undirected=True`` to it
+
+    .. code:: python
+
+        @undirectable
+        class SomeGraph(abc.Graph):
+            ...
+
+        directed_graph = SomeGraph()
+        undirected_graph = SomeGraph(undirected=True)
+
+    This provides an implementation agnostic interface to ensure all edges are undirected.
+    For any :term:`nodes <node>` ``a`` and ``b``, ``graph[a:b] == graph[b:a]`` always holds and
+    ``graph.edges()`` produces only one of ``a:b`` or ``b:a``.
+    """
     assert issubclass(graph_class, abc.Graph), 'only subclasses of Graph can be undirected'
 
     @staticmethod
@@ -28,10 +43,19 @@ def undirectable(graph_class):
     return graph_class
 
 
+# import here to avoid cycle
 from .adjacency_graph import AdjacencyGraph
 
 
 class UndirectedEdge(edge.Edge):
+    """
+    An undirected :py:term:`edge` as a pair of nodes
+
+    For any :term:`nodes <node>` ``a`` and ``b``,
+    the :py:class:`~.UndirectedEdge`\ s ``a:b`` and ``b:a`` are equivalent.
+    As a result, which of the two is :py:attr:`~.UndirectedEdge.start` or :py:attr:`~.UndirectedEdge.stop`
+    is arbitrary but well-defined.
+    """
     def __init__(self, start, stop, step=None):
         # start and stop may be unsortable,
         # but the interface guarantees that they
@@ -46,6 +70,12 @@ class UndirectedEdge(edge.Edge):
 
 
 class Undirected(abc.Graph):
+    """
+    Wrapper to make :py:class:`~.abc.Graph` instances undirected
+
+    .. seealso::
+        The :py:func:`undirectable` decorator for :py:class:`~.abc.Graph` classes.
+    """
     def __init__(self, *source, **kwargs):
         self._graph = AdjacencyGraph()
         super(Undirected, self).__init__(*source, **kwargs)
@@ -154,7 +184,7 @@ class Undirected(abc.Graph):
         Return a new view of the graph's edges
 
         :return: view of the graph's edges
-        :rtype: :py:class:`~.EdgeView`
+        :rtype: :py:class:`~.UndirectedEdgeView`
         """
         return UndirectedEdgeView(self)
 
@@ -163,7 +193,7 @@ class Undirected(abc.Graph):
         Return a new view of the values of the graph's edges
 
         :return: view of the values of the graph's edges
-        :rtype: :py:class:`~.ValueView`
+        :rtype: :py:class:`~.UndirectedValueView`
         """
         return UndirectedValueView(self)
 
