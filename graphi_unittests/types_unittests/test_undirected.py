@@ -43,3 +43,8 @@ class TestUndirected(unittest.TestCase):
         self.assertIn(undirected.UndirectedEdge[1:3], undirected_graph)
         self.assertIn(undirected.UndirectedEdge[1:4], undirected_graph)
         self.assertNotIn(undirected.UndirectedEdge[2:3], undirected_graph)
+        second_graph = self.graph_cls({
+            2: {3: 1}
+        })
+        undirected_graph.update(second_graph)
+        self.assertIn(undirected.UndirectedEdge[2:3], undirected_graph)
