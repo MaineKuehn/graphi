@@ -308,4 +308,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             graph[1:node] = value
             graph[node:1] = 4
         value_view = graph.values()
+        for value in value_view:
+            self.assertIn(value, [0, 1, 2, 4])
+            self.assertTrue(value in value_view)
         self.assertEqual(len(nodes) * 2, len(value_view))
