@@ -227,13 +227,24 @@ class TestAdjacencyGraph(unittest.TestCase):
         self.assertIn(5, graph)
         self.assertIn(6, graph)
 
-    def test_clear(self):
+    def test_clear_undirected(self):
         graph = Undirected(self.graph_cls({
             1: {2: 1, 3: 1, 4: 1},
             2: {1: 1},
             3: {1: 1},
             4: {1: 1}
         }))
+        self.assertEquals(len(graph), 4)
+        graph.clear()
+        self.assertEquals(len(graph), 0)
+
+    def test_clear_directed(self):
+        graph = self.graph_cls({
+            1: {2: 1, 3: 1, 4: 1},
+            2: {1: 1},
+            3: {1: 1},
+            4: {1: 1}
+        })
         self.assertEquals(len(graph), 4)
         graph.clear()
         self.assertEquals(len(graph), 0)
@@ -260,7 +271,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             None in edge_view
 
     def test_edge_view_directed(self):
-        graph = self.graph_cls({1, 2, 3, 4, 5}, undirected=False)
+        graph = self.graph_cls({1, 2, 3, 4, 5})
         nodes = [2, 3, 4]
         for node in nodes:
             graph[1:node] = 1
@@ -291,7 +302,7 @@ class TestAdjacencyGraph(unittest.TestCase):
         self.assertEqual(len(nodes), len(value_view), "The number of values should be half for undirected graphs")
 
     def test_value_view_directed(self):
-        graph = self.graph_cls({1, 2, 3, 4}, undirected=False)
+        graph = self.graph_cls({1, 2, 3, 4})
         nodes = [2, 3, 4]
         for value, node in enumerate(nodes):
             graph[1:node] = value
