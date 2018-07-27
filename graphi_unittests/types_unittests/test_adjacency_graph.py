@@ -8,7 +8,6 @@ except ImportError:
 import graphi.types.adjacency_graph
 import graphi.abc
 from graphi import operators
-from graphi.types.undirected import Undirected
 
 from . import _graph_interface_mixins as mixins
 
@@ -52,16 +51,16 @@ class TestAdjacencyGraph(unittest.TestCase):
 
     def test_init_undirected(self):
         with self.assertRaises(ValueError):
-            Undirected(self.graph_cls({
+            self.graph_cls({
                 1: {2: 1, 3: 1},
                 2: {1: 1},
                 3: {1: 2}
-            }))
+            }, undirected=True)
 
-        graph = Undirected(self.graph_cls({
+        graph = self.graph_cls({
             1: {2: 1, 3: 1},
             2: {1: 1}
-        }))
+        }, undirected=True)
         self.assertEquals(graph[1:3], graph[3:1])
 
     def test_containment(self):
@@ -94,7 +93,7 @@ class TestAdjacencyGraph(unittest.TestCase):
 
     def test_set(self):
         """Adjacency Graph: change/add elements"""
-        graph = Undirected(self.graph_cls({
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1, 5: 1, 6: 2, 8: 1},
             2: {1: 1},
             3: {1: 1},
@@ -103,7 +102,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             6: {1: 2, 7: 1},
             7: {6: 1},
             8: {1: 1}
-        }))
+        }, undirected=True)
         self.assertFalse(slice(1, 7) in graph)
         graph[1:7] = 2
         self.assertEqual(2, graph[1:7])
@@ -183,12 +182,12 @@ class TestAdjacencyGraph(unittest.TestCase):
             graph[8:1]
 
     def test_deletion_undirected(self):
-        graph = Undirected(self.graph_cls({
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1},
             2: {1: 1},
             3: {1: 1},
             4: {1: 1}
-        }))
+        }, undirected=True)
         del graph[1:2]
         with self.assertRaises(graphi.abc.EdgeError):
             graph[1:2]
@@ -217,23 +216,23 @@ class TestAdjacencyGraph(unittest.TestCase):
             operators.neighbours(graph, 9)
 
     def test_update(self):
-        graph = Undirected(self.graph_cls({
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1},
             2: {1: 1},
             3: {1: 1},
             4: {1: 1}
-        }))
+        }, undirected=True)
         graph.update((5, 6))
         self.assertIn(5, graph)
         self.assertIn(6, graph)
 
     def test_clear_undirected(self):
-        graph = Undirected(self.graph_cls({
+        graph = self.graph_cls({
             1: {2: 1, 3: 1, 4: 1},
             2: {1: 1},
             3: {1: 1},
             4: {1: 1}
-        }))
+        }, undirected=True)
         self.assertEquals(len(graph), 4)
         graph.clear()
         self.assertEquals(len(graph), 0)
@@ -250,7 +249,7 @@ class TestAdjacencyGraph(unittest.TestCase):
         self.assertEquals(len(graph), 0)
 
     def test_edge_view_undirected(self):
-        graph = Undirected(self.graph_cls({1, 2, 3, 4}))
+        graph = self.graph_cls({1, 2, 3, 4}, undirected=True)
         nodes = [2, 3, 4]
         for node in nodes:
             graph[1:node] = 1
@@ -294,7 +293,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             None in edge_view
 
     def test_value_view_undirected(self):
-        graph = Undirected(self.graph_cls({1, 2, 3, 4}))
+        graph = self.graph_cls({1, 2, 3, 4}, undirected=True)
         nodes = [2, 3, 4]
         for value, node in enumerate(nodes):
             graph[1:node] = value
