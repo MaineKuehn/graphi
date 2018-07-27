@@ -3,7 +3,7 @@ try:
 except ImportError:
     import unittest
 
-from graphi.types import undirected
+from graphi.types import undirected, adjacency_graph
 
 
 class TestUndirected(unittest.TestCase):
@@ -29,3 +29,17 @@ class TestUndirected(unittest.TestCase):
         graph[1:2] = 1
         self.assertTrue(bool(graph))
         self.assertEquals(len(graph), 2)
+
+    def test_update(self):
+        graph = adjacency_graph.AdjacencyGraph({
+            1: {2: 1, 3: 1},
+            2: {1: 1},
+            3: {1: 1}
+        })
+        undirected_graph = self.graph_cls({
+            1: {2: 1, 4: 1}
+        })
+        undirected_graph.update(graph)
+        self.assertIn(undirected.UndirectedEdge[1:3], graph)
+        self.assertIn(undirected.UndirectedEdge[1:4], graph)
+        self.assertNotIn(undirected.UndirectedEdge[2:3], graph)
