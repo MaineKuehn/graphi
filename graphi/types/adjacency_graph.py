@@ -6,6 +6,10 @@ from .. import abc
 from .. import edge
 
 
+from .undirected import undirectable
+
+
+@undirectable
 class AdjacencyGraph(abc.Graph):
     r"""
     Graph storing edge distances via adjacency lists
