@@ -9,7 +9,7 @@ def undirectable(graph_class):
     """Make an implementation of :py:class:`abc.Graph` undirectable by passing ``undirected=True`` to it"""
     assert issubclass(graph_class, abc.Graph), 'only subclasses of Graph can be undirected'
 
-    @classmethod
+    @staticmethod
     def __new_graph__(cls, *args, **kwargs):
         undirected = kwargs.pop('undirected', False)
         super_new = super(graph_class, cls).__new__
