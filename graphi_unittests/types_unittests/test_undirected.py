@@ -19,3 +19,13 @@ class TestUndirected(unittest.TestCase):
             self.assertNotEqual(last_edge, edge)
             last_edge = edge
         self.assertFalse(last_edge == [1])
+
+    def test_containment(self):
+        graph = self.graph_cls()
+        self.assertFalse(bool(graph), "Graph is expected to be false as no nodes/edges are contained")
+        self.assertEquals(len(graph), 0)
+        graph.add(1)
+        graph.add(2)
+        graph[1:2] = 1
+        self.assertTrue(bool(graph))
+        self.assertEquals(len(graph), 2)
