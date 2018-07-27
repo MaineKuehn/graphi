@@ -31,6 +31,7 @@ if __name__ == '__main__':
         classifiers=[
             'Development Status :: 4 - Beta',
             'Intended Audience :: Developers',
+            'License :: OSI Approved :: MIT License',
             'Topic :: System :: Monitoring',
             'Programming Language :: Python :: 2',
             'Programming Language :: Python :: 2.7',
