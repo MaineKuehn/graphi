@@ -5,6 +5,29 @@ from .. import abc
 from .. import edge
 
 
+def undirectable(graph_class):
+    """Make an implementation of :py:class:`abc.Graph` undirectable by passing ``undirected=True`` to it"""
+    assert issubclass(graph_class, abc.Graph), 'only subclasses of Graph can be undirected'
+
+    @classmethod
+    def __new_graph__(cls, *args, **kwargs):
+        undirected = kwargs.pop('undirected', False)
+        super_new = super(graph_class, cls).__new__
+        if super_new is object.__new__:
+            self = super_new(cls)
+        else:
+            self = super_new(cls, *args, **kwargs)
+        if undirected:  # replicates type.__call__
+            if isinstance(self, cls):
+                self.__init__(*args, **kwargs)
+            return Undirected(self)
+        else:
+            return self
+
+    graph_class.__new__ = __new_graph__
+    return graph_class
+
+
 from .adjacency_graph import AdjacencyGraph
 
 
