@@ -51,6 +51,7 @@ except ImportError:
     import collections as abc_collection
 
 from ..types import adjacency_graph
+from ..types import undirected as undirected_graph
 
 
 class ParserError(Exception):
@@ -197,7 +198,10 @@ def graph_reader(
     else:
         raise TypeError("parameter 'nodes_header' must be True, False, an iterable or a callable")
     # fill graph with nodes
-    graph = adjacency_graph.AdjacencyGraph(nodes, undirected=undirected)
+    if undirected:
+        graph = undirected_graph.Undirected(nodes)
+    else:
+        graph = adjacency_graph.AdjacencyGraph(nodes, undirected=undirected)
     # still need to consume the first line as content if not unset
     iter_rows = reader if first_line is None else itertools.chain([first_line], reader)
     for row_idx, row in enumerate(iter_rows):
