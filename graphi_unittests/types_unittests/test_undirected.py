@@ -74,3 +74,6 @@ class TestUndirected(unittest.TestCase):
         clone_undirected = adjacency_graph.AdjacencyGraph(graph, undirected=True)
         self.assertTrue(slice("6", "1") in clone_undirected)
         self.assertTrue(clone_undirected.undirected)
+        clone_bounded = adjacency_graph.AdjacencyGraph(graph, value_bound=1, undirected=True)
+        self.assertTrue(slice("2", "1") in clone_bounded)
+        self.assertFalse(slice("6", "1") in clone_bounded)
