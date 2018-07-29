@@ -67,5 +67,5 @@ class TestUndirected(unittest.TestCase):
                 """.strip())
         graph = csv.graph_reader(literal.splitlines(), undirected=True)
         self.assertTrue(slice("6", "1") in graph)
-        al_graph = adjacency_graph.AdjacencyGraph(graph, max_distance=1)
+        al_graph = adjacency_graph.AdjacencyGraph(graph)
         self.assertTrue(slice("6", "1") in al_graph)
