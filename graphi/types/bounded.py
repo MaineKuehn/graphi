@@ -1,10 +1,10 @@
 import collections as abc_collection
 
-from ..abc import Graph
+from .. import abc
 from .adjacency_graph import AdjacencyGraph
 
 
-class Bounded(Graph):
+class Bounded(abc.Graph):
     @property
     def undirected(self):
         return self._graph.undirected
