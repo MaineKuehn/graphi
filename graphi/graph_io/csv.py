@@ -202,7 +202,7 @@ def graph_reader(
         raise TypeError("parameter 'nodes_header' must be True, False, an iterable or a callable")
     # fill graph with nodes
     if value_bound:
-        graph = bounded_graph.Bounded(nodes, undirected=undirected)
+        graph = bounded_graph.Bounded(nodes, value_bound=value_bound, undirected=undirected)
     elif undirected:
         graph = undirected_graph.Undirected(nodes)
     else:
