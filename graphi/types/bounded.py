@@ -32,10 +32,14 @@ class Bounded(abc.Graph):
         super(Bounded, self).__init_mapping__(mapping, **kwargs)
 
     def _ensure_bounds(self):
+        value = None  # in case anything else raises that TypeError
         blacklist = []
-        for tail, head, value in self.items():
-            if value > self.value_bound:
-                blacklist.append((tail, head))
+        try:
+            for tail, head, value in self.items():
+                if value > self.value_bound:
+                    blacklist.append((tail, head))
+        except TypeError as err:
+            raise ValueError('cannot bound %r to %r: %s' % (value, self.value_bound, err))
         if self.undirected:
             blacklist = {{tail, head} for tail, head in blacklist}
         for tail, head in blacklist:
