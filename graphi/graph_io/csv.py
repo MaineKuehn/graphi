@@ -52,6 +52,7 @@ except ImportError:
 
 from ..types import adjacency_graph
 from ..types import undirected as undirected_graph
+from ..types import bounded as bounded_graph
 
 
 class ParserError(Exception):
@@ -103,6 +104,7 @@ def graph_reader(
         literal_type=stripped_literal,
         valid_edge=bool,
         undirected=False,
+        value_bound=None,
         *args,
         **kwargs
 ):
@@ -114,6 +116,7 @@ def graph_reader(
     :param literal_type: type callable to evaluate literals
     :param valid_edge: callable to test whether an edge should be inserted
     :param undirected: whether to mirror the underlying matrix
+    :param value_bound: whether and how much the underlying edge values are bounded
 
     The ``iterable`` argument can be any object that returns a line of
     input for each iteration step, such as a file object or a list of strings.
@@ -198,10 +201,12 @@ def graph_reader(
     else:
         raise TypeError("parameter 'nodes_header' must be True, False, an iterable or a callable")
     # fill graph with nodes
-    if undirected:
+    if value_bound:
+        graph = bounded_graph.Bounded(nodes, undirected=undirected)
+    elif undirected:
         graph = undirected_graph.Undirected(nodes)
     else:
-        graph = adjacency_graph.AdjacencyGraph(nodes, undirected=undirected)
+        graph = adjacency_graph.AdjacencyGraph(nodes, undirected=undirected, value_bound=value_bound)
     # still need to consume the first line as content if not unset
     iter_rows = reader if first_line is None else itertools.chain([first_line], reader)
     for row_idx, row in enumerate(iter_rows):
