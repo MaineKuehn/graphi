@@ -2,6 +2,22 @@ from .. import abc
 
 
 def boundable(graph_class):
+    """
+    Make an implementation of :py:class:`~.abc.Graph` bounded when passing ``value_bound`` to it
+
+    .. code:: python
+
+        @boundable
+        class SomeGraph(abc.Graph):
+            ...
+
+        unbounded_graph = SomeGraph()
+        bounded_graph = SomeGraph(value_bound=42)
+
+    This provides an implementation agnostic interface to ensure all edge values are bounded.
+    For any :term:`nodes <node>` ``a`` and ``b``, ``graph[a:b] <= value_bound`` always holds.
+    Setting an edge value larger than ``value_bound`` removes the edge.
+    """
     assert issubclass(graph_class, abc.Graph), 'only subclasses of Graph can be bounded'
     __new__ = graph_class.__new__
 
@@ -26,7 +42,7 @@ def boundable(graph_class):
 
 def undirectable(graph_class):
     """
-    Make an implementation of :py:class:`~.abc.Graph` undirectable by passing ``undirected=True`` to it
+    Make an implementation of :py:class:`~.abc.Graph` undirected when passing ``undirected=True`` to it
 
     .. code:: python
 

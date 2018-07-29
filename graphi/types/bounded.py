@@ -5,6 +5,18 @@ from .adjacency_graph import AdjacencyGraph
 
 
 class Bounded(abc.Graph):
+    """
+    Wrapper to make the values of :py:class:`~.abc.Graph` instances bounded
+
+    :param value_bound: bound for all values
+
+    The ``value_bound`` must be compatible with all values stored in the graph.
+    A :py:exc:`TypeError` is raised whenever a value cannot be bounded.
+    Note that :py:const:`None` is always invalid for ``value_bound``.
+
+    .. seealso::
+        The :py:func:`boundable` decorator for :py:class:`~.abc.Graph` classes.
+    """
     @property
     def undirected(self):
         return self._graph.undirected
