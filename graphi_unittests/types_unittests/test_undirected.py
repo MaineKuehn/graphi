@@ -1,3 +1,7 @@
+import textwrap
+
+from graphi.graph_io import csv
+
 try:
     import unittest2 as unittest
 except ImportError:
@@ -48,3 +52,20 @@ class TestUndirected(unittest.TestCase):
         })
         undirected_graph.update(second_graph)
         self.assertIn(undirected.UndirectedEdge[2:3], undirected_graph)
+
+    def test_conversion(self):
+        literal = textwrap.dedent("""
+                1,2,3,4,5,6,7,8
+                0,1,1,1,1,2,0,1
+                1,0,0,0,0,0,0,0
+                1,0,0,0,0,0,0,0
+                1,0,0,0,0,0,0,0
+                1,0,0,0,0,0,0,0
+                2,0,0,0,0,0,1,0
+                0,0,0,0,0,1,0,0
+                1,0,0,0,0,0,0,0
+                """.strip())
+        graph = csv.graph_reader(literal.splitlines(), undirected=True)
+        self.assertTrue(slice("6", "1") in graph)
+        al_graph = adjacency_graph.AdjacencyGraph(graph, max_distance=1)
+        self.assertTrue(slice("6", "1") in al_graph)
