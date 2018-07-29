@@ -49,9 +49,9 @@ class Bounded(abc.Graph):
         return self._graph[item]
 
     def __setitem__(self, item, value):
-        # do not add edges exceeding our maximum distance
+        # do not allow edges exceeding our maximum distance
         if isinstance(item, slice) and value > self.value_bound:
-            return
+            self._graph.discard(item)
         elif isinstance(value, abc_collection.Mapping):
             value = {node: value for node, value in value.items() if value <= self.value_bound}
         self._graph[item] = value
