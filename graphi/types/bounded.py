@@ -11,6 +11,7 @@ class Bounded(abc.Graph):
 
     def __init__(self, *source, **kwargs):
         self.value_bound = kwargs.pop('value_bound')
+        assert self.value_bound is not None, "None is an illegal 'value_bound' for class %s" % self.__class__.__name__
         self._graph = AdjacencyGraph()
         super(Bounded, self).__init__(*source, **kwargs)
         self._ensure_bounds()
