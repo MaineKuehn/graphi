@@ -54,7 +54,7 @@ class Bounded(abc.Graph):
             return
         elif isinstance(value, abc_collection.Mapping):
             value = {node: value for node, value in value.items() if value <= self.value_bound}
-        super(Bounded, self).__setitem__(item, value)
+        self._graph[item] = value
 
     def __delitem__(self, item):
         del self._graph[item]
