@@ -36,10 +36,14 @@ class Undirected(abc.Graph):
     .. seealso::
         The :py:func:`undirectable` decorator for :py:class:`~.abc.Graph` classes.
     """
+    @property
+    def undirected(self):
+        return True
+
     def __init__(self, *source, **kwargs):
         self._graph = AdjacencyGraph()
         super(Undirected, self).__init__(*source, **kwargs)
-        self.undirected = True
+        assert kwargs.pop('undirected', True), "instances of class %s must be undirected" % self.__class__.__name__
         self._ensure_symmetry()
 
     # initialize a new graph by copying nodes, edges and values from another graph
