@@ -201,12 +201,7 @@ def graph_reader(
     else:
         raise TypeError("parameter 'nodes_header' must be True, False, an iterable or a callable")
     # fill graph with nodes
-    if value_bound:
-        graph = bounded_graph.Bounded(nodes, value_bound=value_bound, undirected=undirected)
-    elif undirected:
-        graph = undirected_graph.Undirected(nodes)
-    else:
-        graph = adjacency_graph.AdjacencyGraph(nodes, undirected=undirected, value_bound=value_bound)
+    graph = adjacency_graph.AdjacencyGraph(nodes, undirected=undirected, value_bound=value_bound)
     # still need to consume the first line as content if not unset
     iter_rows = reader if first_line is None else itertools.chain([first_line], reader)
     for row_idx, row in enumerate(iter_rows):
