@@ -36,7 +36,7 @@ class AdjacencyGraph(abc.Graph):
     def _adjacency_from_graph(graph):
         adjacency = {}
         for node in graph:
-            adjacency[node] = {other: graph[node:other] for other in graph}
+            adjacency[node] = {other: graph[node:other] for other in graph[node]}
         return adjacency
 
     @staticmethod
