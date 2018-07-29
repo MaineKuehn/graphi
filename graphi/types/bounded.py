@@ -41,7 +41,7 @@ class Bounded(abc.Graph):
         except TypeError as err:
             raise ValueError('cannot bound %r to %r: %s' % (value, self.value_bound, err))
         if self.undirected:
-            blacklist = {{tail, head} for tail, head in blacklist}
+            blacklist = {(tail, head) if hash(head) > hash(tail) else (head, tail) for tail, head in blacklist}
         for tail, head in blacklist:
             del self._graph[tail:head]
 

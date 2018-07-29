@@ -19,7 +19,8 @@ class UndirectedEdge(edge.Edge):
         # start and stop may be unsortable,
         # but the interface guarantees that they
         # are hashable
-        start, stop = {start, stop}
+        if hash(start) > hash(stop):
+            start, stop = stop, start
         super(UndirectedEdge, self).__init__(start, stop, step)
 
     def __eq__(self, other):
