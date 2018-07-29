@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 import collections as abc_collection
+import itertools
+
 import six
 
 from .. import abc
@@ -135,6 +137,26 @@ class AdjacencyGraph(abc.Graph):
                 return False
         else:
             return item in self._adjacency
+
+    def __add__(self, other):
+        if isinstance(other, abc.Graph):
+            new_adjacency = {}
+            for node in itertools.chain(self, other):
+                if node in new_adjacency:
+                    continue
+                self_adjacency = self[node].copy() if node in self else {}
+                other_adjacency = other[node].copy() if node in other else {}
+                # make sure there is no ambiguity in edges from sequence of merging
+                for common_node in set(self_adjacency) & set(other_adjacency):
+                    if self_adjacency[common_node] != other_adjacency[common_node]:
+                        raise ValueError('Edge inconsistent in graphs')
+                other_adjacency.update(self_adjacency)
+                new_adjacency[node] = other_adjacency
+            return self.__class__(new_adjacency, undirected=self.undirected and other.undirected)
+        return NotImplemented
+
+    # order is not important
+    __radd__ = __add__
 
     def update(self, other):
         if isinstance(other, (abc.Graph, abc_collection.Mapping)):
