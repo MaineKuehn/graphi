@@ -8,9 +8,10 @@ from .. import abc
 from .. import edge
 
 
-from .undirected import undirectable
+from .decorator import boundable, undirectable
 
 
+@boundable
 @undirectable
 class AdjacencyGraph(abc.Graph):
     r"""
@@ -38,7 +39,7 @@ class AdjacencyGraph(abc.Graph):
     def _adjacency_from_graph(graph):
         adjacency = {}
         for node in graph:
-            adjacency[node] = {other: graph[node:other] for other in graph}
+            adjacency[node] = {other: graph[node:other] for other in graph[node]}
         return adjacency
 
     @staticmethod
