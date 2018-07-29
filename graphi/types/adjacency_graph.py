@@ -6,9 +6,10 @@ from .. import abc
 from .. import edge
 
 
-from .undirected import undirectable
+from .decorator import boundable, undirectable
 
 
+@boundable
 @undirectable
 class AdjacencyGraph(abc.Graph):
     r"""
