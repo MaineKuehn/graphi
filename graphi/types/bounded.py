@@ -41,6 +41,9 @@ class Bounded(abc.Graph):
         for tail, head in blacklist:
             del self._graph[tail:head]
 
+    def __getitem__(self, item):
+        return self._graph[item]
+
     def __setitem__(self, item, value):
         # do not add edges exceeding our maximum distance
         if isinstance(item, slice) and value > self.value_bound:
@@ -48,3 +51,37 @@ class Bounded(abc.Graph):
         elif isinstance(value, abc_collection.Mapping):
             value = {node: value for node, value in value.items() if value <= self.value_bound}
         super(Bounded, self).__setitem__(item, value)
+
+    def __delitem__(self, item):
+        del self._graph[item]
+
+    def __iter__(self):
+        return iter(self._graph)
+
+    def __len__(self):
+        return len(self._graph)
+
+    def __bool__(self):
+        return bool(self._graph)
+
+    __nonzero__ = __bool__
+
+    def __contains__(self, item):
+        return item in self._graph
+
+    def update(self, other):
+        if isinstance(other, (abc.Graph, abc_collection.Mapping)):
+            try:
+                other_bound = getattr(other, 'value_bound')
+            except AttributeError:
+                other = Bounded(other, value_bound=self.value_bound)
+            else:
+                try:
+                    if other_bound > self.value_bound:
+                        other = Bounded(other, value_bound=self.value_bound)
+                except TypeError as err:
+                    raise ValueError('cannot update with bounds %r and %r: %s' % (self.value_bound, other_bound, err))
+        self._graph.update(other)
+
+    def clear(self):
+        self._graph = type(self._graph)()
