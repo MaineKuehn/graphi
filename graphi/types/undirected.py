@@ -49,6 +49,7 @@ class Undirected(abc.Graph):
     def __init__(self, *source, **kwargs):
         self._graph = AdjacencyGraph()
         super(Undirected, self).__init__(*source, **kwargs)
+        self.undirected = True
         self._ensure_symmetry()
 
     # initialize a new graph by copying nodes, edges and values from another graph
