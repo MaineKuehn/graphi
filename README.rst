@@ -22,6 +22,11 @@ GraphI - Python Graph Interface and Types
     :alt: License
     :target: https://github.com/MaineKuehn/graphi/blob/master/LICENSE.txt
 
+.. code::
+
+    flighttime[berlin:london] = 3900
+    # graph    node    node     value
+
 ``GraphI`` is a lightweight graph library - it is suitable to model networks, connections and other relationships.
 Compared to other graph libraries, ``GraphI`` aims for being as pythonic as possible.
 If you are comfortable using ``list``, ``dict`` or other types, ``GraphI`` is intuitive and straight-forward to use.
@@ -36,7 +41,7 @@ If you are comfortable using ``list``, ``dict`` or other types, ``GraphI`` is in
 
 At its heart, ``GraphI`` is built to integrate with Python's data model.
 It natively works with primitives, iterables, mappings and whatever you need.
-For example, creating a multigraph is as simple as using multiple edge values:
+For example, creating a multigraph can be as simple as using multiple edge values:
 
 .. code::
 
