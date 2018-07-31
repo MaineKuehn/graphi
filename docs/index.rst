@@ -38,6 +38,17 @@ GraphI - Python Graph Interface and Types
     Changelog <source/changelog>
     Module Index <source/api/modules>
 
+.. math::
+
+    \mathtt{
+        \underbrace{\vphantom{\bigl[}\mathtt{flighttime}}_\mathtt{graph}
+            [\overbrace{
+                \underbrace{\vphantom{\bigl[}\mathtt{Berlin}}_\mathtt{node}
+                :
+                \underbrace{\vphantom{\bigl[}\mathtt{London}}_\mathtt{node}
+            }^{edge}] = \underbrace{\vphantom{\bigl[}\mathtt{3900}}_\mathtt{value}
+    }
+
 ``GraphI`` is a lightweight graph library - it is suitable to model networks, connections and other relationships.
 Compared to other graph libraries, ``GraphI`` aims for being as pythonic as possible.
 If you are comfortable using :py:class:`list`, :py:class:`dict` or other types, ``GraphI`` is intuitive and straight-forward to use.
