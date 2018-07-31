@@ -19,8 +19,8 @@ class TestAdjacencyGraphInterface(mixins.Mixin.GraphInitMixin, mixins.Mixin.Grap
 
 @undirectable
 class DistanceGraph(graphi.types.adjacency_graph.AdjacencyGraph):
-    def __init__(self, *source, distance=lambda *args: 1, **kwargs):
-        self.distance = distance
+    def __init__(self, *source, **kwargs):
+        self.distance = kwargs.pop('distance', lambda a, b: 1)
         super(DistanceGraph, self).__init__(*source, **kwargs)
 
     def __getitem__(self, item):
