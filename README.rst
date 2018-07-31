@@ -22,7 +22,7 @@ GraphI - Python Graph Interface and Types
     :alt: License
     :target: https://github.com/MaineKuehn/graphi/blob/master/LICENSE.txt
 
-.. code::
+.. code:: python
 
     flighttime[berlin:london] = 3900
     # graph    node    node     value
@@ -31,7 +31,7 @@ GraphI - Python Graph Interface and Types
 Compared to other graph libraries, ``GraphI`` aims for being as pythonic as possible.
 If you are comfortable using ``list``, ``dict`` or other types, ``GraphI`` is intuitive and straight-forward to use.
 
-.. code::
+.. code:: python
 
     # create a graph with initial nodes
     airports = Graph("New York", "Rio", "Tokyo")
@@ -43,7 +43,7 @@ At its heart, ``GraphI`` is built to integrate with Python's data model.
 It natively works with primitives, iterables, mappings and whatever you need.
 For example, creating a multigraph can be as simple as using multiple edge values:
 
-.. code::
+.. code:: python
 
     # add multiple connections between nodes
     airports["Rio":"Tokyo"] = timedelta(days=1, hours=2), timedelta(days=1, hours=3)
