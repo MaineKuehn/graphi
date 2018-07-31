@@ -83,6 +83,14 @@ class Undirected(abc.Graph):
         if graph_diff:
             graph.update(graph_diff)
 
+    def __getattr__(self, item):
+        return getattr(self._graph, item)
+
+    def __setattr__(self, key, value):
+        if key != '_graph':
+            setattr(self._graph, key, value)
+        object.__setattr__(self, key, value)
+
     def __getitem__(self, item):
         return self._graph[item]
 

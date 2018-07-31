@@ -58,6 +58,14 @@ class Bounded(abc.Graph):
         for tail, head in blacklist:
             del self._graph[tail:head]
 
+    def __getattr__(self, item):
+        return getattr(self._graph, item)
+
+    def __setattr__(self, key, value):
+        if key not in ('_graph', 'value_bound'):
+            setattr(self._graph, key, value)
+        object.__setattr__(self, key, value)
+
     def __getitem__(self, item):
         return self._graph[item]
 
