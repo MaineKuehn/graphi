@@ -370,6 +370,7 @@ class Graph(abc_collection.Container):
         """
         if isinstance(other, (Graph, abc_collection.Mapping)):
             for node_from in other:
+                self.add(node_from)
                 node_adjacency = other[node_from]
                 for node_to in node_adjacency:
                     self.add(node_to)
