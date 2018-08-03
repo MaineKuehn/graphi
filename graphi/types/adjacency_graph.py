@@ -110,7 +110,7 @@ class AdjacencyGraph(abc.Graph):
                 raise abc.EdgeError
         else:
             try:
-                node_adjacency = self._adjacency.pop(item)
+                self._adjacency.pop(item)
             except KeyError:
                 raise abc.NodeError
             else:
