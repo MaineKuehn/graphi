@@ -35,6 +35,33 @@ class Mixin(object):
                 self.assertIsInstance(graph.values(), abc.ValueView)
                 self.assertIsInstance(graph.items(), abc.ItemView)
 
+        def test_node_container(self):
+            """Graph Interface: bool(graph), len(graph), iter(graph) operate on nodes"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                graph = self.graph_cls(iter(range(10, 20, 2)))
+                self.assertTrue(graph)
+                self.assertEqual(len(graph), len(range(10, 20, 2)))
+                self.assertEqual(sorted(graph), sorted(range(10, 20, 2)))
+                graph = self.graph_cls()
+                self.assertFalse(graph)
+                self.assertEqual(len(graph), 0)
+                self.assertEqual(list(graph), [])
+
+        def test_copy_clear(self):
+            """Graph Interface: graph.copy()"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                for graph in (self.graph_cls(iter(range(10, 20, 2))), self.graph_cls()):
+                    graph_copy = graph.copy()
+                    self.assertIsNot(graph, graph_copy)
+                    self.assertEqual(bool(graph), bool(graph_copy))
+                    copy_bool = bool(graph_copy)
+                    self.assertEqual(sorted(graph), sorted(graph_copy))
+                    graph.clear()
+                    self.assertFalse(bool(graph))
+                    self.assertEqual(copy_bool, bool(graph_copy))
+                    if copy_bool:
+                        self.assertNotEqual(sorted(graph), sorted(graph_copy))
+
     class GraphInitMixin(GraphMixin):
         def test_init_empty(self):
             """Graph Interface: graph()"""
