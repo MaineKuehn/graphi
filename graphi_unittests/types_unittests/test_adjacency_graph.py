@@ -88,7 +88,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             1: {2: 1, 3: 1},
             2: {1: 1}
         }, undirected=True)
-        self.assertEquals(graph[1:3], graph[3:1])
+        self.assertEqual(graph[1:3], graph[3:1])
 
     def test_containment(self):
         """Adjacency Graph: retrieve elements"""
@@ -260,9 +260,9 @@ class TestAdjacencyGraph(unittest.TestCase):
             3: {1: 1},
             4: {1: 1}
         }, undirected=True)
-        self.assertEquals(len(graph), 4)
+        self.assertEqual(len(graph), 4)
         graph.clear()
-        self.assertEquals(len(graph), 0)
+        self.assertEqual(len(graph), 0)
 
     def test_clear_directed(self):
         graph = self.graph_cls({
@@ -271,9 +271,9 @@ class TestAdjacencyGraph(unittest.TestCase):
             3: {1: 1},
             4: {1: 1}
         })
-        self.assertEquals(len(graph), 4)
+        self.assertEqual(len(graph), 4)
         graph.clear()
-        self.assertEquals(len(graph), 0)
+        self.assertEqual(len(graph), 0)
 
     def test_edge_view_undirected(self):
         graph = self.graph_cls({1, 2, 3, 4}, undirected=True)
@@ -286,7 +286,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             self.assertTrue(edge in graph)
             self.assertTrue(edge in edge_view)
             counter += 1
-        self.assertEquals(len(nodes), counter, "The number of edges should be half for undirected graphs")
+        self.assertEqual(len(nodes), counter, "The number of edges should be half for undirected graphs")
         self.assertTrue(graphi.edge.Edge[1:2] in edge_view)
         self.assertFalse(graphi.edge.Edge[1:5] in edge_view)
         self.assertTrue([1, 2] in edge_view)
@@ -309,7 +309,7 @@ class TestAdjacencyGraph(unittest.TestCase):
             self.assertTrue(edge in graph)
             self.assertTrue(edge in edge_view)
             counter += 1
-        self.assertEquals(len(nodes) * 2 + 1, counter)
+        self.assertEqual(len(nodes) * 2 + 1, counter)
         self.assertTrue(graphi.edge.Edge[1:2] in edge_view)
         self.assertFalse(graphi.edge.Edge[5:1] in edge_view)
         self.assertTrue([1, 2] in edge_view)
@@ -346,5 +346,5 @@ class TestAdjacencyGraph(unittest.TestCase):
 
     def test_graph_customisation(self):
         graph = DistanceGraph([1, 2], undirected=True)
-        self.assertEquals(1, graph[1:2])
-        self.assertEquals(1, graph.distance(1, 2))
+        self.assertEqual(1, graph[1:2])
+        self.assertEqual(1, graph.distance(1, 2))

@@ -8,7 +8,7 @@ from graphi.edge import Edge, Loop
 
 class TestEdge(unittest.TestCase):
     def test_Init(self):
-        self.assertEquals(Edge["start":"stop"], Edge("start", "stop"))
+        self.assertEqual(Edge["start":"stop"], Edge("start", "stop"))
 
     def test_stop(self):
         with self.assertRaises(TypeError):
@@ -20,8 +20,8 @@ class TestEdge(unittest.TestCase):
 
     def test_index(self):
         edge = Edge("start", "stop")
-        self.assertEquals(edge[0], "start")
-        self.assertEquals(edge[1], "stop")
+        self.assertEqual(edge[0], "start")
+        self.assertEqual(edge[1], "stop")
         with self.assertRaises(ValueError):
             edge[2]
 
@@ -30,19 +30,19 @@ class TestEdge(unittest.TestCase):
         edge = Edge(*nodes)
 
         for position, node in enumerate(edge):
-            self.assertEquals(nodes[position], node)
+            self.assertEqual(nodes[position], node)
 
         edge2 = Edge(*edge)
-        self.assertEquals(edge2, edge)
+        self.assertEqual(edge2, edge)
 
     def test_representation(self):
         edge = Edge("start", "stop")
-        self.assertEquals("[start:stop]", str(edge))
+        self.assertEqual("[start:stop]", str(edge))
 
 
 class TestLoop(unittest.TestCase):
     def test_init(self):
-        self.assertEquals(Loop("start"), Edge("start", "start"))
+        self.assertEqual(Loop("start"), Edge("start", "start"))
 
         with self.assertRaises(ValueError):
             Loop("start", "stop")

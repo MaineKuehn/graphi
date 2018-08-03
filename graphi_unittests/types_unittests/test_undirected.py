@@ -27,12 +27,12 @@ class TestUndirected(unittest.TestCase):
     def test_containment(self):
         graph = self.graph_cls()
         self.assertFalse(bool(graph), "Graph is expected to be false as no nodes/edges are contained")
-        self.assertEquals(len(graph), 0)
+        self.assertEqual(len(graph), 0)
         graph.add(1)
         graph.add(2)
         graph[1:2] = 1
         self.assertTrue(bool(graph))
-        self.assertEquals(len(graph), 2)
+        self.assertEqual(len(graph), 2)
 
     def test_update(self):
         graph = adjacency_graph.AdjacencyGraph({
