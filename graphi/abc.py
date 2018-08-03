@@ -360,7 +360,6 @@ class Graph(abc_collection.Container):
             pass
 
     # dict-like graph methods
-    @abc.abstractmethod
     def update(self, other):
         """
         Update the graph with the nodes, edges and values from ``other``,
@@ -369,7 +368,15 @@ class Graph(abc_collection.Container):
         :param other: graph or items from which to pull elements
         :type other: :py:class:`~.Graph` or :py:class:`~.ItemView`
         """
-        raise NotImplementedError
+        if isinstance(other, (Graph, abc_collection.Mapping)):
+            for node_from in other:
+                node_adjacency = other[node_from]
+                for node_to in node_adjacency:
+                    self.add(node_to)
+                    self[node_from:node_to] = node_adjacency[node_to]
+        else:
+            for node in other:
+                self.add(node)
 
     def get(self, item, default=None):
         """
