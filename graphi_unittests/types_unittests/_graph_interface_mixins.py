@@ -47,8 +47,8 @@ class Mixin(object):
                 self.assertEqual(len(graph), 0)
                 self.assertEqual(list(graph), [])
 
-        def test_copy_clear(self):
-            """Graph Interface: graph.copy()"""
+        def test_copy_clear_update(self):
+            """Graph Interface: graph.copy(), graph.clear(), graph.update()"""
             with self.subTest(cls=self.graph_cls_identifier):
                 for graph in (self.graph_cls(iter(range(10, 20, 2))), self.graph_cls()):
                     graph_copy = graph.copy()
@@ -61,6 +61,23 @@ class Mixin(object):
                     self.assertEqual(copy_bool, bool(graph_copy))
                     if copy_bool:
                         self.assertNotEqual(sorted(graph), sorted(graph_copy))
+                    graph.update(iter(graph_copy))
+                    self.assertIsNot(graph, graph_copy)
+                    self.assertEqual(bool(graph), bool(graph_copy))
+                    self.assertEqual(sorted(graph), sorted(graph_copy))
+
+        def test_get_discard(self):
+            """Graph Interface: graph.get(), graph.discard()"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                nodes = list(range(10, 20, 2))
+                graph = self.graph_cls(iter(nodes))
+                for node in nodes:
+                    self.assertIsNotNone(graph.get(node))
+                    self.assertIsNone(graph.get(node + 1, default=None))
+                for node in nodes:
+                    self.assertIsNone(graph.discard(node))
+                    self.assertIsNone(graph.discard(node + 1))
+
 
     class GraphInitMixin(GraphMixin):
         def test_init_empty(self):
