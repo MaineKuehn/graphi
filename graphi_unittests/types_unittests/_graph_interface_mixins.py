@@ -47,7 +47,7 @@ class Mixin(object):
                 )
                 self.assertIn(10, graph.nodes())
                 self.assertNotIn(1, graph.nodes())
-                self.assertEqual(list(graph.nodes()), list(range(10, 20, 2)))
+                self.assertEqual(sorted(graph.nodes()), sorted(range(10, 20, 2)))
                 self.assertEqual(len(graph.nodes()), len(list(graph.nodes())))
 
         def test_edge_views(self):
