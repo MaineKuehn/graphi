@@ -31,23 +31,23 @@ class SimpleGraph(Graph):
         return adjacency
 
     def __init_empty__(self, **kwargs):
-        self.__init_kwargs__(**kwargs)
+        super(SimpleGraph, self).__init_empty__(**kwargs)
 
     # initialize a new graph by copying nodes, edges and values from another graph
     def __init_graph__(self, graph, **kwargs):
         self.update(self._adjacency_from_graph(graph))
-        self.__init_kwargs__(**kwargs)
+        super(SimpleGraph, self).__init_graph__(graph, **kwargs)
 
     # initialize a new graph by copying nodes from an iterable
     def __init_iterable__(self, iterable, **kwargs):
         for node in iterable:
             self._adjacency.setdefault(node, {})
-        self.__init_kwargs__(**kwargs)
+        super(SimpleGraph, self).__init_iterable__(iterable, **kwargs)
 
     # initialize a new graph by copying nodes, edges and values from a nested mapping
     def __init_mapping__(self, mapping, **kwargs):
         self.update(self._adjacency_from_mapping(mapping))
-        self.__init_kwargs__(**kwargs)
+        super(SimpleGraph, self).__init_mapping__(mapping, **kwargs)
 
     def __getitem__(self, item):
         if item.__class__ is slice:
