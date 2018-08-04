@@ -13,10 +13,8 @@ from . import _graph_interface_mixins as mixins
 class SimpleGraph(Graph):
     """Test Graph using the entire ABC base functionality"""
     def __init__(self, *source, **kwargs):
-        self.undirected = kwargs.pop('undirected', False)
-        assert not self.undirected
         self._adjacency = {}  # {node: {neighbour: distance, neighbour: distance, ...}, ...}
-        super(SimpleGraph, self).__init__(*source)
+        super(SimpleGraph, self).__init__(*source, **kwargs)
 
     @staticmethod
     def _adjacency_from_graph(graph):
@@ -32,21 +30,24 @@ class SimpleGraph(Graph):
             adjacency[node] = {other: neighbours[other] for other in neighbours}
         return adjacency
 
-    def __init_empty__(self, max_distance=None):
-        return
+    def __init_empty__(self, **kwargs):
+        self.__init_kwargs__(**kwargs)
 
     # initialize a new graph by copying nodes, edges and values from another graph
-    def __init_graph__(self, graph, max_distance=None):
+    def __init_graph__(self, graph, **kwargs):
         self.update(self._adjacency_from_graph(graph))
+        self.__init_kwargs__(**kwargs)
 
     # initialize a new graph by copying nodes from an iterable
     def __init_iterable__(self, iterable, **kwargs):
         for node in iterable:
             self._adjacency.setdefault(node, {})
+        self.__init_kwargs__(**kwargs)
 
     # initialize a new graph by copying nodes, edges and values from a nested mapping
-    def __init_mapping__(self, mapping, max_distance=None):
+    def __init_mapping__(self, mapping, **kwargs):
         self.update(self._adjacency_from_mapping(mapping))
+        self.__init_kwargs__(**kwargs)
 
     def __getitem__(self, item):
         if item.__class__ is slice:
