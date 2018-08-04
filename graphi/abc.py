@@ -500,7 +500,7 @@ class ValueView(GraphView):
 
     def __contains__(self, value):
         self_graph = self._graph
-        return any(self_graph[node_a:node_b] == value for node_a in self for node_b in self)
+        return any(self_graph[graph_edge] == value for graph_edge in self_graph.edges())
 
     def __len__(self):
         return sum(1 for _ in self)
@@ -527,6 +527,8 @@ class ItemView(GraphView):
             return self._graph[node_a:node_b] == value
         except (EdgeError, NodeError):
             return False
+        except ValueError:
+            raise TypeError('items must be of length 3')
 
     def __len__(self):
         return sum(1 for _ in self)
