@@ -564,10 +564,8 @@ class AdjacencyView(GraphView):
     def __iter__(self):
         self_graph, self_node = self._graph, self._node
         for node in self_graph:
-            try:
-                yield self_graph[self_node:node]
-            except (EdgeError, NodeError):
-                continue
+            if edge.Edge[self_node:node] in self_graph:
+                yield node
 
     def __len__(self):
         return sum(1 for _ in self)
