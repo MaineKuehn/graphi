@@ -5,7 +5,7 @@ try:
 except ImportError:
     import unittest
 
-from graphi.abc import Graph, EdgeError, NodeError, AdjacencyListTypeError
+from graphi.abc import Graph, EdgeError, NodeError, AdjacencyListTypeError, AdjacencyView
 
 from . import _graph_interface_mixins as mixins
 
@@ -57,10 +57,9 @@ class SimpleGraph(Graph):
             except KeyError:
                 raise EdgeError
         else:
-            try:
-                return self._adjacency[item]
-            except KeyError:
-                raise NodeError
+            if item in self:
+                return AdjacencyView(self, item)
+            raise NodeError
 
     def __setitem__(self, item, value):
         if item.__class__ is slice:
