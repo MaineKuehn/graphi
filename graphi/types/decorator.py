@@ -20,9 +20,10 @@ def boundable(graph_class):
     """
     assert issubclass(graph_class, abc.Graph), 'only subclasses of Graph can be bounded'
     __new__ = graph_class.__new__
+    __init__ = graph_class.__init__
 
     @staticmethod
-    def __new_graph__(cls, *args, **kwargs):
+    def __new_boundable__(cls, *args, **kwargs):
         value_bound = kwargs.pop('value_bound', None)
         super_new = __new__
         if super_new is object.__new__:
@@ -36,7 +37,13 @@ def boundable(graph_class):
         else:
             return self
 
-    graph_class.__new__ = __new_graph__
+    def __init_boundable__(self, *args, **kwargs):
+        value_bound = kwargs.pop('value_bound', None)
+        assert value_bound is None, "boundable failed to trigger on 'value_bound' keyword"
+        __init__(self, *args, **kwargs)
+
+    graph_class.__new__ = __new_boundable__
+    graph_class.__init__ = __init_boundable__
     return graph_class
 
 
@@ -59,9 +66,10 @@ def undirectable(graph_class):
     """
     assert issubclass(graph_class, abc.Graph), 'only subclasses of Graph can be undirected'
     __new__ = graph_class.__new__
+    __init__ = graph_class.__init__
 
     @staticmethod
-    def __new_graph__(cls, *args, **kwargs):
+    def __new_undirectable__(cls, *args, **kwargs):
         undirected = kwargs.pop('undirected', False)
         super_new = __new__
         if super_new is object.__new__:
@@ -75,7 +83,13 @@ def undirectable(graph_class):
         else:
             return self
 
-    graph_class.__new__ = __new_graph__
+    def __init_undirectable__(self, *args, **kwargs):
+        undirected = kwargs.pop('undirected', False)
+        assert not undirected, "undirectable failed to trigger on 'undirected' keyword"
+        __init__(self, *args, **kwargs)
+
+    graph_class.__new__ = __new_undirectable__
+    graph_class.__init__ = __init_undirectable__
     return graph_class
 
 
