@@ -101,6 +101,22 @@ class Mixin(object):
                     self.assertNotIn((10, 12), graph.items())
                 self.assertEqual(len(graph.items()), len(list(graph.items())))
 
+        def test_adjacency(self):
+            """Graph Interface: item in graph.items(), iter(graph.items())"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                graph = self.graph_cls(
+                    {node_from: {
+                        node_to: 1
+                        for node_to in range(10, 20, 2)
+                        if node_from < node_to
+                    } for node_from in range(10, 20, 2)}
+                )
+                self.assertIn(12, graph[10])
+                self.assertNotIn(10, graph[12])
+                self.assertEqual(1, graph[10][12])
+                self.assertEqual(len(graph[10]), len(list(graph[10])))
+                self.assertNotIn(1, set(graph[10]))
+
         def test_node_container(self):
             """Graph Interface: bool(graph), len(graph), iter(graph) operate on nodes"""
             with self.subTest(cls=self.graph_cls_identifier):
