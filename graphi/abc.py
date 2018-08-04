@@ -561,12 +561,6 @@ class AdjacencyView(GraphView):
     def __getitem__(self, node):
         return self._graph[self._node:node]
 
-    def __setitem__(self, node, value):
-        self._graph[self._node:node] = value
-
-    def __delitem__(self, node):
-        del self._graph[self._node:node]
-
     def __iter__(self):
         self_graph, self_node = self._graph, self._node
         for node in self_graph:
