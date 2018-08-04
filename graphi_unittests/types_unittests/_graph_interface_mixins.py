@@ -160,3 +160,11 @@ class Mixin(object):
                 self.assertEqual(len(graph.edges()), len(range(10, 20, 2)) ** 2)
                 self.assertEqual(len(graph.values()), len(range(10, 20, 2)) ** 2)
                 self.assertEqual(len(graph.items()), len(range(10, 20, 2)) ** 2)
+
+        def test_init_kwargs(self):
+            """Graph Interface: graph(foobar=...)"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                with self.assertRaises(TypeError):
+                    self.graph_cls(foobar=12312)
+                with self.assertRaises(TypeError):
+                    self.graph_cls(foobar=12312, queras='foobar')
