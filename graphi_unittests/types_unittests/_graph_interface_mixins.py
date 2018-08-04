@@ -26,7 +26,7 @@ class Mixin(object):
                 return '%s.%s' % (self.graph_cls.__module__, self.graph_cls.__name__)
 
     class GraphInterfaceMixin(GraphMixin):
-        def test_views(self):
+        def test_view_type(self):
             """Graph Interface: type(graph.nodes()), type(graph.edges()), ..."""
             with self.subTest(cls=self.graph_cls_identifier):
                 graph = self.graph_cls()
@@ -34,6 +34,72 @@ class Mixin(object):
                 self.assertIsInstance(graph.edges(), abc.EdgeView)
                 self.assertIsInstance(graph.values(), abc.ValueView)
                 self.assertIsInstance(graph.items(), abc.ItemView)
+
+        def test_node_views(self):
+            """Graph Interface: node in graph.nodes(), iter(graph.nodes())"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                graph = self.graph_cls(
+                    {node_from: {
+                        node_to: 1
+                        for node_to in range(10, 20, 2)
+                        if node_from < node_to
+                    } for node_from in range(10, 20, 2)}
+                )
+                self.assertIn(10, graph.nodes())
+                self.assertNotIn(1, graph.nodes())
+                self.assertEqual(list(graph.nodes()), list(range(10, 20, 2)))
+                self.assertEqual(len(graph.nodes()), len(list(graph.nodes())))
+
+        def test_edge_views(self):
+            """Graph Interface: edge in graph.edges(), iter(graph.edges())"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                graph = self.graph_cls(
+                    {node_from: {
+                        node_to: 1
+                        for node_to in range(10, 20, 2)
+                        if node_from < node_to
+                    } for node_from in range(10, 20, 2)}
+                )
+                self.assertIn(slice(10, 12), graph.edges())
+                self.assertIn((10, 12), graph.edges())
+                self.assertNotIn(slice(12, 10), graph.edges())
+                self.assertNotIn((12, 10), graph.edges())
+                with self.assertRaises(TypeError):
+                    self.assertNotIn((10, 12, 14), graph.edges())
+                self.assertEqual(len(graph.edges()), len(list(graph.edges())))
+
+        def test_value_views(self):
+            """Graph Interface: value in graph.values(), iter(graph.values())"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                graph = self.graph_cls(
+                    {node_from: {
+                        node_to: 1
+                        for node_to in range(10, 20, 2)
+                        if node_from < node_to
+                    } for node_from in range(10, 20, 2)}
+                )
+                self.assertIn(1, graph.values())
+                self.assertNotIn(-1, graph.values())
+                self.assertEqual(set(graph.values()), {1})
+                self.assertEqual(len(graph.values()), len(list(graph.values())))
+
+        def test_item_views(self):
+            """Graph Interface: item in graph.items(), iter(graph.items())"""
+            with self.subTest(cls=self.graph_cls_identifier):
+                graph = self.graph_cls(
+                    {node_from: {
+                        node_to: 1
+                        for node_to in range(10, 20, 2)
+                        if node_from < node_to
+                    } for node_from in range(10, 20, 2)}
+                )
+                self.assertIn((10, 12, 1), graph.items())
+                self.assertNotIn((12, 10, 1), graph.items())
+                self.assertNotIn((10, 12, -1), graph.items())
+                with self.assertRaises(TypeError):
+                    self.assertNotIn((10, 12, 14, 15), graph.items())
+                    self.assertNotIn((10, 12), graph.items())
+                self.assertEqual(len(graph.items()), len(list(graph.items())))
 
         def test_node_container(self):
             """Graph Interface: bool(graph), len(graph), iter(graph) operate on nodes"""
@@ -77,7 +143,6 @@ class Mixin(object):
                 for node in nodes:
                     self.assertIsNone(graph.discard(node))
                     self.assertIsNone(graph.discard(node + 1))
-
 
     class GraphInitMixin(GraphMixin):
         def test_init_empty(self):
