@@ -234,7 +234,9 @@ class Graph(abc_collection.Container):
                     '%r are invalid keyword arguments for %s' % (
                         ', '.join(kwargs), self.__class__.__name__
                     ))
-            raise TypeError('%r is an invalid keyword argument for %s' % (next(kwargs), self.__class__.__name__))
+            raise TypeError('%r is an invalid keyword argument for %s' % (
+                next(iter(kwargs)), self.__class__.__name__)
+            )
 
     # container interface
     def __len__(self):
