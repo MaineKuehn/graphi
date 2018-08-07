@@ -153,7 +153,8 @@ cdef class CythonGraph(object):
     def __bool__(self):
         return bool(self._incidences)
 
-    __nonzero__ = __bool__
+    def __nonzero__(self):
+        return bool(self._incidences)
 
     def __contains__(self, item):
         if item.__class__ is slice:
