@@ -19,7 +19,7 @@ with open(os.path.join(repo_base_dir, 'README.rst'), 'r') as README:
 CEXTENSIONS = [
     Extension(
         'graphi.types._graph',
-        ['graphi/types/_graph.pyx'],
+        ['graphi/types/cython_graph/plain_graph.pyx'],
     )
 ] if platform.python_implementation() == 'CPython' else []
 

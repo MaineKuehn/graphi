@@ -2,9 +2,9 @@
 from __future__ import absolute_import
 import collections as abc_collection
 
-from ..abc import Graph as GraphABC, EdgeError, NodeError, AdjacencyListTypeError, \
+from graphi.abc import Graph as GraphABC, EdgeError, NodeError, AdjacencyListTypeError, \
     NodeView as NodeViewABC, EdgeView as EdgeViewABC, ValueView as ValueViewABC, ItemView as ItemViewABC
-from ..edge import Edge
+from graphi.edge import Edge
 
 
 Graph_or_Map = (GraphABC, abc_collection.Mapping)

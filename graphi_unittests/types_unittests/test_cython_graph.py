@@ -4,13 +4,13 @@ except ImportError:
     import unittest
 
 try:
-    from graphi.types import _graph
+    from graphi.types.cython_graph.plain_graph import CythonGraph
 except ImportError:
-    _graph = None
+    CythonGraph = None
 
 from . import _graph_interface_mixins as mixins
 
 
-@unittest.skipIf(_graph is None, 'Cython extension not available')
+@unittest.skipIf(CythonGraph is None, 'Cython extension not available')
 class TestCythonGraphInterface(mixins.Mixin.GraphInitMixin, mixins.Mixin.GraphInterfaceMixin):
-    graph_cls = _graph.CythonGraph if _graph is not None else None
+    graph_cls = CythonGraph
