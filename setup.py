@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import os
 import sys
+import platform
 from setuptools import setup, find_packages
+from setuptools.extension import Extension
 
 repo_base_dir = os.path.abspath(os.path.dirname(__file__))
 # pull in the packages metadata
@@ -9,9 +11,17 @@ package_about = {}
 with open(os.path.join(repo_base_dir, "graphi", "__about__.py")) as about_file:
     exec(about_file.read(), package_about)
 
-
 with open(os.path.join(repo_base_dir, 'README.rst'), 'r') as README:
     long_description = README.read()
+
+# setuptools.Extension automatically falls back to using .c files
+# if Cython is not available to handle .pyx
+CEXTENSIONS = [
+    Extension(
+        'graphi.types.cython_graph.plain_graph',
+        ['graphi/types/cython_graph/plain_graph.pyx'],
+    )
+] if platform.python_implementation() == 'CPython' else []
 
 if __name__ == '__main__':
     setup(
@@ -25,6 +35,7 @@ if __name__ == '__main__':
         packages=find_packages(),
         # dependencies
         install_requires=['six'],
+        ext_modules=CEXTENSIONS,
         # metadata for package search
         license='MIT',
         # https://pypi.python.org/pypi?%3Aaction=list_classifiers
