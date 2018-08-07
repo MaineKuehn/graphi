@@ -36,6 +36,7 @@ if __name__ == '__main__':
         # dependencies
         install_requires=['six'],
         ext_modules=CEXTENSIONS,
+        zip_safe=False,
         # metadata for package search
         license='MIT',
         # https://pypi.python.org/pypi?%3Aaction=list_classifiers
