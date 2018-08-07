@@ -1,3 +1,4 @@
+import platform
 try:
     import unittest2 as unittest
 except ImportError:
@@ -5,12 +6,17 @@ except ImportError:
 
 try:
     from graphi.types.cython_graph.plain_graph import CythonGraph
-except ImportError:
-    CythonGraph = None
+except ImportError as err:
+    class CythonGraph(object):
+        failure_reason = str(err)
 
-from . import _graph_interface_mixins as mixins
+        def __new__(cls, *args, **kwargs):
+            raise ImportError(cls.failure_reason)
+    del err
+
+from graphi_unittests.types_unittests import _graph_interface_mixins as mixins
 
 
-@unittest.skipIf(CythonGraph is None, 'Cython extension not available')
+@unittest.skipIf(platform.python_implementation() != 'CPython', 'Cython extension not available outside of CPython')
 class TestCythonGraphInterface(mixins.Mixin.GraphInitMixin, mixins.Mixin.GraphInterfaceMixin):
     graph_cls = CythonGraph
