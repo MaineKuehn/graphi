@@ -1,3 +1,4 @@
+# cython: language_level=3
 from __future__ import absolute_import
 import collections as abc_collection
 
