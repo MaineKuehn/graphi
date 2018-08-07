@@ -161,6 +161,25 @@ cdef class CythonGraph(object):
         else:
             return item in self._incidences
 
+    def clear(self):
+        self._incidences = {}
+        self._edge_values = {}
+
+    def copy(self):
+        return CythonGraph(self)
+
+    def nodes(self):
+        return NodeView(self)
+
+    def edges(self):
+        return EdgeView(self)
+
+    def values(self):
+        return ValueView(self)
+
+    def items(self):
+        return ItemView(self)
+
     cpdef add(self, item):
         # Cython makes practically the same C code for real and faked slices
         # no need to distinguish between them
@@ -171,6 +190,12 @@ cdef class CythonGraph(object):
             self._add_edge(node_from, node_to)
         else:
             self._add_node(item)
+
+    def discard(self, item):
+        try:
+            del self[item]
+        except (NodeError, EdgeError):
+            pass
 
     cpdef update(self, other):
         if isinstance(other, Graph_or_Map):
@@ -184,9 +209,18 @@ cdef class CythonGraph(object):
             for node in other:
                 self._add_node(node)
 
-    def clear(self):
-        self._incidences = {}
-        self._edge_values = {}
+    def get(self, item, default=None):
+        if item.__class__ is slice:
+            node_from, node_to = item.start, item.stop
+            try:
+                return self._edge_values[node_from, node_to]
+            except KeyError:
+                return default
+        else:
+            if item in self._incidences:
+                return NodeAdjacencyView(self, item)
+            else:
+                return default
 
     # pure Cython helper methods
     ############################
@@ -269,10 +303,12 @@ cdef class EdgeView(object):
             return pair in self._graph
         else:
             try:
-                return Edge(*pair) in self._graph._edge_values
-            except TypeError:
+                node_from, node_to = pair
+            except ValueError:
                 pass
-        raise TypeError('an edge is required')
+            else:
+                return (node_from, node_to) in self._graph._edge_values
+        raise TypeError('an edge or pair is required')
 
     def __len__(self):
         return len(self._graph._edge_values)
@@ -288,7 +324,7 @@ cdef class ValueView(object):
         self._graph = graph
 
     def __iter__(self):
-        return self._graph._edge_values.values()
+        return iter(self._graph._edge_values.values())
 
     def __contains__(self, value):
         return any(edge_value == value for edge_value in iter(self))
