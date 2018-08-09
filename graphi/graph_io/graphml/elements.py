@@ -88,13 +88,17 @@ class KeyDomain(object):
     def compile_attributes(self, element):
         attributes = {}
         child_data = {child.get('key'): child.text for child in element}
-        for data_key in self.keys:
+        for data_key in self.keys:  # type: DataKey
             try:
                 value = child_data[data_key.identifier]
             except KeyError:
-                attributes[data_key.identifier] = data_key.default
+                # GraphML Primer:
+                # If no default value is specified the value of the GraphML-Attribute
+                # is undefined for the graph element [if it has no value].
+                if data_key.default is not None:
+                    attributes[data_key.attr_name] = data_key.default
             else:
-                attributes[data_key.identifier] = data_key.xml_to_py(value)
+                attributes[data_key.attr_name] = data_key.xml_to_py(value)
         return attributes
 
     @classmethod
