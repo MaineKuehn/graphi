@@ -7,6 +7,7 @@ except ImportError:
 
 import graphi.types.adjacency_graph
 import graphi.abc
+import graphi.edge
 from graphi import operators
 from graphi.types.decorator import undirectable
 

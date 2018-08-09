@@ -51,8 +51,6 @@ except ImportError:
     import collections as abc_collection
 
 from ..types import adjacency_graph
-from ..types import undirected as undirected_graph
-from ..types import bounded as bounded_graph
 
 
 class ParserError(Exception):
@@ -207,7 +205,7 @@ def graph_reader(
     for row_idx, row in enumerate(iter_rows):
         try:
             node_from = nodes[row_idx]
-        except IndexError as err:
+        except IndexError:
             raise ParserError('trailing row exceeds node count of %d' % len(nodes), row_idx + 1)
         for idx, literal in enumerate(row if not undirected else row[-len(nodes) + row_idx:]):
             node_to = nodes[idx] if not undirected else nodes[row_idx + idx]

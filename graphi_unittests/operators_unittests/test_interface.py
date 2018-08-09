@@ -16,14 +16,16 @@ class UnoptimizedGraph(adjacency_graph.AdjacencyGraph):
 
 
 class MaybeGraph(adjacency_graph.AdjacencyGraph):
-    def __graphi_operator__(self, optimize=True):
+    @staticmethod
+    def __graphi_operator__(optimize=True):
         if optimize is False:
             return NotImplemented
         return 'maybe'
 
 
 class OptimizedGraph(adjacency_graph.AdjacencyGraph):
-    def __graphi_operator__(self):
+    @staticmethod
+    def __graphi_operator__():
         return 'optimized'
 
 

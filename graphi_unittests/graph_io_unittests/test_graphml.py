@@ -3,9 +3,7 @@ try:
 except ImportError:
     import unittest
 
-from graphi import abc
 from graphi.edge import Edge
-from graphi.types import adjacency_graph
 from graphi.graph_io import graphml
 
 #: Minimal example of GraphML functionality for a single graph
