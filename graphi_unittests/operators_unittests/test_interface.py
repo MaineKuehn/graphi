@@ -1,7 +1,4 @@
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
+import unittest
 
 from graphi.types import adjacency_graph
 from graphi.operators import interface

@@ -1,8 +1,5 @@
 import platform
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
+import unittest
 
 try:
     from graphi.types.cython_graph.plain_graph import CythonGraph

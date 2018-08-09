@@ -1,9 +1,5 @@
 import six
 import collections as abc_collection
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
 
 from graphi.abc import Graph, EdgeError, NodeError, AdjacencyListTypeError, AdjacencyView
 

@@ -1,11 +1,7 @@
 import textwrap
+import unittest
 
 from graphi.graph_io import csv
-
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
 
 from graphi.types import undirected, adjacency_graph
 
