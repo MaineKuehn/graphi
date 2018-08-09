@@ -34,7 +34,9 @@ if __name__ == '__main__':
         url=package_about['__url__'],
         packages=find_packages(),
         # dependencies
-        install_requires=['six'],
+        install_requires=[
+            'six',
+        ],
         ext_modules=CEXTENSIONS,
         zip_safe=False,
         # metadata for package search
