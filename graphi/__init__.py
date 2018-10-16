@@ -1,4 +1,5 @@
 from .abc import Graph as _GraphABC
+from .edge import Edge as _Edge
 from .types.adjacency_graph import AdjacencyGraph as _AdjacencyGraph
 
 #: Default graph type implementation
@@ -29,5 +30,16 @@ graph = _AdjacencyGraph
 #:       :py:class:`~graphi.abc.Graph`
 #:       for details.
 GraphABC = _GraphABC
+
+#: Rich representation of :term:`edges <edge>` as ``[start:end]`` pairs
+#:
+#: Convenience interface to define and work with :term:`edges <edge>`
+#: outside of graphs. This primarily allows to store edges and to test
+#: whether edges are in a graph.
+#:
+#: :note: Graphs only guarantee to store ``start`` and ``end``.
+#:        Any information stored on an ``Edge`` is not preserved
+#:        by the :term:`graph`.
+Edge = _Edge
 
 __all__ = ['graph', 'GraphABC']
