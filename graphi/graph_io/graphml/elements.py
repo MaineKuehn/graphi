@@ -1,8 +1,11 @@
+"""
+Representations of the elements in a GraphML document
+"""
 import re
 
 
 class QualifiedTag(object):
-    """A tag consisting of (optional) namespace and local name"""
+    """An XML tag consisting of (optional) namespace and local name"""
     _literal_re = re.compile(r'({.*})?(.*)')
 
     def __init__(self, namespace, localname):
@@ -29,11 +32,18 @@ class QualifiedTag(object):
 
 
 class DataKey(object):
+    """
+    A GraphML Key specification on how to convert attributes of nodes
+
+    :note: Unlike the GraphML ``key`` element, no domain is stored.
+           See :py:class:`~.KeyDomain` for its equivalent.
+    """
     types = {'boolean': bool, 'int': int, 'long': int, 'float': float, 'double': float, 'string': str}
 
     def __init__(self, identifier, attr_name, attr_type, default=None):
         if attr_type not in self.types:
-            raise ValueError("'attr_type' must be any of '%s'" % "', '".join(self.types))
+            raise ValueError("'attr_type' must be any of '%s', not %s" % (
+                "', '".join(self.types), identifier))
         self.identifier = identifier
         self.attr_name = attr_name
         self.attr_type = attr_type
@@ -52,11 +62,30 @@ class DataKey(object):
 
 
 class KeyDomain(object):
+    """
+    The GraphML domain to which keys apply
+
+    A :py:class:`~.KeyDomain` represents all keys of a given domain.
+    A GraphML ``key`` element with a ``domain`` is represented by a
+    :py:class:`~.DataKey` stored in the corresponding :py:class:`~.KeyDomain`.
+    """
+    #: valid domains for GraphML keys
+    GRAPHML_DOMAINS = "graph", "node", "edge", "all"
+
     def __init__(self, domain, keys):
+        if domain not in self.GRAPHML_DOMAINS:
+            raise ValueError("'domain' must be any of '%s', not %s" % (
+                "', '".join(self.GRAPHML_DOMAINS), domain))
         self.domain = domain
         self.keys = tuple(keys)
 
     def compile_attributes(self, element):
+        """
+        Compile a dictionary of attributes from a graphml element for this domain
+
+        :note: The validity of the domain is currently not checked.
+               In the future, an error may be thrown if ``element`` is of the wrong domain.
+        """
         attributes = {}
         child_data = {child.get('key'): child.text for child in element}
         for data_key in self.keys:  # type: DataKey
@@ -84,6 +113,7 @@ class KeyDomain(object):
 
 
 class GraphMLNode(object):
+    """A GraphML node element"""
     def __init__(self, identifier, attributes):
         self.identifier = identifier
         self.attributes = attributes
@@ -96,6 +126,7 @@ class GraphMLNode(object):
 
 
 class GraphMLEdge(object):
+    """A GraphML edge element"""
     def __init__(self, identifier, source, target, directed, attributes):
         self.identifier = identifier
         self.source = source
