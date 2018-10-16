@@ -81,7 +81,7 @@ This allows the use of common operations without loss of performance:
     outgoing_flights = {city: len(airports[city]) for city in airports}
 
 With its general-purpose design, ``GraphI`` makes no assumptions about your data.
-You are free to use whatever is needed to solve your problem, not please data structure.
+You are free to use whatever is needed to solve your problem.
 
 Frequently Asked Questions
 ==========================
@@ -89,6 +89,24 @@ Frequently Asked Questions
 *Yet another graph library?*
     The goal of ``GraphI`` is not to be another graph library, but to provide an intuitive way to work with graphs.
     Working with complex graphs should be as easy *for you* as working with any other primitive type.
+
+    ``GraphI`` is suitable for interactive, explorative use.
+    At the same time, it also allows for a seamless specialisation to optimised data structures.
+
+*What parts do I actually need?*
+    The ``GraphI`` library provides several points of interest:
+
+      * The :py:class:`graphi.graph` type, the most performant general purpose graph type available.
+        Use this as the starting point, the way you would use ``dict``, ``list`` and others.
+
+      * The :py:mod:`graphi.types` module which offers various graph types for different use-cases.
+        Use this for specialisation, the way you would use ``numpy.array`` and others.
+
+      * The :py:mod:`graphi.decorator` helpers which can produce undirected and bounded graph types.
+        Use this for custom types, to quickly provide variants from directed, unbounded graphs.
+
+      * The :py:mod:`graphi.abc` which allows to code against several different graph implementations.
+        Use this for generic algorithms, the way you would use ``collections.abc`` types.
 
 *What is this thing you call ABC?*
     ``GraphI`` does not just provide graph *implementations*, but also an efficient graph *interface*.
@@ -113,6 +131,9 @@ Frequently Asked Questions
 
     From our experience, performance critical code is best run with `PyPy <https://pypy.org>`_.
     This will not just optimize isolated pieces, but the actual combination of your algorithm and ``GraphI`` as a whole.
+
+    For ``CPython``, an optimised graph type implemented in C is available.
+    Note that :py:class:`graphi.graph` will always represent the most optimised graph type available.
 
 Indices and tables
 ==================
