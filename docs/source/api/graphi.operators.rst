@@ -1,5 +1,5 @@
-graphi\.operators package
-=========================
+graphi.operators package
+========================
 
 .. automodule:: graphi.operators
     :members:

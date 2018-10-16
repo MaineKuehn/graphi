@@ -1,5 +1,5 @@
-graphi\.edge module
-===================
+graphi.edge module
+==================
 
 .. automodule:: graphi.edge
     :members:

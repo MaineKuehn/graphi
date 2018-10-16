@@ -1,7 +1,7 @@
-graphi.graph\_io.csv module
+graphi.types.bounded module
 ===========================
 
-.. automodule:: graphi.graph_io.csv
+.. automodule:: graphi.types.bounded
     :members:
     :undoc-members:
     :show-inheritance:

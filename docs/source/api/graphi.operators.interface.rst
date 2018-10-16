@@ -1,5 +1,5 @@
-graphi\.operators\.interface module
-===================================
+graphi.operators.interface module
+=================================
 
 .. automodule:: graphi.operators.interface
     :members:

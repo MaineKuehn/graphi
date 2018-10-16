@@ -102,8 +102,8 @@ Frequently Asked Questions
       * The :py:mod:`graphi.types` module which offers various graph types for different use-cases.
         Use this for specialisation, the way you would use ``numpy.array`` and others.
 
-      * The :py:mod:`graphi.decorator` helpers which can produce undirected and bounded graph types.
-        Use this for custom types, to quickly provide variants from directed, unbounded graphs.
+      * The :py:mod:`graphi.types.decorator` helpers which can produce undirected and bounded graph types.
+        Use this for custom types to quickly provide variants from directed graphs.
 
       * The :py:mod:`graphi.abc` which allows to code against several different graph implementations.
         Use this for generic algorithms, the way you would use ``collections.abc`` types.

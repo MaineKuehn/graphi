@@ -42,4 +42,4 @@ GraphABC = _GraphABC
 #:        by the :term:`graph`.
 Edge = _Edge
 
-__all__ = ['graph', 'GraphABC']
+__all__ = ['graph', 'GraphABC', 'Edge']

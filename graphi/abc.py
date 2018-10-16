@@ -50,7 +50,7 @@ class Graph(abc_collection.Container):
     In short, ``graph[a]`` provides a collection of edges originating at ``a``,
     while ``graph[a:b]`` provides the specific edge value from ``a`` to ``b``.
 
-    .. note:: Many interfaces return the rich :py:class:`~.Edge` type for its added usability.
+    .. note:: Many interfaces return the rich :py:class:`~.edge.Edge` type for its added usability.
               To access an edge value, using :py:class:`slice` such as ``graph[a:b]`` is sufficient, however.
 
     Similar to :py:class:`Mappings`, nodes are the primary keys of a :py:class:`~.Graph`.
@@ -374,7 +374,7 @@ class Graph(abc_collection.Container):
         overwriting existing elements.
 
         :param other: graph or items from which to pull elements
-        :type other: :py:class:`~.Graph` or :py:class:`~.ItemView`
+        :type other: :py:class:`~.Graph` or :py:class:`~.abc.ItemView`
         """
         if isinstance(other, (Graph, abc_collection.Mapping)):
             for node_from in other:

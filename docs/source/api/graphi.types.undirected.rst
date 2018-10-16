@@ -1,5 +1,5 @@
-graphi\.types\.undirected module
-================================
+graphi.types.undirected module
+==============================
 
 .. automodule:: graphi.types.undirected
     :members:

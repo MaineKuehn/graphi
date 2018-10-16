@@ -4,7 +4,7 @@ Utilities for loading and storing Graphs as GraphML XML
 The GraphML Format
 ------------------
 
-This modules is capable of reading data according to the `GraphML Specificiation`_.
+This modules is capable of reading data according to the `GraphML Specification`_.
 The GraphML format covers all functionality that can be represented by :my:mod`graphi` graphs.
 Note that several GraphML features, such as hyperedges, are not supported.
 

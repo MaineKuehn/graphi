@@ -1,5 +1,5 @@
-graphi\.abc module
-==================
+graphi.abc module
+=================
 
 .. automodule:: graphi.abc
     :members:
