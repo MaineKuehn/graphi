@@ -1,8 +1,12 @@
 from __future__ import division
-from . import interface
+
+try:
+    from singledispatch import singledispatch
+except ImportError:
+    from functools import singledispatch
 
 
-@interface.graph_operator
+@singledispatch
 def density(graph):
     """
     Return the density of the graph, i.e. the connectedness of its nodes

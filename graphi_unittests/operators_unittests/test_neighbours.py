@@ -27,15 +27,19 @@ class TestNeighbours(unittest.TestCase):
                     )
                 self.assertEqual(set(neighbours(graph, 'node', float('-inf'))), set())
 
-    def test_method(self):
+    def test_override(self):
         """Overridden neighbours(graph, node, ...)"""
         class NeighboursGraph(adjacency_graph.AdjacencyGraph):
-            def __graphi_neighbours__(self, node, maximum_distance=None):
-                if maximum_distance is None:
-                    return range(len(self[node]))
-                if maximum_distance < 0:
-                    return []
-                return range(int(maximum_distance))
+            pass
+
+        @neighbours.register(NeighboursGraph)
+        def test_neighbours(self, node, maximum_distance=None):
+            if maximum_distance is None:
+                return range(len(self[node]))
+            if maximum_distance < 0:
+                return []
+            return range(int(maximum_distance))
+
         for edges in self._get_edge_values():
             with self.subTest(edges=edges):
                 graph = NeighboursGraph(

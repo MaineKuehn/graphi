@@ -1,7 +1,10 @@
-from . import interface
+try:
+    from singledispatch import singledispatch
+except ImportError:
+    from functools import singledispatch
 
 
-@interface.graph_operator
+@singledispatch
 def neighbours(graph, node, maximum_distance=None):
     """
     Yield all nodes to which there is an outgoing edge from ``node`` in ``graph``

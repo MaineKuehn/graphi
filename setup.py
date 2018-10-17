@@ -23,6 +23,10 @@ CEXTENSIONS = [
     )
 ] if platform.python_implementation() == 'CPython' else []
 
+install_requires = ['six']
+if sys.version_info < (3, 4):
+    install_requires.append('singledispatch')
+
 if __name__ == '__main__':
     setup(
         name=package_about['__title__'],
@@ -34,9 +38,7 @@ if __name__ == '__main__':
         url=package_about['__url__'],
         packages=find_packages(),
         # dependencies
-        install_requires=[
-            'six',
-        ],
+        install_requires=install_requires,
         ext_modules=CEXTENSIONS,
         zip_safe=False,
         # metadata for package search
