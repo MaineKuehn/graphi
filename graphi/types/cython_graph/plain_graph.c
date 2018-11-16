@@ -3357,7 +3357,7 @@ static PyObject *__pyx_pf_6graphi_5types_12cython_graph_11plain_graph_11CythonGr
  *     # initialize a new graph by copying nodes from an iterable
  *     def __init_iterable__(self, iterable, **kwargs):             # <<<<<<<<<<<<<<
  *         for node in iterable:
- *             self._incidences[node] = []
+ *             self._incidences[node] = set()
  */
 
 /* Python wrapper */
@@ -3429,7 +3429,7 @@ static PyObject *__pyx_pf_6graphi_5types_12cython_graph_11plain_graph_11CythonGr
  *     # initialize a new graph by copying nodes from an iterable
  *     def __init_iterable__(self, iterable, **kwargs):
  *         for node in iterable:             # <<<<<<<<<<<<<<
- *             self._incidences[node] = []
+ *             self._incidences[node] = set()
  *         self.__init_kwargs__(**kwargs)
  */
   if (likely(PyList_CheckExact(__pyx_v_iterable)) || PyTuple_CheckExact(__pyx_v_iterable)) {
@@ -3477,11 +3477,11 @@ static PyObject *__pyx_pf_6graphi_5types_12cython_graph_11plain_graph_11CythonGr
     /* "graphi/types/cython_graph/plain_graph.pyx":72
  *     def __init_iterable__(self, iterable, **kwargs):
  *         for node in iterable:
- *             self._incidences[node] = []             # <<<<<<<<<<<<<<
+ *             self._incidences[node] = set()             # <<<<<<<<<<<<<<
  *         self.__init_kwargs__(**kwargs)
  * 
  */
-    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_4 = PySet_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     if (unlikely(__pyx_v_self->_incidences == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -3494,7 +3494,7 @@ static PyObject *__pyx_pf_6graphi_5types_12cython_graph_11plain_graph_11CythonGr
  *     # initialize a new graph by copying nodes from an iterable
  *     def __init_iterable__(self, iterable, **kwargs):
  *         for node in iterable:             # <<<<<<<<<<<<<<
- *             self._incidences[node] = []
+ *             self._incidences[node] = set()
  *         self.__init_kwargs__(**kwargs)
  */
   }
@@ -3502,7 +3502,7 @@ static PyObject *__pyx_pf_6graphi_5types_12cython_graph_11plain_graph_11CythonGr
 
   /* "graphi/types/cython_graph/plain_graph.pyx":73
  *         for node in iterable:
- *             self._incidences[node] = []
+ *             self._incidences[node] = set()
  *         self.__init_kwargs__(**kwargs)             # <<<<<<<<<<<<<<
  * 
  *     # initialize a new graph by copying nodes, edges and values from a nested mapping
@@ -3519,7 +3519,7 @@ static PyObject *__pyx_pf_6graphi_5types_12cython_graph_11plain_graph_11CythonGr
  *     # initialize a new graph by copying nodes from an iterable
  *     def __init_iterable__(self, iterable, **kwargs):             # <<<<<<<<<<<<<<
  *         for node in iterable:
- *             self._incidences[node] = []
+ *             self._incidences[node] = set()
  */
 
   /* function exit code */

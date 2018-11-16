@@ -69,7 +69,7 @@ cdef class CythonGraph(object):
     # initialize a new graph by copying nodes from an iterable
     def __init_iterable__(self, iterable, **kwargs):
         for node in iterable:
-            self._incidences[node] = []
+            self._incidences[node] = set()
         self.__init_kwargs__(**kwargs)
 
     # initialize a new graph by copying nodes, edges and values from a nested mapping
