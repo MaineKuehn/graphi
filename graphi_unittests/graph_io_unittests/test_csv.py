@@ -2,7 +2,7 @@ import textwrap
 import unittest
 
 from graphi import abc
-from graphi.graph_io import csv
+from graphi.io import csv
 
 
 class GraphIOTest(unittest.TestCase):

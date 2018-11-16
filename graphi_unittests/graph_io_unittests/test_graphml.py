@@ -1,7 +1,7 @@
 import unittest
 
 from graphi.edge import Edge
-from graphi.graph_io import graphml
+from graphi.io import graphml
 
 #: Minimal example of GraphML functionality for a single graph
 GRAPHML_SINGLE_TARGET = """

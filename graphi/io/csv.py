@@ -24,7 +24,7 @@ The csv itself is parsed using a :py:func:`csv.reader`, which allows setting the
 
 .. code:: python
 
-    from graphi.graph_io import csv
+    from graphi.io import csv
 
     literal = \"\"\"\\
     a, b, c
