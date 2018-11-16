@@ -1,6 +1,10 @@
 from .abc import Graph as _GraphABC
 from .edge import Edge as _Edge
-from .types.adjacency_graph import AdjacencyGraph as _AdjacencyGraph
+try:
+    from .types.cython_graph import CythonGraph as _DefaultGraph
+except ImportError:
+    from .types.adjacency_graph import AdjacencyGraph as _DefaultGraph
+
 
 #: Default graph type implementation
 #:
@@ -14,7 +18,7 @@ from .types.adjacency_graph import AdjacencyGraph as _AdjacencyGraph
 #: :see: The corresponding class
 #:       :py:class:`~graphi.types.adjacency_graph.AdjacencyGraph`
 #:       for details.
-graph = _AdjacencyGraph
+graph = _DefaultGraph
 
 #: Graph :term:`abstract base class` for type checks and virtual subclasses
 #:
