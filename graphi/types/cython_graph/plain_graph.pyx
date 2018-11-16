@@ -26,13 +26,13 @@ cdef class CythonGraph(object):
     O(len(:py:meth:`nodes`) = n) and O(len(:py:meth:`edges`) -> n\ :sup:`2`\ ),
     respectively.
     """
-    #: node -> [neighbour_1, neighbour_2, neighbour_3, ...]
+    #: node -> {neighbour_1, neighbour_2, neighbour_3, ...}
     cdef dict _incidences
     #: node, node -> value
     cdef dict _edge_values
 
     def __init__(self, *source, **kwargs):
-        self._incidences = {}  # {node: [neighbour, neighbour, ...]}
+        self._incidences = {}  # {node: {neighbour, neighbour, ...}}
         self._edge_values = {}  # {(node, node): value, (node, node): value, ...}
         if not source:
             self.__init_empty__(**kwargs)
@@ -94,16 +94,20 @@ cdef class CythonGraph(object):
             try:
                 return self._edge_values[node_from, node_to]
             except KeyError:
-                raise EdgeError
+                raise EdgeError(item)
         else:
             if item in self._incidences:
                 return NodeAdjacencyView(self, item)
             else:
-                raise NodeError
+                raise NodeError(item)
 
     def __setitem__(self, item, value):
         if item.__class__ is slice:
             node_from, node_to = item.start, item.stop
+            if node_from not in self._incidences:
+                raise NodeError(node_from)  # first edge node
+            elif node_to not in self._incidences:
+                raise NodeError(node_to)  # second edge node
             self._set_edge(node_from, node_to, value)
         else:
             # g[a] = g[a]
@@ -129,12 +133,14 @@ cdef class CythonGraph(object):
             try:
                 del self._edge_values[node_from, node_to]
             except KeyError:
-                raise EdgeError
+                raise EdgeError(item)
+            else:
+                self._incidences[node_from].remove(node_to)
         else:
             try:
                 incidences = self._incidences.pop(item)
             except KeyError:
-                raise NodeError
+                raise NodeError(item)
             else:
                 for node_to in incidences:
                     del self._edge_values[item, node_to]
@@ -206,7 +212,7 @@ cdef class CythonGraph(object):
                 node_adjacency = other[node_from]
                 for node_to in node_adjacency:
                     self._add_node(node_to)
-                    self._edge_values[node_from, node_to] = node_adjacency[node_to]
+                    self._set_edge(node_from, node_to, node_adjacency[node_to])
         else:
             for node in other:
                 self._add_node(node)
@@ -229,20 +235,21 @@ cdef class CythonGraph(object):
     cdef _add_node(self, node):
         """Ensure that `node` is part of self"""
         if node not in self._incidences:
-            self._incidences[node] = []
+            self._incidences[node] = set()
 
     cdef _add_edge(self, node_from, node_to):
         """Ensure that node_from:node_to is part of self; does not _add either node"""
+        cdef set incidence
         if (node_from, node_to) not in self._edge_values:
+            incidence = self._incidences[node_from]
+            incidence.add(node_to)
             self._edge_values[node_from, node_to] = True
 
     cdef _set_edge(self, node_from, node_to, value):
-        if node_from not in self._incidences:
-            raise NodeError  # first edge node
-        elif node_to not in self._incidences:
-            raise NodeError  # second edge node
-        else:
-            self._edge_values[node_from, node_to] = value
+        """Ensure that node_from:node_to is set to value; does not _add either node"""
+        cdef set incidence = self._incidences[node_from]
+        incidence.add(node_to)
+        self._edge_values[node_from, node_to] = value
 
 
 # View Objects
