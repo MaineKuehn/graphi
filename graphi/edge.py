@@ -74,6 +74,9 @@ class Edge(object):
         # this class as not-slice. This means it cannot be used for builtin types.
         return slice
 
+    def __len__(self):
+        return 2
+
     def __getitem__(self, index):
         if index == 0:
             return self.start
