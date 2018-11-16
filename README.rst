@@ -1,6 +1,6 @@
-+++++++++++++++++++++++++++++++++++++++++
-GraphI - Python Graph Interface and Types
-+++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++
+GraphI - Graphs for Humans
+++++++++++++++++++++++++++
 
 .. image:: https://readthedocs.org/projects/graphi/badge/?version=latest
     :target: http://graphi.readthedocs.io/en/latest/?badge=latest
@@ -28,13 +28,14 @@ GraphI - Python Graph Interface and Types
     # graph    node    node     value
 
 ``GraphI`` is a lightweight graph library - it is suitable to model networks, connections and other relationships.
-Compared to other graph libraries, ``GraphI`` aims for being as pythonic as possible.
+Compared to other graph libraries, ``GraphI`` aims for being as pythonic and accessible as possible.
 If you are comfortable using ``list``, ``dict`` or other types, ``GraphI`` is intuitive and straight-forward to use.
 
 .. code:: python
 
+    from graphi import graph
     # create a graph with initial nodes
-    airports = Graph("New York", "Rio", "Tokyo")
+    airports = graph("New York", "Rio", "Tokyo")
     # add connections between nodes
     airports["New York":"Rio"] = timedelta(hours=9, minutes=50)
     airports["New York":"Tokyo"] = timedelta(hours=13, minutes=55)

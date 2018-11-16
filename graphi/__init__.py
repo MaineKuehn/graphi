@@ -1,3 +1,34 @@
+"""
+++++++++++++++++++++++++++
+GraphI - Graphs for Humans
+++++++++++++++++++++++++++
+
+Documentation is available in docstrings of modules, classes and functions.
+In an interactive session, use ``help``, or ipython's ``?`` and ``??``.
+For example, use ``help(graphi.GraphABC)`` to view the graph interface.
+
+For further help, tutorials and examples visit
+http://graphi.readthedocs.io
+to view the full documentation.
+
+Using Graphs
+++++++++++++
+
+You should start by using the type ``graphi.graph`` - the most well-rounded
+graph implementation on your system.  Like all ``graphi`` types, it uses an
+interface similar to the Python builtin types:
+
+.. code:: python
+
+    from graphi import graph
+
+    # create a graph with initial nodes
+    airports = graph("New York", "Rio", "Tokyo")
+
+    # add connections between nodes
+    airports["New York":"Rio"] = timedelta(hours=9, minutes=50)
+    airports["New York":"Tokyo"] = timedelta(hours=13, minutes=55)
+"""
 from .abc import Graph as _GraphABC
 from .edge import Edge as _Edge
 try:
@@ -14,10 +45,6 @@ except ImportError:
 #: provided.
 #: The implementation is adequate for most use-cases, and provides
 #: a balance of complexity, performance and storage.
-#:
-#: :see: The corresponding class
-#:       :py:class:`~graphi.types.adjacency_graph.AdjacencyGraph`
-#:       for details.
 graph = _DefaultGraph
 
 #: Graph :term:`abstract base class` for type checks and virtual subclasses
