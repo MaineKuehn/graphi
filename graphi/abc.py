@@ -12,12 +12,16 @@ from . import edge
 
 class EdgeError(Exception):
     """Graph edge not found"""
-    pass
+    def __init__(self, edge):
+        self.edge = edge
+        super(EdgeError, self).__init__(edge)
 
 
 class NodeError(Exception):
     """Graph node not found"""
-    pass
+    def __init__(self, node):
+        self.node = node
+        super(NodeError, self).__init__(node)
 
 
 class AdjacencyListTypeError(TypeError):

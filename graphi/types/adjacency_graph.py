@@ -72,22 +72,22 @@ class AdjacencyGraph(abc.Graph):
             try:
                 return self._adjacency[node_from][node_to]
             except KeyError:
-                raise abc.EdgeError
+                raise abc.EdgeError(item)
         else:
             try:
                 return self._adjacency[item]
             except KeyError:
-                raise abc.NodeError
+                raise abc.NodeError(item)
 
     def __setitem__(self, item, value):
         if item.__class__ is slice:
             node_from, node_to = item.start, item.stop
             if node_to not in self._adjacency:
-                raise abc.NodeError  # second edge node
+                raise abc.NodeError(node_to)  # second edge node
             try:
                 self._adjacency[node_from][node_to] = value
             except KeyError:
-                raise abc.NodeError  # first edge node
+                raise abc.NodeError(node_from)  # first edge node
         else:
             # g[a] = g[a]
             if self._adjacency.get(item, object()) is value:
@@ -108,12 +108,12 @@ class AdjacencyGraph(abc.Graph):
             try:
                 del self._adjacency[node_from][node_to]
             except KeyError:
-                raise abc.EdgeError
+                raise abc.EdgeError(item)
         else:
             try:
                 self._adjacency.pop(item)
             except KeyError:
-                raise abc.NodeError
+                raise abc.NodeError(item)
             else:
                 # clean up all edges to this node
                 for node in self:

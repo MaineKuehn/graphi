@@ -51,11 +51,11 @@ class SimpleGraph(Graph):
             try:
                 return self._adjacency[node_from][node_to]
             except KeyError:
-                raise EdgeError
+                raise EdgeError((node_from, node_to))
         else:
             if item in self:
                 return AdjacencyView(self, item)
-            raise NodeError
+            raise NodeError(item)
 
     def __setitem__(self, item, value):
         if item.__class__ is slice:
@@ -63,7 +63,7 @@ class SimpleGraph(Graph):
             try:
                 self._adjacency[node_from][node_to] = value
             except KeyError:
-                raise NodeError  # first or second edge node
+                raise NodeError(item)  # first or second edge node
         else:
             # g[a] = g[a]
             if self._adjacency.get(item, object()) is value:
@@ -84,12 +84,12 @@ class SimpleGraph(Graph):
             try:
                 del self._adjacency[node_from][node_to]
             except KeyError:
-                raise EdgeError
+                raise EdgeError((node_from, node_to))
         else:
             try:
                 self._adjacency.pop(item)
             except KeyError:
-                raise NodeError
+                raise NodeError(item)
             else:
                 for node in self:
                     self._adjacency[node].pop(item, None)
