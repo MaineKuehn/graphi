@@ -2,20 +2,24 @@
 graphi Changelog
 ++++++++++++++++
 
-prerelease 2017-??-??
+prerelease 201?-??-??
 ---------------------
 
-    **Notes**
+    **Overview**
         Added operator interface and implementations
 
         Added graph input/output
+
+        Added Cython graph implementation
 
     **Major Changes**
         Added ``graph[item] = True``, which is equal to ``graph.add(item)``.
         Deprecates both ``graph[node] = node`` and ``graph[node] = None``.
 
+        The class ``graphi.graph`` always uses the best implementation available
+
     **New Features**
-        Operator interface allowing graphs to provide optimized implementations
+        Operator interface allowing graphs types to use optimized implementations
 
         Added operators:
 
@@ -23,15 +27,18 @@ prerelease 2017-??-??
 
             - ``density(graph)``
 
-        Added input/output:
+        Added input formats:
 
             - csv
 
+            - GraphML
+
     **Minor Changes**
 
-        Graphs explicitly define ``bool(graph)``. This was previously implicitly available as ``bool`` falls back to ``__len__``.
+        Graphs explicitly define ``bool(graph)``.
+        This was previously implicitly available as ``bool`` falls back to ``__len__``.
 
-0.2.0 2017-07-31
+0.2.0 2018-07-31
 ----------------
 
     **Notes**
