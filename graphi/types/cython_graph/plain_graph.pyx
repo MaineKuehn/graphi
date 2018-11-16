@@ -1,6 +1,7 @@
 # cython: language_level=3
 from __future__ import absolute_import
 import collections as abc_collection
+from itertools import islice
 
 from graphi.abc import Graph as GraphABC, EdgeError, NodeError, AdjacencyListTypeError, \
     NodeView as NodeViewABC, EdgeView as EdgeViewABC, ValueView as ValueViewABC, ItemView as ItemViewABC
@@ -251,6 +252,36 @@ cdef class CythonGraph(object):
         incidence.add(node_to)
         self._edge_values[node_from, node_to] = value
 
+    # representations
+    #################
+    cdef str _data_str(self):
+        return '{%s}' % ', '.join(NodeAdjacencyView(self, node)._data_str() for node in self)
+
+    def __str__(self):
+        if len(self._incidences) <= 16:
+            return '%s(%s)' % (self.__class__.__name__, self._data_str())
+        elif len(self._incidences) <= 64:
+            incidences = list(self._incidences)
+            return '%s({%s, %s})' % (
+                self.__class__.__name__,
+                ', '.join(NodeAdjacencyView(node)._data_str() for node in incidences[:16]),
+                ', '.join('%r: {...}' % node for node in incidences[16:]),
+            )
+        elif len(self._incidences) <= 128:
+            return '%s({%s})' % (
+                self.__class__.__name__,
+                ', '.join('%r: {...}' % node for node in self._incidences),
+            )
+        else:
+            return '%s({%s, ...})' % (
+                self.__class__.__name__,
+                ', '.join('%r: {...}' % node for node in islice(self._incidences, 128)),
+            )
+
+    def __repr__(self):
+        return '<%s of %d nodes, %d edges at %s>' % (
+            self.__class__.__name__, len(self._incidences), len(self._edge_values), id(self))
+
 
 # View Objects
 # These directly access the data of a CythonGraph
@@ -276,6 +307,19 @@ cdef class NodeAdjacencyView(object):
     def __contains__(self, node):
         return (self._node_from, node) in self._graph._edge_values
 
+    cdef str _data_str(self):
+        return '%r : {%s}' % (
+            self._node_from,
+            ', '.join('%r: %r' % (node_to, self._graph[self._node_from:node_to])
+            for node_to in self._graph._incidences[self._node_from])
+        )
+
+    def __str__(self):
+        return '<%s>' % self._data_str()
+
+    def __repr__(self):
+        return '<%s of %r in %r>' % (self.__class__.__name__, self._node_from, self._graph)
+
 
 cdef class NodeView(object):
     """
@@ -294,6 +338,17 @@ cdef class NodeView(object):
 
     def __len__(self):
         return len(self._graph._incidences)
+
+    cdef str _data_str(self):
+        return '%s' % (
+            ','.join(repr(node) for node in self)
+        )
+
+    def __str__(self):
+        return '<%s>' % self._data_str()
+
+    def __repr__(self):
+        return '<%s of %r>' % (self.__class__.__name__, self._graph)
 
 
 cdef class EdgeView(object):
@@ -322,6 +377,17 @@ cdef class EdgeView(object):
     def __len__(self):
         return len(self._graph._edge_values)
 
+    cdef str _data_str(self):
+        return '%s' % (
+            ','.join(repr(edge) for edge in self)
+        )
+
+    def __str__(self):
+        return '<%s>' % self._data_str()
+
+    def __repr__(self):
+        return '<%s of %r>' % (self.__class__.__name__, self._graph)
+
 
 cdef class ValueView(object):
     """
@@ -340,6 +406,17 @@ cdef class ValueView(object):
 
     def __len__(self):
         return len(self._graph._edge_values)
+
+    cdef str _data_str(self):
+        return '%s' % (
+            ','.join(repr(value) for value in self)
+        )
+
+    def __str__(self):
+        return '<%s>' % self._data_str()
+
+    def __repr__(self):
+        return '<%s of %r>' % (self.__class__.__name__, self._graph)
 
 
 cdef class ItemView(object):
@@ -371,6 +448,17 @@ cdef class ItemView(object):
 
     def __len__(self):
         return len(self._graph._edge_values)
+
+    cdef str _data_str(self):
+        return '%s' % (
+            ','.join(repr(items) for items in self)
+        )
+
+    def __str__(self):
+        return '<%s>' % self._data_str()
+
+    def __repr__(self):
+        return '<%s of %r>' % (self.__class__.__name__, self._graph)
 
 
 GraphABC.register(CythonGraph)
