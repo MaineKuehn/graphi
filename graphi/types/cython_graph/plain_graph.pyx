@@ -341,7 +341,7 @@ cdef class NodeView(object):
 
     cdef str _data_str(self):
         return '%s' % (
-            ','.join(repr(node) for node in self)
+            ', '.join(repr(node) for node in self)
         )
 
     def __str__(self):
@@ -379,7 +379,7 @@ cdef class EdgeView(object):
 
     cdef str _data_str(self):
         return '%s' % (
-            ','.join(repr(edge) for edge in self)
+            ', '.join(repr(edge) for edge in self)
         )
 
     def __str__(self):
@@ -409,7 +409,7 @@ cdef class ValueView(object):
 
     cdef str _data_str(self):
         return '%s' % (
-            ','.join(repr(value) for value in self)
+            ', '.join(repr(value) for value in self)
         )
 
     def __str__(self):
@@ -451,7 +451,7 @@ cdef class ItemView(object):
 
     cdef str _data_str(self):
         return '%s' % (
-            ','.join(repr(items) for items in self)
+            ', '.join(repr(items) for items in self)
         )
 
     def __str__(self):
