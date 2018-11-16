@@ -21,13 +21,31 @@ interface similar to the Python builtin types:
 .. code:: python
 
     from graphi import graph
+    from datetime import timedelta
 
     # create a graph with initial nodes
     airports = graph("New York", "Rio", "Tokyo")
 
-    # add connections between nodes
+    # add edges between nodes
     airports["New York":"Rio"] = timedelta(hours=9, minutes=50)
     airports["New York":"Tokyo"] = timedelta(hours=13, minutes=55)
+
+All graphs behave like a blend of a ``set`` of nodes and a ``dict`` of edges.
+Bulk lookups, such as the adjacency of a node or edges of a graph, provide
+efficient views. For example, `len(graph[node])`` provides the number of
+outgoing edges from ``node`` without building intermediate containers.
+
+.. code:: python
+
+    print('There are', len(airports), 'airports in the world!')
+
+    # iterate directly on nodes...
+    for node in airports:
+        print(node, 'has', len(airports[node]), 'outgoing connections.')
+
+    # ... or use graph.nodes(), graph.edges(), graph.values() or graph.items()
+    for edge in airports.edges():
+        print('Origin:', edge.start, '\tDestination:', edge.stop, '\tFlight Time:', airports[edge])
 """
 from .abc import Graph as _GraphABC
 from .edge import Edge as _Edge
