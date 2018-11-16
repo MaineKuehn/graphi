@@ -112,6 +112,8 @@ class Mixin(object):
                 self.assertNotIn(10, graph[12])
                 self.assertEqual(1, graph[10][12])
                 self.assertEqual(len(graph[10]), len(list(graph[10])))
+                # test iterating over values
+                self.assertIn(12, set(graph[10]))
                 self.assertNotIn(1, set(graph[10]))
 
         def test_node_container(self):
